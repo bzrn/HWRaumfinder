@@ -11,17 +11,27 @@ public class Raumfinder implements RaumfinderIF {
     private ArrayList<Raum> raeume;
     private ArrayList<Reservierung> reservierungen;
     //private ArrayList<Nutzer> nutzer;
-    //private ArrayList<Dozent> dozenten;
+    //private ArrayList<Dozent> dozenten;   // Dozenten wollten wir doch nicht speichern
     private OnlineEinleser onEinleser;        //muss Interface werden
     //private RaumfinderFileAdapterIF saver;
 
     //Konstruktor muss noch angepasst werden!
-    public Raumfinder(ArrayList<Raum> raeume, OnlineEinleser onEinleser){
+
+    public Raumfinder () {
+
+        raeume = new ArrayList<Raum>();
+        reservierungen = new ArrayList<Reservierung>();
+        //nutzer = new ArrayList<Nutzer>(); // noch nicht implementiert
+        onEinleser = new OnlineEinleser(this);
+            onEinleser.einlesen();
+    }
+
+    public Raumfinder(ArrayList<Raum> raeume, ArrayList<Reservierung> reservierungen, OnlineEinleser onEinleser){
+
         this.raeume = raeume;
+        this.reservierungen = reservierungen;
         this.onEinleser = onEinleser;
-
-        this.raeume = onEinleser.einlesen();
-
+            onEinleser.einlesen();
     }
 
     public ArrayList<Raum> getRaeume() {
@@ -36,6 +46,7 @@ public class Raumfinder implements RaumfinderIF {
     //}
 
     public void onlineEinlesen(){
+        onEinleser.einlesen();
     }
 
     public void save(){
@@ -47,15 +58,15 @@ public class Raumfinder implements RaumfinderIF {
     public Raum sucheKennung(String raumKennung){ //sucht Raum nach Kennung, im Moment noch exakte Kennung
         for(int i = 0; i<raeume.size(); i++){
             if(raumKennung.equalsIgnoreCase(raeume.get(i).getRaumBezeichnung())){
-                System.out.println("Cool.");
                 return raeume.get(i);
             }
         }
-
         return null;
     }
-    public void addRaum(Raum a){
+
+    public void addRaum(Raum a){    //könnte überflüssig sein... //nicht überflüssig, sortierung muss hier implementiert werden <alex>
         raeume.add(a);
-    } //könnte überflüssig sein...
-}
+    }
+
+    public ArrayList<Raum> gettRaeume () { return raeume;}
 }
