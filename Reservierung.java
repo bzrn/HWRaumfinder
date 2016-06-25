@@ -107,7 +107,15 @@ public class Reservierung {
         this.storniert = storniert;
     }
 
-
+    public String toString () {
+        return  "reservierungsNr:\t\t"  + reservierungsNr                       + "\n" +
+                "Raum:\t\t"             + raum.getRaumBezeichnung()             + "\n" +
+                "Inhaber:\t\t"          + inhaber                               + "\n" +
+                "Zeitraum:\t\t"           + zeitraum                            + "\n" +
+                "resZeitpunkr:\t\t"     + reservierungsZeitpunkt.toString()     + "\n" +
+                "Error:\t\t"            + error                                 + "\n" +
+                "Storniert:\t\t"        + storniert;
+    }
 
 
 }
