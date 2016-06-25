@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,38 +6,51 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class OnlineEinleser {
 
     private int fileCounter;
+    private RaumfinderIF raumfinder;
+
+    private final String SPEICHERORT = "C:\\Users\\Alexander\\Projekte\\IdeaProjects\\HWRaumfinder\\StundenplanFiles\\";
 
 
-	public static void main (String[] Args) throws FileNotFoundException, IOException {
+	public static void main (String[] Args) throws IOException {
 
-		OnlineEinleser el = new OnlineEinleser();
-		el.download();
+		OnlineEinleser el = new OnlineEinleser(null);
+		el.einlesen();
 		//el.readEvents("C:\\Users\\Alexander\\Desktop\\elektrotechnik-semester1-kurs.ics");
 		//el.einlesen();
 	}
 
-    public void einlesen() {
-
-
-        // readEvents (FILEPATH);
-
+    public OnlineEinleser (RaumfinderIF parent){
+        this.raumfinder=parent;
     }
 
-    public void download(){
+    public void einlesen() {
+
+        ArrayList<Reservierung> resses = new ArrayList<Reservierung>();
+
+        download();
+
+        for (int i=0; i<fileCounter; i++) {
+            resses.addAll(readEvents(SPEICHERORT + "events_" + i + ".ics"));
+        }
+
+        for (int i=0; i<resses.size(); i++) {
+            System.out.println(resses.get(i).toString());
+            System.out.println("-----------");
+        }
+    }
+
+    private void download(){
 
         URL tempURL;
         String tempString;
         ReadableByteChannel rbc = null;
         FileOutputStream fos = null;
 
-        final String SPEICHERORT = "\\StundenplanFiles\\";
         final String URLSTART = "http://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/";
 
         String[] url1 = {        // normal: alle mit a: 1-6, abc  || alle ohne a: 1-6, kein kurs    //"bank/semester1/kursa",
@@ -146,18 +158,19 @@ public class OnlineEinleser {
                 download (tempURL, new File (SPEICHERORT + "events_" + fileCounter + ".ics"), rbc, fos);
             }
 
-            rbc.close();
-            fos.close();
+            if (rbc != null) rbc.close();
+            if (fos!= null) fos.close();
         }
         catch (MalformedURLException e) {
-            System.err.println("Interner Fehler: Fehlerhafte URL");
+            System.err.println("Interner Fehler: Fehlerhafte URL [download]");
         }
         catch (IOException e) {
-            System.err.println("Interner Fehler: rbc/fos konnte nicht geschlossen werden");
+            System.err.println("Interner Fehler: rbc/fos konnte nicht geschlossen werden [download]");
+            e.printStackTrace();
         }
     }
 
-    private void download (URL website, File ziel, ReadableByteChannel rbc, FileOutputStream fos) throws FileNotFoundException, IOException{
+    private void download (URL website, File ziel, ReadableByteChannel rbc, FileOutputStream fos) throws IOException{
         rbc = Channels.newChannel(website.openStream());
         fos = new FileOutputStream(ziel);
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
@@ -193,49 +206,63 @@ public class OnlineEinleser {
 
         try {
             while (tempDatei.indexOf("SUMMARY")>0){
-                tempDatei = substringAfter(tempDatei,"SUMMARY:");
+                tempDatei = substringAfter(tempDatei, "SUMMARY:");
                 tempStr = tempDatei.substring(0,tempDatei.indexOf("LOCATION")-2);
-                strName = strBesitzer = tempStr.substring(0, tempStr.indexOf("\\;")) + " " + tempStr.substring(tempStr.indexOf("\\;")+2, tempStr.lastIndexOf("\\;"));
+                strName = tempStr.substring(0, tempStr.indexOf("\\;")) + " " + tempStr.substring(tempStr.indexOf("\\;")+2, tempStr.lastIndexOf("\\;"));     //ERROR HERE
                 strBesitzer = tempStr.substring(tempStr.lastIndexOf(";")+1, tempStr.length());
-                tempDatei = substringAfter(tempDatei,"LOCATION:CL: ");
+                    strBesitzer = strBesitzer.replaceAll("\\\\", "");
+                tempDatei = substringAfter(tempDatei, "LOCATION:CL: ");
                 strRaum = tempDatei.substring(0,tempDatei.indexOf("DESCRIPTION")-2);
                 tempDatei = substringAfter(tempDatei,"DTSTART;TZID=Europe/Berlin:");
                 strStart = tempDatei.substring(0,tempDatei.indexOf("DTEND")-2);
-                tempDatei = substringAfter(tempDatei,"DTEND;TZID=Europe/Berlin:");
+                tempDatei = substringAfter(tempDatei, "DTEND;TZID=Europe/Berlin:");
                 strEnde = tempDatei.substring(0,tempDatei.indexOf("PRIORITY")-2);
 
-                //System.out.println(tempName);
-                //System.out.println(strBesitzer);
-                //System.out.println(strRaum);
-                //System.out.println(strStart);
-                //System.out.println(strEnde);
-                //System.out.println("-----------");
+                /*
+                System.out.println(strName);
+                System.out.println(strBesitzer);
+                System.out.println(strRaum);
+                System.out.println(strStart);
+                System.out.println(strEnde);
+                System.out.println("-----------");
+                */
 
-                tempRaum = null;
-                tempBesitzer = null;
-                tempZeitraum = null;
+                //tempRaum = raumfinder.sucheKennung(strRaum);  zu Testzwecken auskommentiert
+                tempRaum = null;    // Test
+                    if (tempRaum == null) {
+                        tempRaum = new Raum (
+                                        strRaum,
+                                        null,       // Ausstattung null
+                                        (short) 0,  // Kapazität null
+                                        true        // buchbar true
+                        );
+                        //raumfinder.addRaum(tempRaum);     zu Testzwecken auskommentiert
+                    }
+
+                tempBesitzer = new Dozent (strBesitzer);
+                tempZeitraum = new Zeitraum();  // Implementierung Zeitraum fehlt
 
                 reservierungen.add(
                         new Reservierung(
                                 tempRaum,
                                 tempBesitzer,
-                                tempZeitraum
+                                tempZeitraum,
+                                strName
                         )
                 );
             }
 
         } catch (IndexOutOfBoundsException e) {
-            System.err.println("ERROR");
+            System.err.println("Interner Fehler: Substring out of Bounds [readEvents]");
             e.printStackTrace();
         }
 
-        return raume;
+        return reservierungen;
     }
 
     private String substringAfter (String text, String breakpoint) {
         int startIndex=text.indexOf(breakpoint);
-//		if (startIndex == -1) throw new IndexOutOfBoundsException();
-        return text.substring((startIndex+breakpoint.length()), text.length());
+        return text.substring((startIndex+breakpoint.length()));
     }
 
     private String readICS (String filepath){
