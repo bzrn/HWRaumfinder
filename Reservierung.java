@@ -55,6 +55,19 @@ public class Reservierung {
         this.error = false;
         this.storniert = false;
     }
+    
+    // mit mauell gesetztem Zeitpunkt und Kommentar, für OnlineEinleser
+    public Reservierung(Raum raum, Reservierer inhaber, Zeitraum zeitraum, Date zeitpunkt) {
+
+        this.reservierungsNr = Long.toString(resCounter++);
+        this.raum = raum;
+        this.inhaber = inhaber;
+        this.zeitraum = zeitraum;
+        this.reservierungsZeitpunkt = zeitpunkt;
+        this.kommentar = "";
+        this.error = false;
+        this.storniert = false;
+    }
 
     //Getter und Setter
 
