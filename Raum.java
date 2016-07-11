@@ -20,7 +20,7 @@ public class Raum {
     public Raum(String raumBezeichnung, Ausstattung ausstattung, short kapazitaet, boolean buchbar){
         this.raumBezeichnung = raumBezeichnung;
         this.ausstattung=ausstattung;
-        //this.belegung = belegung;
+        this.belegung = new ArrayList<Reservierung>();
         this.buchbar = buchbar;
     }
 
