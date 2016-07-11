@@ -10,7 +10,7 @@ public class Raumfinder implements RaumfinderIF {
     //Attribute
     private ArrayList<Raum> raeume;
     private ArrayList<Reservierung> reservierungen;
-    //private ArrayList<Nutzer> nutzer;
+    private ArrayList<Nutzer> nutzer;
     //private ArrayList<Dozent> dozenten;   // Dozenten wollten wir doch nicht speichern
     private OnlineEinleser onEinleser;        //muss Interface werden
     //private RaumfinderFileAdapterIF saver;
@@ -21,7 +21,7 @@ public class Raumfinder implements RaumfinderIF {
 
         raeume = new ArrayList<Raum>();
         reservierungen = new ArrayList<Reservierung>();
-        //nutzer = new ArrayList<Nutzer>(); // noch nicht implementiert
+        nutzer = new ArrayList<Nutzer>(); // noch nicht implementiert
         onEinleser = new OnlineEinleser(this);
             onEinleser.einlesen();
     }
@@ -68,5 +68,5 @@ public class Raumfinder implements RaumfinderIF {
         raeume.add(a);
     }
 
-    public ArrayList<Raum> gettRaeume () { return raeume;}
+    public ArrayList<Raum> getRaeume () { return raeume;}
 }
