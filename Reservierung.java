@@ -15,7 +15,7 @@ public class Reservierung {
 
     private static long resCounter = 0;
 
-    private String reservierungsNr;
+    private long reservierungsNr;
     private Raum raum;
     private Reservierer inhaber;
     private Zeitraum zeitraum;
@@ -33,7 +33,7 @@ public class Reservierung {
     // mit Kommentar
     public Reservierung(Raum raum, Reservierer inhaber, Zeitraum zeitraum, String kommentar) {
 
-        this.reservierungsNr = Long.toString(resCounter++);
+        this.reservierungsNr = resCounter++;
         this.raum = raum;
         this.inhaber = inhaber;
         this.zeitraum = zeitraum;
@@ -46,7 +46,7 @@ public class Reservierung {
     // ohne Kommentar
     public Reservierung(Raum raum, Reservierer inhaber, Zeitraum zeitraum) {
 
-        this.reservierungsNr = Long.toString(resCounter++);
+        this.reservierungsNr = resCounter++;
         this.raum = raum;
         this.inhaber = inhaber;
         this.zeitraum = zeitraum;
@@ -59,7 +59,7 @@ public class Reservierung {
     // mit mauell gesetztem Zeitpunkt und Kommentar, für OnlineEinleser
     public Reservierung(Raum raum, Reservierer inhaber, Zeitraum zeitraum, Date zeitpunkt) {
 
-        this.reservierungsNr = Long.toString(resCounter++);
+        this.reservierungsNr = resCounter++;
         this.raum = raum;
         this.inhaber = inhaber;
         this.zeitraum = zeitraum;
