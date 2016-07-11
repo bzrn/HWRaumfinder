@@ -13,7 +13,6 @@ public class Raum {
     private String raumBezeichnung;
     private ArrayList<Reservierung> belegung;
     private Ausstattung ausstattung;
-    private short kapazitaet;
     private boolean buchbar;
 
 
@@ -22,7 +21,6 @@ public class Raum {
         this.raumBezeichnung = raumBezeichnung;
         this.ausstattung=ausstattung;
         //this.belegung = belegung;
-        this.kapazitaet = kapazitaet;
         this.buchbar = buchbar;
     }
 
@@ -38,14 +36,6 @@ public class Raum {
         return belegung;
     }
 
-    public short getKapazitaet() {
-        return kapazitaet;
-    }
-
-    public void setKapazitaet(short kapazitaet) {
-        this.kapazitaet=kapazitaet;
-    }
-
     public Ausstattung getAusstattung() {
         return ausstattung;
     }
@@ -57,6 +47,8 @@ public class Raum {
     public boolean isBuchbar() {
         return buchbar;
     }
+    
+    public boolean hatMindestausstattung (Ausstattung a) {
+    	return ausstattung.hatMindestens(a);
+    }
 }
-
-
