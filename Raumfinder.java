@@ -37,13 +37,14 @@ public class Raumfinder { //implements RaumfinderIF {
 
     public ArrayList<Raum> suche (Zeitraum s, Ausstattung a){
     	
+    	int offset = 0;
     	ConcurrentSkipListMap<Integer,Raum> erg = new ConcurrentSkipListMap<Integer,Raum>();
     	
     	for (int i=0; i<raeume.size(); i++) {
     		Raum r = raeume.get(i);
     		int score = r.hatMindestausstattung(a);
         	if (score > 0 && r.istFrei(s)) {
-        		erg.put(score, r);
+        		erg.put((score*1000)+(offset++) , r);
         	}
         }
     	return (new ArrayList<Raum>(erg.values()));
