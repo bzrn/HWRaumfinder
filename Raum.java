@@ -48,7 +48,7 @@ public class Raum {
         return buchbar;
     }
     
-    public boolean hatMindestausstattung (Ausstattung a) {
+    public int hatMindestausstattung (Ausstattung a) {
     	return ausstattung.hatMindestens(a);
     }
 }
