@@ -71,10 +71,10 @@ public class Reservierung {
 
     //Getter und Setter
 
-    public String getReservierungsNr() {
+    public long getReservierungsNr() {
         return reservierungsNr;
     }
-    public void setReservierungsNr(String reservierungsNr) {
+    public void setReservierungsNr(long reservierungsNr) {
         this.reservierungsNr = reservierungsNr;
     }
     public Raum getRaum() {
