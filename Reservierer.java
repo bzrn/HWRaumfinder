@@ -1,6 +1,5 @@
 
 public interface Reservierer {
 
-    String name=null;
-
+	public String getName();
 }
