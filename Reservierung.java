@@ -119,6 +119,10 @@ public class Reservierung {
     public void setStorniert(boolean storniert) {
         this.storniert = storniert;
     }
+    
+    public boolean kollidiert (Zeitraum zr) {
+    	return this.zeitraum.kollidiert(zr);
+    }
 
     public String toString () {
         return  "reservierungsNr:\t\t"  + reservierungsNr                       + "\n" +
@@ -132,4 +136,3 @@ public class Reservierung {
 
 
 }
-
