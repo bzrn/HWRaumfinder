@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
@@ -50,8 +51,12 @@ public class Raumfinder { //implements RaumfinderIF {
     	return (new ArrayList<Raum>(erg.values()));
     }
 
-    //public void reservieren (Nutzer n, Raum r, Zeitraum s) {
-    //}
+    public void reservieren (Raum r, Reservierer n, Zeitraum s) {
+    	Reservierung neu = new Reservierung (r, n, s);
+    	this.addReservierung(neu);
+    	r.addReservierung(neu);
+    	if (n instanceof StandardNutzer)((StandardNutzer)n).addReservierung(neu);
+    }
 
     public void onlineEinlesen(){
         onEinleser.einlesen();
@@ -78,5 +83,24 @@ public class Raumfinder { //implements RaumfinderIF {
 
     public ArrayList<Raum> getRaeume() {
         return raeume;
+    }
+    
+    public void addReservierung(Reservierung neu){
+    	
+    	Date neuStart=neu.getZeitraum().getStart(), tempStart;
+        
+    	for (int i=0, j=reservierungen.size(), tempIndex; i<reservierungen.size() && j>=0 && i<j; ) {
+        	
+        	tempIndex=(i+j)/2;
+        	tempStart= reservierungen.get(tempIndex).getZeitraum().getStart();
+        	
+        	if (tempStart.equals(neuStart))	reservierungen.add(tempIndex, neu);
+        	if (tempStart.after(neuStart))	j=tempIndex;
+        	if (tempStart.before(neuStart))	i=tempIndex;
+        }
+    }
+
+    public ArrayList<Reservierung> getReservierungen() {
+        return reservierungen;
     }
 }
