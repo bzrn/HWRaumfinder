@@ -1,7 +1,3 @@
-package Raumfinder;
-
-
-
 /**
  * Zweck:
  * @author
@@ -119,16 +115,26 @@ public class Ausstattung {
 	 */
 	
 	public int hatMindestens(Ausstattung anforderung){
+		
 		int erfuellteAnforderungen=0;
-		if (!(anforderung.beamer)||this.beamer) erfuellteAnforderungen++;
-		if (!(anforderung.ohp)||this.ohp) erfuellteAnforderungen++;
-		if (!(anforderung.tafel)||this.tafel) erfuellteAnforderungen++;
-		if (!(anforderung.smartboard)||this.smartboard) erfuellteAnforderungen++;
-		if (!(anforderung.whiteboard)||this.whiteboard) erfuellteAnforderungen++;
-		if (!(anforderung.computerraum)||this.computerraum) erfuellteAnforderungen++;
-		if (anforderung.getKapazitaet()<=this.getKapazitaet()) erfuellteAnforderungen++;
-		return erfuellteAnforderungen;
+		
+		if ((anforderung.beamer==true&&anforderung.beamer==this.beamer)
+						&& (anforderung.ohp==true&&anforderung.ohp==this.ohp)
+						&& (anforderung.tafel==true&&anforderung.tafel==this.tafel)
+						&& (anforderung.smartboard==true&&anforderung.smartboard==this.smartboard)
+						&& (anforderung.whiteboard==true&&anforderung.whiteboard==this.whiteboard)
+						&& (anforderung.computerraum==true&&anforderung.computerraum==this.computerraum)
+						&& (anforderung.getKapazitaet()<=this.getKapazitaet()))
+		{
+			if (this.beamer) erfuellteAnforderungen += 2;
+			if (this.ohp) erfuellteAnforderungen++;
+			if (this.tafel) erfuellteAnforderungen++;
+			if (this.smartboard) erfuellteAnforderungen += 2;
+			if (this.whiteboard) erfuellteAnforderungen++;
+			if (this.computerraum) erfuellteAnforderungen += 3;
+			if (anforderung.getKapazitaet()<=this.getKapazitaet()) erfuellteAnforderungen++;
 		}
+		
+		return erfuellteAnforderungen;
 	}
-	
-
+}
