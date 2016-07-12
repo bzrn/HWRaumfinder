@@ -17,10 +17,10 @@ public class Raum {
 
 
     //Konstruktor - muss die Belegung da rein?
-    public Raum(String raumBezeichnung, Ausstattung ausstattung, short kapazitaet, boolean buchbar){
+    public Raum(String raumBezeichnung, Ausstattung ausstattung, boolean buchbar){
         this.raumBezeichnung = raumBezeichnung;
-        this.ausstattung=ausstattung;
         this.belegung = new ArrayList<Reservierung>();
+        this.ausstattung=ausstattung;
         this.buchbar = buchbar;
     }
 
@@ -50,5 +50,12 @@ public class Raum {
     
     public int hatMindestausstattung (Ausstattung a) {
     	return ausstattung.hatMindestens(a);
+    }
+    
+    public boolean istFrei(Zeitraum zr) {
+    	for (int i=0; i<belegung.size(); i++) {
+    		if (belegung.get(i).kollidiert(zr)) return false;
+    	}
+    	return true;
     }
 }
