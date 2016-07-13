@@ -27,7 +27,6 @@ public class Reservierung {
 
     // Konstruktoren
     //  ->  reservierungsNr und reservierungsZeitpunkt werden automatisch gesetzt
-    //       @Hanna: möglicherweise Konstruktor mit manuell setzbarem resZeitpunkt für eingelesene Reservierungen?
     //  ->  error und storniert sind bei Objektkonstruktion false
 
     // mit Kommentar
@@ -121,14 +120,16 @@ public class Reservierung {
     }
     
     public boolean kollidiert (Zeitraum zr) {
-    	return this.zeitraum.kollidiert(zr);
+        if (error || storniert) return false;
+        else return this.zeitraum.kollidiert(zr);
     }
 
     public String toString () {
         return  "reservierungsNr:\t\t"  + reservierungsNr                       + "\n" +
+                "Kommentar:\t\t"        + kommentar                             + "\n" +
                 "Raum:\t\t"             + raum.getRaumBezeichnung()             + "\n" +
-                "Inhaber:\t\t"          + inhaber                               + "\n" +
-                "Zeitraum:\t\t"           + zeitraum                            + "\n" +
+                "Inhaber:\t\t"          + inhaber.getName()                     + "\n" +
+                "Zeitraum:\t\t"           + zeitraum.getStart().toString()      + "\n" +
                 "resZeitpunkr:\t\t"     + reservierungsZeitpunkt.toString()     + "\n" +
                 "Error:\t\t"            + error                                 + "\n" +
                 "Storniert:\t\t"        + storniert;
