@@ -1,5 +1,3 @@
-package Raumfinder;
-
 import java.util.Date;
 
 public class Zeitraum {
