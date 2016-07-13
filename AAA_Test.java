@@ -5,6 +5,9 @@ import java.util.Date;
 
 /**
  * Created by Alexander on 12.07.2016.
+ * Größtenteils zum Testen von Reservierungen, aber auch andere Features angerissen.
+ * Nutzer- und Raumverwaltung noch nicht bis ins Detail integriert.
+ * Vorsicht beim onlineEinlesen: Erst 'SPEICHERORT' anpassen!
  */
 public class AAA_Test {
 
