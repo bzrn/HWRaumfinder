@@ -7,24 +7,26 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class OnlineEinleser {
 
-    private int fileCounter;
-    private RaumfinderIF raumfinder;
+    private int fileCounter, errCounter;
+    private Raumfinder raumfinder;  //RaumfinderIF
 
     private final String SPEICHERORT = "C:\\Users\\Alexander\\Projekte\\IdeaProjects\\HWRaumfinder\\StundenplanFiles\\";
 
 
 	public static void main (String[] Args) throws IOException {
 
-		OnlineEinleser el = new OnlineEinleser(null);
-		el.einlesen();
-		//el.readEvents("C:\\Users\\Alexander\\Desktop\\elektrotechnik-semester1-kurs.ics");
+        Raumfinder taaezt = new Raumfinder(true);
+		//OnlineEinleser el = new OnlineEinleser(null);
 		//el.einlesen();
+		//el.readEvents("C:\\Users\\Alexander\\Desktop\\elektrotechnik-semester1-kurs.ics");
 	}
 
-    public OnlineEinleser (RaumfinderIF parent){
+    public OnlineEinleser (Raumfinder parent){        //RaumfinderIF
         this.raumfinder=parent;
     }
 
@@ -38,10 +40,17 @@ public class OnlineEinleser {
             resses.addAll(readEvents(SPEICHERORT + "events_" + i + ".ics"));
         }
 
-        for (int i=0; i<resses.size(); i++) {
+        for (int i=0; i<resses.size(); i++){
+            raumfinder.reservieren(resses.get(i), true);
+        }
+
+        /*
+        for (int i=0; i<resses.size(); i=i+2) {
             System.out.println(resses.get(i).toString());
             System.out.println("-----------");
         }
+        System.err.println("Error Count: "+errCounter);
+        */
     }
 
     private void download(){
@@ -53,22 +62,22 @@ public class OnlineEinleser {
 
         final String URLSTART = "http://moodle.hwr-berlin.de/fb2-stundenplan/download.php?doctype=.ics&url=./fb2-stundenplaene/";
 
-        String[] url1 = {        // normal: alle mit a: 1-6, abc  || alle ohne a: 1-6, kein kurs    //"bank/semester1/kursa",
+        String[] url1 = {        // normal: 1-6, abc      //"bank/semester1/kursa",
                 "bank/",
                 "handel/",
-                "immobilien/",
                 "industrie/",
                 "wi/"
         };
         String[] url2 = {                       // nur ein Kurs je Semester
-                "bauwesen/semester1/kurs",
-                "dl/semester1/kurs",
-                "elektrotechnik/semester1/kurs",
-                "fm/semester1/kurs",
-                "iba/semester1/kurs",
-                "informatik/semester1/kurs",
-                "maschinenbau/semester1/kurs",
-                "steuern/semester1/kurs"
+                "bauwesen/",
+                "dl/",
+                "elektrotechnik/",
+                "fm/",
+                "iba/",
+                "immobilien/",
+                "informatik/",
+                "maschinenbau/",
+                "steuern/"
         };
         String[] url3 = {
                 "ppm/semester1/kurs",	//sem 1-4
@@ -115,16 +124,16 @@ public class OnlineEinleser {
                 "tourismus/semester5/kursb",
                 "tourismus/semester6/kurs",
                 "tourismus/semester6/kursa",
-                "tourismus/semester6/kursb",
+                "tourismus/semester6/kursb"
 
-                "6B_151_153",
+                /*"6B_151_153",
                 "Gapp",
                 "Jurscha",
                 "Krause_Andreas",
                 "Tchepki",
                 "Wagner_Ralf",
                 "Wittmuess",
-                "wannemacher"
+                "wannemacher"*/
         };
 
         try {
@@ -158,7 +167,7 @@ public class OnlineEinleser {
                 download (tempURL, new File (SPEICHERORT + "events_" + fileCounter + ".ics"), rbc, fos);
             }
 
-            if (rbc != null) rbc.close();
+            if (rbc != null) rbc.close();   //funktioniert so nicht, muss anders  -> close in download (..)?
             if (fos!= null) fos.close();
         }
         catch (MalformedURLException e) {
@@ -206,13 +215,37 @@ public class OnlineEinleser {
 
         try {
             while (tempDatei.indexOf("SUMMARY")>0){
-                tempDatei = substringAfter(tempDatei, "SUMMARY:");
+               /*tempDatei = substringAfter(tempDatei, "SUMMARY:");
                 tempStr = tempDatei.substring(0,tempDatei.indexOf("LOCATION")-2);
-                strName = tempStr.substring(0, tempStr.indexOf("\\;")) + " " + tempStr.substring(tempStr.indexOf("\\;")+2, tempStr.lastIndexOf("\\;"));     //ERROR HERE
-                strBesitzer = tempStr.substring(tempStr.lastIndexOf(";")+1, tempStr.length());
+                strName = tempStr.substring(0, tempStr.indexOf("\\")) + " " + tempStr.substring(tempStr.indexOf("\\")+3, tempStr.lastIndexOf("\\"));     //ERROR HERE
+                strBesitzer = tempStr.substring(tempStr.lastIndexOf("\\")+2, tempStr.length());
                     strBesitzer = strBesitzer.replaceAll("\\\\", "");
-                tempDatei = substringAfter(tempDatei, "LOCATION:CL: ");
+*/
+                tempDatei = substringAfter(tempDatei, "LOCATION:");
                 strRaum = tempDatei.substring(0,tempDatei.indexOf("DESCRIPTION")-2);
+                    strRaum = strRaum.replaceAll("\\\\n", "");
+                    strRaum = strRaum.replaceAll("\\\\", "");
+                    strRaum = strRaum.replaceAll("CL: ", "");
+                //neu ab hier:
+                tempDatei = substringAfter(tempDatei, "DESCRIPTION:Art: ");
+                tempStr = tempDatei.substring(0,tempDatei.indexOf("DTSTART")-2);
+                    tempStr = tempStr.replaceAll("\\n", "");
+                    tempStr = tempStr.replaceAll("\\r", "");
+                    tempStr = tempStr.replaceAll("\\t", "");
+                strName = tempStr.substring(0, tempStr.indexOf("\\")) + ": ";
+                tempStr = substringAfter(tempStr, "Veranstaltung: ");
+                if (tempStr.indexOf("Veran")>=0) strName += tempStr.substring(0, tempStr.indexOf("Veran"));
+                else strName += tempStr.substring(0, tempStr.indexOf("Dozent"));
+                    strName = strName.replaceAll("\\\\n", "");
+                    strName = strName.replaceAll("\\\\", "");
+                tempStr = substringAfter(tempStr, "Dozent: ");
+                strBesitzer = tempStr.substring(0, tempStr.indexOf("Raum"));
+                    strBesitzer = strBesitzer.replaceAll("\\\\n", "");
+                    strBesitzer = strBesitzer.replaceAll("\\\\", "");
+                tempStr = substringAfter(tempStr, "Raum: ");
+                //strRaum = tempStr; //.substring(0,tempStr.indexOf("DTSTART"));
+                    //strRaum = strRaum.replaceAll("\\\\n", "");
+
                 tempDatei = substringAfter(tempDatei,"DTSTART;TZID=Europe/Berlin:");
                 strStart = tempDatei.substring(0,tempDatei.indexOf("DTEND")-2);
                 tempDatei = substringAfter(tempDatei, "DTEND;TZID=Europe/Berlin:");
@@ -227,20 +260,25 @@ public class OnlineEinleser {
                 System.out.println("-----------");
                 */
 
-                //tempRaum = raumfinder.sucheKennung(strRaum);  zu Testzwecken auskommentiert
-                tempRaum = null;    // Test
+                // Test:
+//                if (strRaum.length()>50){
+ //                   System.out.println("Fuck.");
+  //              }
+
+                if (strRaum.isEmpty()) strRaum = "kein Raum";
+                tempRaum = raumfinder.sucheKennung(strRaum);
+                //tempRaum = null;    // Test
                     if (tempRaum == null) {
                         tempRaum = new Raum (
                                         strRaum,
                                         null,       // Ausstattung null
-                                        (short) 0,  // Kapazität null
                                         true        // buchbar true
                         );
-                        //raumfinder.addRaum(tempRaum);     zu Testzwecken auskommentiert
+                        raumfinder.addRaum(tempRaum);
                     }
 
                 tempBesitzer = new Dozent (strBesitzer);
-                tempZeitraum = new Zeitraum();  // Implementierung Zeitraum fehlt
+                tempZeitraum = new Zeitraum(icsStringToDate(strStart), icsStringToDate(strEnde));
 
                 reservierungen.add(
                         new Reservierung(
@@ -254,6 +292,7 @@ public class OnlineEinleser {
 
         } catch (IndexOutOfBoundsException e) {
             System.err.println("Interner Fehler: Substring out of Bounds [readEvents]");
+            errCounter++;
             e.printStackTrace();
         }
 
@@ -278,6 +317,20 @@ public class OnlineEinleser {
             e.printStackTrace();
         }
         return erg;
+    }
+
+    public Date icsStringToDate (String s) {        // eigentlich private stat public -> aendern!
+
+        int year,month,day,hrs,mins,secs;
+
+        year    = Integer.parseInt(s.substring(0,4));
+        month   = Integer.parseInt(s.substring(4,6));
+        day     = Integer.parseInt(s.substring(6,8));
+        hrs     = Integer.parseInt(s.substring(9,11));
+        mins    = Integer.parseInt(s.substring(11,13));
+        secs    = Integer.parseInt(s.substring(13,15));
+
+        return new Date(year-1900, month-1, day, hrs, mins, secs);
     }
 
 }
