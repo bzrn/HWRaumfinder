@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Zweck:
@@ -16,7 +17,6 @@ public class Raum {
     private boolean buchbar;
 
 
-    //Konstruktor - muss die Belegung da rein?
     public Raum(String raumBezeichnung, Ausstattung ausstattung, boolean buchbar){
         this.raumBezeichnung = raumBezeichnung;
         this.belegung = new ArrayList<Reservierung>();
@@ -53,9 +53,15 @@ public class Raum {
     }
     
     public boolean istFrei(Zeitraum zr) {
-    	for (int i=0; i<belegung.size(); i++) {
-    		if (belegung.get(i).kollidiert(zr)) return false;
-    	}
-    	return true;
+    	if (findeKollision(zr)==null) return true;
+    	else return false;
+    }
+
+    public Reservierung findeKollision (Zeitraum zr) {
+        return GlobaleMethoden.findeKollisioninArrayList(belegung, zr);
+    }
+
+    public void addReservierung(Reservierung neu){
+        GlobaleMethoden.addReservierungtoArrayList(belegung, neu);
     }
 }
