@@ -1,5 +1,10 @@
+package Verarbeitung;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
+@SuppressWarnings("deprecation")
 public class Zeitraum {
 	
 	//Attribute
@@ -45,6 +50,21 @@ public class Zeitraum {
 		return dauer;
 	}
 
+	public String toString(){
+		String erg="";
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(start);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
+		erg += sdf.format(c.getTime()) + " von: ";
+		erg += Integer.toString(c.get(Calendar.HOUR_OF_DAY))+":"+Integer.toString(c.get(Calendar.MINUTE));
+		c.setTime(ende);
+		erg += " bis: " + Integer.toString(c.get(Calendar.HOUR_OF_DAY))+":"+Integer.toString(c.get(Calendar.MINUTE));
+
+		return erg;
+	}
+
 
 	
 	//15 min Einheiten -> Pro Tag 4*24=96 (Schätzungsweise täglich 8-20 Uhr, sonntags geschlossen?!  32-80ste Einheit geöffnet
@@ -52,7 +72,6 @@ public class Zeitraum {
 
 
 	//Methoden
-
 	public int berechneDauer(Date start, Date ende){
 		int stunden=ende.getHours()-start.getHours();
 		int min=ende.getMinutes()-start.getMinutes();
