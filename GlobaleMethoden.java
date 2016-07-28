@@ -1,7 +1,7 @@
+package Verarbeitung;
+
 import java.util.ArrayList;
 import java.util.Date;
-
-package Verarbeitung;
 
 public class GlobaleMethoden {
 
