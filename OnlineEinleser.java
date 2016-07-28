@@ -1,3 +1,5 @@
+package Verarbeitung;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -9,8 +11,6 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-package Verarbeitung;
 
 public class OnlineEinleser {
 
