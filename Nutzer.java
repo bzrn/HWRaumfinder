@@ -1,3 +1,5 @@
+package Verarbeitung;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -19,7 +21,7 @@ public abstract class Nutzer {
             setPwHash(password);
             setSicherheitsAntwortHash(sicherheitsAntwort);
         } catch (NoSuchAlgorithmException wtf){
-            System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+            System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Verarbeitung.Nutzer-Konstr]");
         }
     }
 
@@ -60,6 +62,12 @@ public abstract class Nutzer {
     public boolean checkPw (String password){
         messageDigest.update(password.getBytes());
         if (pwHash.equals(new String (messageDigest.digest()))) return true;
+        else return false;
+    }
+
+    public boolean checkFrage (String antwort){
+        messageDigest.update(antwort.getBytes());
+        if (sicherheitsAntwortHash.equals(new String (messageDigest.digest()))) return true;
         else return false;
     }
 }
