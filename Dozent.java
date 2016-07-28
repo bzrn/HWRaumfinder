@@ -1,6 +1,4 @@
-/**
- * Created by Alexander on 25.06.2016.
- */
+package Verarbeitung;
 
 public class Dozent implements Reservierer {
 
