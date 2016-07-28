@@ -1,3 +1,5 @@
+package Verarbeitung;
+
 /**
  * Zweck:
  * @author
@@ -136,5 +138,35 @@ public class Ausstattung {
 		}
 		
 		return erfuellteAnforderungen;
+	}
+
+	public String[][] toStringArray() {
+		String[][] erg = new String[2][7];
+
+		erg[0][0] = "Beamer";
+		erg[0][1] = "OH-Projektor";
+		erg[0][2] = "Tafel";
+		erg[0][3] = "Smartboard";
+		erg[0][4] = "Whiteboard";
+		erg[0][5] = "Whiteboard";
+		erg[0][6] = "Computerraum";
+		erg[0][7] = "Kapazität";
+
+		if (beamer) erg[1][0]="Ja";
+			else erg[1][0]="Nein";
+
+		if (ohp) erg[1][1]="Ja";
+			else erg[1][1]="Nein";
+		if (tafel) erg[1][2]="Ja";
+			else erg[1][2]="Nein";
+		if (smartboard) erg[1][3]="Ja";
+			else erg[1][3]="Nein";
+		if (whiteboard) erg[1][4]="Ja";
+			else erg[1][4]="Nein";
+		if (computerraum) erg[1][5]="Ja";
+			else erg[1][5]="Nein";
+		erg[1][6] = Integer.toString(kapazitaet);
+
+		return erg;
 	}
 }
