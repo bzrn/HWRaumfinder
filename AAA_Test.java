@@ -1,13 +1,15 @@
+package Verarbeitung;
+
+import Verarbeitung.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
+import Oberflaeche.*;
 
 /**
  * Created by Alexander on 12.07.2016.
- * Größtenteils zum Testen von Reservierungen, aber auch andere Features angerissen.
- * Nutzer- und Raumverwaltung noch nicht bis ins Detail integriert.
- * Vorsicht beim onlineEinlesen: Erst 'SPEICHERORT' anpassen!
  */
 public class AAA_Test {
 
@@ -30,6 +32,7 @@ public class AAA_Test {
             System.out.print(
                     "\nBitte waehlen:\n"
                     +"\t1 - online einlesen\n"
+                    +"\t11 - GUIFrame erstellen\n"
                     +"\t2 - Reservierungen ausgeben\n"
                     +"\t3 - neue Reservierung\n"
                     +"\t31 - Reservierung stornieren\n"
@@ -51,6 +54,8 @@ public class AAA_Test {
                     rf.onlineEinlesen();
                     System.out.println("Fertig!");
                     break;
+                case 11:
+                    GUIFrame frame = new GUIFrame(rf);
                 case 2:
                     System.out.println("A für alle, R für Raum:");
                     eingabe=din.readLine();
@@ -153,8 +158,10 @@ public class AAA_Test {
                     break;
                 case 9:
                     System.out.println("Neuen Nutzernamen eingeben:");
-                    eingabe = din.readLine();
-                    rf.addNutzer(new StandardNutzer (eingabe, "", "", ""));
+                    String nutzername = din.readLine();
+                    System.out.println("Passwort eingeben:");
+                    String passwort = din.readLine();
+                    rf.legeNutzerAn(nutzername,passwort,"","",false);
                     break;
                 case 0:
                     exit = true;
