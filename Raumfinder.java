@@ -1,5 +1,6 @@
+package Verarbeitung;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
@@ -37,22 +38,22 @@ public class Raumfinder implements RaumfinderIF {
             onlineEinlesen();
     }
 
-    // Raumsuche anhand von Kriterien (Zeitraum || Ausstattung
-    public ArrayList<Raum> suche (Zeitraum s, Ausstattung a){
+    // Raumsuche anhand von Kriterien (Zeitraum || Ausstattung)
+    public ArrayList<String> suche (Zeitraum s, Ausstattung a){
 
         // Variableninitialisierung
     	int offset = 0;
-    	ConcurrentSkipListMap<Integer,Raum> erg = new ConcurrentSkipListMap<Integer,Raum>();
+    	ConcurrentSkipListMap<Integer,String> erg = new ConcurrentSkipListMap<>();
 
         // Durchlaufen aller Räume
     	for (int i=0; i<raeume.size(); i++) {
     		Raum r = raeume.get(i);
     		int score = r.hatMindestausstattung(a);     // Bewertung der Relevanz des Suchergebnisses
         	if (score > 0 && r.istFrei(s)) {            // bei erfülten Suchkriterien
-        		erg.put((score*1000)+(offset++) , r);   // als Ergebnis abspeichern (invers geordnet nach Relevanz)
+        		erg.put((score*1000)+(offset++) , r.getRaumBezeichnung());   // als Ergebnis abspeichern (invers geordnet nach Relevanz)
         	}
         }
-    	return (new ArrayList<Raum>(erg.descendingMap().values()));     // Konstruktion und Reversion der Werte
+    	return (new ArrayList<String>(erg.descendingMap().values()));     // Konstruktion und Reversion der Werte
     }
 
     // automatische Erstellung einer Reservierung ohne Kommentar
@@ -155,8 +156,28 @@ public class Raumfinder implements RaumfinderIF {
         return null;
     }
 
-    public void addNutzer(Nutzer n){    //könnte überflüssig sein... //nicht überflüssig, sortierung muss hier implementiert werden <alex>
+    public boolean pruefeVerfuegbarkeitRaum (String raumKennung, Zeitraum zr){
+        return sucheKennung(raumKennung).istFrei(zr);
+    }
+
+    public Nutzer authentifiziereNutzer (String name, String password) {
+        Nutzer erg = sucheNutzer(name);
+        if(!erg.checkPw(password)) erg=null;
+        return erg;
+    }
+
+    public void legeNutzerAn (String name, String password, String sicherheitsFrage, String sicherheitsAntwort, boolean admin) {
+        if(admin){
+            addNutzer(new Admin (name,password,sicherheitsFrage,sicherheitsAntwort));       // deletable-Erweiterung?
+        } else {
+            addNutzer(new StandardNutzer(name,password,sicherheitsFrage,sicherheitsAntwort));
+        }
+    }
+
+    private void addNutzer(Nutzer n){
         nutzer.add(n);
+
+        // SORTIERUNG!
     }
 
     public ArrayList<Nutzer> getNutzer() {
