@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+package Verarbeitung;
+
 public class OnlineEinleser {
 
     private int fileCounter, errCounter;
