@@ -45,11 +45,11 @@ public class Raumfinder implements RaumfinderIF {
     	int offset = 0;
     	ConcurrentSkipListMap<Integer,String> erg = new ConcurrentSkipListMap<>();
 
-        // Durchlaufen aller Räume
+        // Durchlaufen aller RÃ¤ume
     	for (int i=0; i<raeume.size(); i++) {
     		Raum r = raeume.get(i);
     		int score = r.hatMindestausstattung(a);     // Bewertung der Relevanz des Suchergebnisses
-        	if (score > 0 && r.istFrei(s)) {            // bei erfülten Suchkriterien
+        	if (score > 0 && r.istFrei(s)) {            // bei erfÃ¼lten Suchkriterien
         		erg.put((score*1000)+(offset++) , r.getRaumBezeichnung());   // als Ergebnis abspeichern (invers geordnet nach Relevanz)
         	}
         }
@@ -78,7 +78,7 @@ public class Raumfinder implements RaumfinderIF {
         StandardNutzer sn = null;
         if  (neu.getInhaber() instanceof StandardNutzer) sn = (StandardNutzer)neu.getInhaber();
 
-        // mögliche Kollisionen suchen
+        // mÃ¶gliche Kollisionen suchen
         if (!raum.istFrei(zr)) kollisionRaum = true;
         if (sn != null) if (!sn.istFrei(zr))  kollisionInh = true;
 
@@ -115,6 +115,8 @@ public class Raumfinder implements RaumfinderIF {
 
     public void stornieren (Reservierung r) {
         r.setStorniert(true);
+        r.getRaum().getBelegung().remove(r);
+        if (r.getInhaber() instanceof StandardNutzer) ((StandardNutzer)r.getInhaber()).getReservierungen().remove(r);
     }
 
     public void onlineEinlesen(){
@@ -129,7 +131,7 @@ public class Raumfinder implements RaumfinderIF {
         //Schnittstelle zu PersistenzAdapter
     }
 
-    public Raum sucheKennung(String raumKennung){ //sucht Raum nach Kennung, im Moment noch exakte Kennung
+    public Raum sucheKennung(String raumKennung){
         for(int i = 0; i<raeume.size(); i++){
             if(raumKennung.equalsIgnoreCase(raeume.get(i).getRaumBezeichnung())){
                 return raeume.get(i);
@@ -137,8 +139,9 @@ public class Raumfinder implements RaumfinderIF {
         }
         return null;
     }
+  
 
-    public Nutzer sucheNutzer(String nutzerName){ //sucht Nutzer nach Namen, im Moment noch exakter Name
+    public Nutzer sucheNutzer(String nutzerName){
         for(int i = 0; i<nutzer.size(); i++){
             if(nutzerName.equalsIgnoreCase(nutzer.get(i).getName())){
                 return nutzer.get(i);
@@ -173,6 +176,10 @@ public class Raumfinder implements RaumfinderIF {
             addNutzer(new StandardNutzer(name,password,sicherheitsFrage,sicherheitsAntwort));
         }
     }
+    
+    public void loescheNutzer (Nutzer n) {
+    	nutzer.remove(n);
+    }
 
     private void addNutzer(Nutzer n){
         nutzer.add(n);
@@ -183,8 +190,16 @@ public class Raumfinder implements RaumfinderIF {
     public ArrayList<Nutzer> getNutzer() {
         return nutzer;
     }
+    
+    public String[] getNutzerString() {
+    	String[] erg = new String[nutzer.size()];
+    	for (int i=0; i<erg.length; i++) {
+    		erg[i] = nutzer.get(i).getName();
+    	}
+    	return erg;
+    }
 
-    public void addRaum(Raum a){    //könnte überflüssig sein... //nicht überflüssig, sortierung muss hier implementiert werden <alex>
+    public void addRaum(Raum a){    //kÃ¶nnte Ã¼berflÃ¼ssig sein... //nicht Ã¼berflÃ¼ssig, sortierung muss hier implementiert werden <alex>
         raeume.add(a);
     }
 
