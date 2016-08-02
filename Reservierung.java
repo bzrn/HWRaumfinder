@@ -6,7 +6,7 @@ import java.util.Date;
  * Zweck:
  * @author
  * @version
- * Änderungshistorie:
+ * Ã„nderungshistorie:
  * Created by mwolff on 19.06.16.
  * Hanna am 3. Juni
  */
@@ -57,7 +57,7 @@ public class Reservierung {
         this.storniert = false;
     }
     
-    // mit mauell gesetztem Zeitpunkt und Kommentar, für OnlineEinleser
+    // mit mauell gesetztem Zeitpunkt und Kommentar, fÃ¼r Verarbeitung.OnlineEinleser
     public Reservierung(Raum raum, Reservierer inhaber, Zeitraum zeitraum, Date zeitpunkt) {
 
         this.reservierungsNr = resCounter++;
@@ -126,15 +126,26 @@ public class Reservierung {
         else return this.zeitraum.kollidiert(zr);
     }
 
-    public String toString () {
-        return  "reservierungsNr:\t\t"  + reservierungsNr                       + "\n" +
-                "Kommentar:\t\t"        + kommentar                             + "\n" +
-                "Raum:\t\t"             + raum.getRaumBezeichnung()             + "\n" +
-                "Inhaber:\t\t"          + inhaber.getName()                     + "\n" +
-                "Zeitraum:\t\t"           + zeitraum.getStart().toString()      + "\n" +
-                "resZeitpunkr:\t\t"     + reservierungsZeitpunkt.toString()     + "\n" +
-                "Error:\t\t"            + error                                 + "\n" +
-                "Storniert:\t\t"        + storniert;
+    public String toString (boolean admin) {
+        String erg; 
+        erg =	"Nummer:     "  + reservierungsNr                       + "\n" +
+                "Raum:       "  + raum.getRaumBezeichnung()             + "\n" +
+                "Zeitraum:   "  + zeitraum.toString()      				+ "\n" +
+                "Kommentar:  ";
+        
+        if (!kommentar.isEmpty()) erg += kommentar;
+        else erg += "Kein Kommentar";
+        
+        erg +=  "\n" +
+        		"reserviert am reservierungsZeitpunkt.toString();";
+        
+        if (admin){
+        	erg +=	"Inhaber:    "  + inhaber.getName()                     + "\n" +
+        			"Error:      "  + error                                 + "\n" +
+                    "Storniert:  "  + storniert;
+        }
+
+        return erg;
     }
 
 
