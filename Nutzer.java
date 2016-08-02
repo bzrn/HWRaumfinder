@@ -1,9 +1,10 @@
 package Verarbeitung;
 
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public abstract class Nutzer {
+public abstract class Nutzer implements Serializable{
 
     protected static long nutzerCounter = 0;
     protected long nutzerNr;
