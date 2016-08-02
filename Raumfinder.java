@@ -1,5 +1,6 @@
-package Verarbeitung;
+package Raumfinder;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -8,7 +9,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 
 
-public class Raumfinder implements RaumfinderIF {
+public class Raumfinder implements RaumfinderIF, Serializable {
 
     //Attribute
     private ArrayList<Raum> raeume;
@@ -123,11 +124,79 @@ public class Raumfinder implements RaumfinderIF {
         onEinleser.einlesen();
     }
 
-    public void save(){
-        //Schnittstelle zu PersistenzAdapter
+  //ab hier der ganze speicherkram
+
+    File raeumedatei;
+    File reservierungendatei;
+    File nutzerdatei;
+
+
+    @SuppressWarnings("resource")
+	public void save(){
+    	
+    	Raum[]speicherraum=new Raum[raeume.size()+1];
+    	raeume.toArray(speicherraum);
+    	
+    	Reservierung[]speicherres=new Reservierung[reservierungen.size()+1];
+    	reservierungen.toArray(speicherres);
+    	
+    	Nutzer[]speichernutzer=new Nutzer[nutzer.size()+1];
+    	nutzer.toArray(speichernutzer);
+    	
+    	
+    	
+    	try{
+    	
+    	ObjectOutputStream out;
+    	
+    	out = new ObjectOutputStream (new FileOutputStream(raeumedatei));
+    	out.writeObject(speicherraum);
+
+    	out = new ObjectOutputStream (new FileOutputStream(reservierungendatei));
+    	out.writeObject(speicherres);
+    	
+    	out = new ObjectOutputStream (new FileOutputStream(nutzerdatei));
+    	out.writeObject(speichernutzer);
+    	
+    	out.close();
+    	
+    	}catch(IOException e){
+    		System.out.println("Es gab ein Problem beim Speichern");
+    		return;
+    	}
     }
 
-    public void load(){
+    @SuppressWarnings("resource")
+	public void load() throws ClassNotFoundException, IOException {
+    	
+
+    		ObjectInputStream in;
+    		
+    		
+			in = new ObjectInputStream (new FileInputStream(raeumedatei));
+    		Raum[] laderaum=(Raum[])in.readObject();
+    		
+    		in = new ObjectInputStream (new FileInputStream(reservierungendatei));
+    		Reservierung[] laderes=(Reservierung[])in.readObject();
+    		
+    		in = new ObjectInputStream (new FileInputStream(nutzerdatei));
+    		Nutzer[] ladenutzer=(Nutzer[])in.readObject();
+    		
+    		in.close();
+
+    	
+    	for (int i=0; i<laderaum.length; i++){
+    		raeume.add(laderaum[i]);
+    	}
+    	
+    	for (int i=0; i<laderes.length; i++){
+    		reservierungen.add(laderes[i]);
+    	}
+    	
+    	for (int i=0; i<ladenutzer.length; i++){
+    		nutzer.add(ladenutzer[i]);	
+    	}		
+    		
         //Schnittstelle zu PersistenzAdapter
     }
 
