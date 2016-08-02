@@ -1,5 +1,6 @@
 package Verarbeitung;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Date;
 
 // Attribute
 
-public class Reservierung {
+public class Reservierung implements Serializable{
 
     private static long resCounter = 0;
 
