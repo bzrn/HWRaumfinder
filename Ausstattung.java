@@ -1,5 +1,7 @@
 package Verarbeitung;
 
+import java.io.Serializable;
+
 /**
  * Zweck:
  * @author
@@ -10,7 +12,7 @@ package Verarbeitung;
  */
 
 
-public class Ausstattung {
+public class Ausstattung implements Serializable{
 
 
 	//Attribute
