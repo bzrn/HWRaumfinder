@@ -1,11 +1,12 @@
 package Verarbeitung;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 @SuppressWarnings("deprecation")
-public class Zeitraum {
+public class Zeitraum implements Serializable{
 	
 	//Attribute
 	
@@ -90,4 +91,6 @@ public class Zeitraum {
 		return false;
 	}
 	
+}
+
 }
