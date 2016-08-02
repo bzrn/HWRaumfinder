@@ -1,12 +1,12 @@
 package Verarbeitung;
 
-import Verarbeitung.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
-import Oberflaeche.*;
+//import Oberflaeche.*;
+
+import Verarbeitung.*;
 
 /**
  * Created by Alexander on 12.07.2016.
@@ -44,6 +44,8 @@ public class AAA_Test {
                     +"\t7 - alle Nutzer ausgeben\n"
                     +"\t8 - Nutzer suchen\n"
                     +"\t9 - neuer Nutzer\n"
+                    +"\t100 - save()\n"
+                    +"\t101 - load()\n"
                     +"\t0 - verlassen\n"
                     +"\nBitte entsprechende Ziffer eingeben: ");
 
@@ -54,8 +56,8 @@ public class AAA_Test {
                     rf.onlineEinlesen();
                     System.out.println("Fertig!");
                     break;
-                case 11:
-                    GUIFrame frame = new GUIFrame(rf);
+                //case 11:
+                 //   GUIFrame frame = new GUIFrame(rf);
                 case 2:
                     System.out.println("A für alle, R für Raum:");
                     eingabe=din.readLine();
@@ -163,6 +165,20 @@ public class AAA_Test {
                     String passwort = din.readLine();
                     rf.legeNutzerAn(nutzername,passwort,"","",false);
                     break;
+                    
+                // Ergänzung der save() und load() Methoden
+                case 100:
+                	rf.save();
+                	break;
+                case 101:
+				try {
+					rf.load();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					System.out.println("beim Laden Klasse nicht gefunden");
+					e.printStackTrace();
+				}
+                	break;
                 case 0:
                     exit = true;
                     break;
