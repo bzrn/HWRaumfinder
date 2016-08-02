@@ -1,5 +1,6 @@
 package Verarbeitung;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,7 +12,7 @@ import java.util.Date;
  * Created by mwolff on 19.06.16.
  * Hanna am 23. Juni
  */
-public class Raum {
+public class Raum implements Serializable{
 
     private String raumBezeichnung;
     private ArrayList<Reservierung> belegung;
