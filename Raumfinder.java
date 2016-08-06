@@ -1,4 +1,4 @@
-package Verarbeitung;		// Changed
+package Verarbeitung;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -49,11 +49,11 @@ public class Raumfinder implements RaumfinderIF {
     	int offset = 0;
     	ConcurrentSkipListMap<Integer,String> erg = new ConcurrentSkipListMap<>();
 
-        // Durchlaufen aller Räume
+        // Durchlaufen aller R�ume
     	for (int i=0; i<raeume.size(); i++) {
     		Raum r = raeume.get(i);
     		int score = r.hatMindestausstattung(a);     // Bewertung der Relevanz des Suchergebnisses
-        	if (score > 0 && r.istFrei(s)) {            // bei erfÃ¼lten Suchkriterien
+        	if (score > 0 && r.istFrei(s)) {            // bei erfülten Suchkriterien
         		erg.put((score*1000)+(offset++) , r.getRaumBezeichnung());   // als Ergebnis abspeichern (invers geordnet nach Relevanz)
         	}
         }
@@ -82,7 +82,7 @@ public class Raumfinder implements RaumfinderIF {
         StandardNutzer sn = null;
         if  (neu.getInhaber() instanceof StandardNutzer) sn = (StandardNutzer)neu.getInhaber();
 
-        // mÃ¶gliche Kollisionen suchen
+        // mögliche Kollisionen suchen
         if (!raum.istFrei(zr)) kollisionRaum = true;
         if (sn != null) if (!sn.istFrei(zr))  kollisionInh = true;
 
@@ -185,14 +185,15 @@ public class Raumfinder implements RaumfinderIF {
         }
     }
     
-    public void loescheNutzer (Nutzer n) {
-    	nutzer.remove(n);
+    public boolean loescheNutzer (Nutzer n) {
+    	if (n instanceof Admin) if (!((Admin) n).isDeletable()) return false;
+
+        nutzer.remove(n);
+        return true;
     }
 
     private void addNutzer(Nutzer n){
         nutzer.add(n);
-
-        // SORTIERUNG!
     }
 
     public ArrayList<Nutzer> getNutzer() {
@@ -206,18 +207,18 @@ public class Raumfinder implements RaumfinderIF {
     public String[] getNutzerString() {
     	String[] erg = new String[nutzer.size()];
     	for (int i=0; i<erg.length; i++) {
-    		erg[i] = nutzer.get(i).getName();
+    		Nutzer temp = nutzer.get(i);
+            erg[i] = temp.getName();
+            if (temp instanceof Admin)  erg[i] += " <Admin>";
     	}
     	return erg;
     }
 
-    public void addRaum(Raum a){    //kÃ¶nnte Ã¼berflÃ¼ssig sein... //nicht Ã¼berflÃ¼ssig, sortierung muss hier implementiert werden <alex>
+    public void addRaum(Raum a){    //könnte überflüssig sein... //nicht überflüssig, sortierung muss hier implementiert werden <alex>
         raeume.add(a);
     }
 
-    public void loescheRaum (Raum a) {
-        raeume.remove(a);
-    }
+    public void loescheRaum (Raum a) { raeume.remove(a); }
 
     public ArrayList<Raum> getRaeume() {
         return raeume;
