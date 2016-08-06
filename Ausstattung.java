@@ -1,4 +1,4 @@
-package Verarbeitung;
+package Verarbeitung;		// Changed
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 
 
-public class Ausstattung implements Serializable{
+public class Ausstattung implements Serializable {
 
 
 	//Attribute
@@ -121,21 +121,21 @@ public class Ausstattung implements Serializable{
 	public int hatMindestens(Ausstattung anforderung){
 		
 		int erfuellteAnforderungen=0;
-		
-		if ((anforderung.beamer==true&&anforderung.beamer==this.beamer)
-						&& (anforderung.ohp==true&&anforderung.ohp==this.ohp)
-						&& (anforderung.tafel==true&&anforderung.tafel==this.tafel)
-						&& (anforderung.smartboard==true&&anforderung.smartboard==this.smartboard)
-						&& (anforderung.whiteboard==true&&anforderung.whiteboard==this.whiteboard)
-						&& (anforderung.computerraum==true&&anforderung.computerraum==this.computerraum)
+	
+		if ((!anforderung.beamer || this.beamer)	// nicht gefordert oder existiert
+						&& (!anforderung.ohp || this.ohp)
+						&& (!anforderung.tafel || this.tafel)
+						&& (!anforderung.smartboard || this.smartboard)
+						&& (!anforderung.whiteboard || this.whiteboard)
+						&& (!anforderung.computerraum || this.computerraum)
 						&& (anforderung.getKapazitaet()<=this.getKapazitaet()))
 		{
-			if (this.beamer) erfuellteAnforderungen += 2;
-			if (this.ohp) erfuellteAnforderungen++;
-			if (this.tafel) erfuellteAnforderungen++;
-			if (this.smartboard) erfuellteAnforderungen += 2;
-			if (this.whiteboard) erfuellteAnforderungen++;
-			if (this.computerraum) erfuellteAnforderungen += 3;
+			if (anforderung.beamer && this.beamer) erfuellteAnforderungen ++;	//+= 2;
+			if (anforderung.ohp && this.ohp) erfuellteAnforderungen++;
+			if (anforderung.tafel && this.tafel) erfuellteAnforderungen++;
+			if (anforderung.smartboard && this.smartboard) erfuellteAnforderungen ++;	//+= 2;
+			if (anforderung.whiteboard && this.whiteboard) erfuellteAnforderungen++;
+			if (anforderung.computerraum && this.computerraum) erfuellteAnforderungen ++;	//+= 3;
 			if (anforderung.getKapazitaet()<=this.getKapazitaet()) erfuellteAnforderungen++;
 		}
 		
@@ -150,13 +150,11 @@ public class Ausstattung implements Serializable{
 		erg[0][2] = "Tafel";
 		erg[0][3] = "Smartboard";
 		erg[0][4] = "Whiteboard";
-		erg[0][5] = "Whiteboard";
-		erg[0][6] = "Computerraum";
-		erg[0][7] = "KapazitÃ¤t";
+		erg[0][5] = "Computerraum";
+		erg[0][6] = "Kapazität";
 
 		if (beamer) erg[1][0]="Ja";
 			else erg[1][0]="Nein";
-
 		if (ohp) erg[1][1]="Ja";
 			else erg[1][1]="Nein";
 		if (tafel) erg[1][2]="Ja";

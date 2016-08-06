@@ -1,6 +1,5 @@
-package Raumfinder;
+package Verarbeitung;		// Changed
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -9,14 +8,14 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 
 
-public class Raumfinder implements RaumfinderIF, Serializable {
+public class Raumfinder implements RaumfinderIF {
 
     //Attribute
     private ArrayList<Raum> raeume;
     private ArrayList<Reservierung> reservierungen;
     private ArrayList<Nutzer> nutzer;
     private OnlineEinleser onEinleser;        //muss Interface werden
-    //private RaumfinderFileAdapterIF saver;
+    private RaumfinderFileAdapter fileAdapter;	// IF!
 
 
     // Standardkonstruktor
@@ -26,6 +25,8 @@ public class Raumfinder implements RaumfinderIF, Serializable {
         reservierungen = new ArrayList<Reservierung>();
         nutzer = new ArrayList<Nutzer>();
         onEinleser = new OnlineEinleser(this);
+        fileAdapter = new RaumfinderFileAdapter (this);
+        
         if (einlesen) onlineEinlesen();
     }
 
@@ -36,7 +37,9 @@ public class Raumfinder implements RaumfinderIF, Serializable {
         this.reservierungen = reservierungen;
         this.nutzer=nutzer;
         this.onEinleser = onEinleser;
-            onlineEinlesen();
+        fileAdapter = new RaumfinderFileAdapter (this);
+        
+        onlineEinlesen();
     }
 
     // Raumsuche anhand von Kriterien (Zeitraum || Ausstattung)
@@ -46,11 +49,11 @@ public class Raumfinder implements RaumfinderIF, Serializable {
     	int offset = 0;
     	ConcurrentSkipListMap<Integer,String> erg = new ConcurrentSkipListMap<>();
 
-        // Durchlaufen aller RÃ¤ume
+        // Durchlaufen aller R�ume
     	for (int i=0; i<raeume.size(); i++) {
     		Raum r = raeume.get(i);
     		int score = r.hatMindestausstattung(a);     // Bewertung der Relevanz des Suchergebnisses
-        	if (score > 0 && r.istFrei(s)) {            // bei erfÃ¼lten Suchkriterien
+        	if (score > 0 && r.istFrei(s)) {            // bei erfülten Suchkriterien
         		erg.put((score*1000)+(offset++) , r.getRaumBezeichnung());   // als Ergebnis abspeichern (invers geordnet nach Relevanz)
         	}
         }
@@ -79,7 +82,7 @@ public class Raumfinder implements RaumfinderIF, Serializable {
         StandardNutzer sn = null;
         if  (neu.getInhaber() instanceof StandardNutzer) sn = (StandardNutzer)neu.getInhaber();
 
-        // mÃ¶gliche Kollisionen suchen
+        // mögliche Kollisionen suchen
         if (!raum.istFrei(zr)) kollisionRaum = true;
         if (sn != null) if (!sn.istFrei(zr))  kollisionInh = true;
 
@@ -116,88 +119,20 @@ public class Raumfinder implements RaumfinderIF, Serializable {
 
     public void stornieren (Reservierung r) {
         r.setStorniert(true);
-        r.getRaum().getBelegung().remove(r);
-        if (r.getInhaber() instanceof StandardNutzer) ((StandardNutzer)r.getInhaber()).getReservierungen().remove(r);
+        r.getRaum().removeReservierung(r);
+        if (r.getInhaber() instanceof StandardNutzer) ((StandardNutzer) r.getInhaber()).removeReservierung(r);
     }
 
     public void onlineEinlesen(){
         onEinleser.einlesen();
     }
 
-  //ab hier der ganze speicherkram
-
-    File raeumedatei;
-    File reservierungendatei;
-    File nutzerdatei;
-
-
-    @SuppressWarnings("resource")
-	public void save(){
-    	
-    	Raum[]speicherraum=new Raum[raeume.size()+1];
-    	raeume.toArray(speicherraum);
-    	
-    	Reservierung[]speicherres=new Reservierung[reservierungen.size()+1];
-    	reservierungen.toArray(speicherres);
-    	
-    	Nutzer[]speichernutzer=new Nutzer[nutzer.size()+1];
-    	nutzer.toArray(speichernutzer);
-    	
-    	
-    	
-    	try{
-    	
-    	ObjectOutputStream out;
-    	
-    	out = new ObjectOutputStream (new FileOutputStream(raeumedatei));
-    	out.writeObject(speicherraum);
-
-    	out = new ObjectOutputStream (new FileOutputStream(reservierungendatei));
-    	out.writeObject(speicherres);
-    	
-    	out = new ObjectOutputStream (new FileOutputStream(nutzerdatei));
-    	out.writeObject(speichernutzer);
-    	
-    	out.close();
-    	
-    	}catch(IOException e){
-    		System.out.println("Es gab ein Problem beim Speichern");
-    		return;
-    	}
+    public void save(){
+    	fileAdapter.save();
     }
 
-    @SuppressWarnings("resource")
-	public void load() throws ClassNotFoundException, IOException {
-    	
-
-    		ObjectInputStream in;
-    		
-    		
-			in = new ObjectInputStream (new FileInputStream(raeumedatei));
-    		Raum[] laderaum=(Raum[])in.readObject();
-    		
-    		in = new ObjectInputStream (new FileInputStream(reservierungendatei));
-    		Reservierung[] laderes=(Reservierung[])in.readObject();
-    		
-    		in = new ObjectInputStream (new FileInputStream(nutzerdatei));
-    		Nutzer[] ladenutzer=(Nutzer[])in.readObject();
-    		
-    		in.close();
-
-    	
-    	for (int i=0; i<laderaum.length; i++){
-    		raeume.add(laderaum[i]);
-    	}
-    	
-    	for (int i=0; i<laderes.length; i++){
-    		reservierungen.add(laderes[i]);
-    	}
-    	
-    	for (int i=0; i<ladenutzer.length; i++){
-    		nutzer.add(ladenutzer[i]);	
-    	}		
-    		
-        //Schnittstelle zu PersistenzAdapter
+    public void load(){
+    	fileAdapter.load();
     }
 
     public Raum sucheKennung(String raumKennung){
@@ -231,10 +166,14 @@ public class Raumfinder implements RaumfinderIF, Serializable {
     public boolean pruefeVerfuegbarkeitRaum (String raumKennung, Zeitraum zr){
         return sucheKennung(raumKennung).istFrei(zr);
     }
+    
+    public boolean pruefeBuchbarkeitRaum (String raumKennung){
+    	return sucheKennung(raumKennung).isBuchbar();
+    }
 
     public Nutzer authentifiziereNutzer (String name, String password) {
         Nutzer erg = sucheNutzer(name);
-        if(!erg.checkPw(password)) erg=null;
+        if(erg!=null && !erg.checkPw(password)) erg=null;
         return erg;
     }
 
@@ -260,6 +199,10 @@ public class Raumfinder implements RaumfinderIF, Serializable {
         return nutzer;
     }
     
+    public void setNutzer (ArrayList<Nutzer> nutzer) {
+    	this.nutzer = nutzer;
+    }
+    
     public String[] getNutzerString() {
     	String[] erg = new String[nutzer.size()];
     	for (int i=0; i<erg.length; i++) {
@@ -268,12 +211,16 @@ public class Raumfinder implements RaumfinderIF, Serializable {
     	return erg;
     }
 
-    public void addRaum(Raum a){    //kÃ¶nnte Ã¼berflÃ¼ssig sein... //nicht Ã¼berflÃ¼ssig, sortierung muss hier implementiert werden <alex>
+    public void addRaum(Raum a){    //könnte überflüssig sein... //nicht überflüssig, sortierung muss hier implementiert werden <alex>
         raeume.add(a);
     }
 
     public ArrayList<Raum> getRaeume() {
         return raeume;
+    }
+    
+    public void setRaeume (ArrayList<Raum> raeume) {
+    	this.raeume = raeume;
     }
     
     private void addReservierung(Reservierung neu){
@@ -282,6 +229,10 @@ public class Raumfinder implements RaumfinderIF, Serializable {
 
     public ArrayList<Reservierung> getReservierungen() {
         return reservierungen;
+    }
+    
+    public void setReservierungen (ArrayList<Reservierung> reservierungen) {
+    this. reservierungen = reservierungen;
     }
      public OnlineEinleser getOnEinleser () {
          return onEinleser;

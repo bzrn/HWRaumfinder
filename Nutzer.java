@@ -1,15 +1,15 @@
-package Verarbeitung;
+package Verarbeitung;		// Changed
 
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public abstract class Nutzer implements Serializable{
+public abstract class Nutzer implements Serializable {
 
     protected static long nutzerCounter = 0;
     protected long nutzerNr;
     protected String name, pwHash, sicherheitsFrage, sicherheitsAntwortHash;
-    protected static MessageDigest messageDigest;
+    protected static MessageDigest messageDigest;		// more or less solved
 
     protected Nutzer (String name, String password, String sicherheitsFrage, String sicherheitsAntwort) {
 
@@ -22,7 +22,7 @@ public abstract class Nutzer implements Serializable{
             setPwHash(password);
             setSicherheitsAntwortHash(sicherheitsAntwort);
         } catch (NoSuchAlgorithmException wtf){
-            System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Verarbeitung.Nutzer-Konstr]");
+            System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
         }
     }
 
@@ -39,6 +39,13 @@ public abstract class Nutzer implements Serializable{
     }
 
     public void setPwHash(String password) {
+    	if (messageDigest==null) {
+    		try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException wtf){
+                System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+            }
+    	}
         messageDigest.update(password.getBytes());
         pwHash = new String(messageDigest.digest());
     }
@@ -56,17 +63,38 @@ public abstract class Nutzer implements Serializable{
     }
 
     public void setSicherheitsAntwortHash(String sicherheitsAntwort) {
+    	if (messageDigest==null) {
+    		try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException wtf){
+                System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+            }
+    	}
         messageDigest.update(sicherheitsAntwort.getBytes());
         sicherheitsAntwortHash = new String(messageDigest.digest());
     }
 
     public boolean checkPw (String password){
+    	if (messageDigest==null) {
+    		try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException wtf){
+                System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+            }
+    	}
         messageDigest.update(password.getBytes());
         if (pwHash.equals(new String (messageDigest.digest()))) return true;
         else return false;
     }
 
     public boolean checkFrage (String antwort){
+    	if (messageDigest==null) {
+    		try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException wtf){
+                System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+            }
+    	}
         messageDigest.update(antwort.getBytes());
         if (sicherheitsAntwortHash.equals(new String (messageDigest.digest()))) return true;
         else return false;

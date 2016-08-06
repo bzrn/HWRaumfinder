@@ -1,12 +1,10 @@
-package Verarbeitung;
+package Verarbeitung;		//  Changed
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
 import Oberflaeche.*;
-
-import Verarbeitung.*;
 
 /**
  * Created by Alexander on 12.07.2016.
@@ -33,6 +31,8 @@ public class AAA_Test {
                     "\nBitte waehlen:\n"
                     +"\t1 - online einlesen\n"
                     +"\t11 - GUIFrame erstellen\n"
+                    +"\t12 - Speichern\n"
+                    +"\t13 - Laden\n"
                     +"\t2 - Reservierungen ausgeben\n"
                     +"\t3 - neue Reservierung\n"
                     +"\t31 - Reservierung stornieren\n"
@@ -44,8 +44,7 @@ public class AAA_Test {
                     +"\t7 - alle Nutzer ausgeben\n"
                     +"\t8 - Nutzer suchen\n"
                     +"\t9 - neuer Nutzer\n"
-                    +"\t100 - save()\n"
-                    +"\t101 - load()\n"
+                    +"\t99 - neuer Admin\n"
                     +"\t0 - verlassen\n"
                     +"\nBitte entsprechende Ziffer eingeben: ");
 
@@ -56,8 +55,17 @@ public class AAA_Test {
                     rf.onlineEinlesen();
                     System.out.println("Fertig!");
                     break;
-                //case 11:
-                 //   GUIFrame frame = new GUIFrame(rf);
+                case 11:
+                    GUIFrame frame = new GUIFrame(rf);
+                    break;
+                case 12:
+                	rf.save();
+                	System.out.println("Raumfinder gesichert!");
+                	break;
+                case 13:
+                	rf.load();
+                	System.out.println("Raumfinder geladen!");
+                	break;
                 case 2:
                     System.out.println("A für alle, R für Raum:");
                     eingabe=din.readLine();
@@ -144,7 +152,7 @@ public class AAA_Test {
                 case 6:
                     System.out.println("Neuen Raumnamen eingeben:");
                     eingabe = din.readLine();
-                    rf.addRaum(new Raum(eingabe, null, true));
+                    rf.addRaum(new Raum(eingabe, new Ausstattung(true,true,true,false,false,false,5), true));
                     break;
                 case 7:
                     System.out.println("Nutzer:");
@@ -165,20 +173,13 @@ public class AAA_Test {
                     String passwort = din.readLine();
                     rf.legeNutzerAn(nutzername,passwort,"","",false);
                     break;
-                    
-                // Ergänzung der save() und load() Methoden
-                case 100:
-                	rf.save();
-                	break;
-                case 101:
-				try {
-					rf.load();
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					System.out.println("beim Laden Klasse nicht gefunden");
-					e.printStackTrace();
-				}
-                	break;
+                case 99:
+                	System.out.println("Neuen Nutzernamen eingeben:");
+                    String nutzername1 = din.readLine();
+                    System.out.println("Passwort eingeben:");
+                    String passwort1 = din.readLine();
+                    rf.legeNutzerAn(nutzername1,passwort1,"","",true);
+                    break;
                 case 0:
                     exit = true;
                     break;

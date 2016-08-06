@@ -1,4 +1,4 @@
-package Verarbeitung;
+package Verarbeitung;	// Changed
 
 import java.io.Serializable;
 import java.util.Date;
@@ -7,14 +7,14 @@ import java.util.Date;
  * Zweck:
  * @author
  * @version
- * Ã„nderungshistorie:
+ * Änderungshistorie:
  * Created by mwolff on 19.06.16.
  * Hanna am 3. Juni
  */
 
 // Attribute
 
-public class Reservierung implements Serializable{
+public class Reservierung implements Serializable {
 
     private static long resCounter = 0;
 
@@ -58,7 +58,7 @@ public class Reservierung implements Serializable{
         this.storniert = false;
     }
     
-    // mit mauell gesetztem Zeitpunkt und Kommentar, fÃ¼r Verarbeitung.OnlineEinleser
+    // mit mauell gesetztem Zeitpunkt und Kommentar, für Verarbeitung.OnlineEinleser
     public Reservierung(Raum raum, Reservierer inhaber, Zeitraum zeitraum, Date zeitpunkt) {
 
         this.reservierungsNr = resCounter++;
@@ -138,7 +138,7 @@ public class Reservierung implements Serializable{
         else erg += "Kein Kommentar";
         
         erg +=  "\n" +
-        		"reserviert am reservierungsZeitpunkt.toString();";
+        		"reserviert am " + reservierungsZeitpunkt.toString() + "\n";
         
         if (admin){
         	erg +=	"Inhaber:    "  + inhaber.getName()                     + "\n" +

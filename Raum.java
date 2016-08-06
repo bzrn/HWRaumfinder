@@ -1,8 +1,7 @@
-package Verarbeitung;
+package Verarbeitung;		// Changed
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Zweck:
@@ -12,7 +11,7 @@ import java.util.Date;
  * Created by mwolff on 19.06.16.
  * Hanna am 23. Juni
  */
-public class Raum implements Serializable{
+public class Raum implements Serializable {
 
     private String raumBezeichnung;
     private ArrayList<Reservierung> belegung;
@@ -66,5 +65,13 @@ public class Raum implements Serializable{
 
     public void addReservierung(Reservierung neu){
         GlobaleMethoden.addReservierungtoArrayList(belegung, neu);
+    }
+    
+    public void removeReservierung (Reservierung weg) {
+    	belegung.remove(weg);
+    }
+    
+    public String toString(){
+    	return raumBezeichnung;
     }
 }

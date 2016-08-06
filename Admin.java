@@ -1,24 +1,26 @@
 package Verarbeitung;
 
-public class Admin extends Nutzer {
+import java.io.Serializable;
 
-	private boolean deletable;
+public class Admin extends Nutzer implements Serializable {
 
-	public Admin (String name, String password, String sicherheitsFrage, String sicherheitsAntwort) {
-		super (name, password, sicherheitsFrage, sicherheitsAntwort);
-		this.deletable = true;
-	}
-	
-	public Admin (String name, String password, String sicherheitsFrage, String sicherheitsAntwort, boolean deletable) {
-		super (name, password, sicherheitsFrage, sicherheitsAntwort);
-		this.deletable = deletable;
-	}
+    private boolean deletable;
 
-	public boolean isDeletable() {
-		return deletable;
-	}
+    public Admin (String name, String password, String sicherheitsFrage, String sicherheitsAntwort) {
+        super (name, password, sicherheitsFrage, sicherheitsAntwort);
+        this.deletable = true;
+    }
 
-	public void setDeletable(boolean deletable) {
-		this.deletable = deletable;
-	}
+    public Admin (String name, String password, String sicherheitsFrage, String sicherheitsAntwort, boolean deletable) {
+        super (name, password, sicherheitsFrage, sicherheitsAntwort);
+        this.deletable = deletable;
+    }
+
+    public boolean isDeletable() {
+        return deletable;
+    }
+
+    public void setDeletable(boolean deletable) {
+        this.deletable = deletable;
+    }
 }

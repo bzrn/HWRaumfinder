@@ -1,8 +1,9 @@
-package Verarbeitung;
+package Verarbeitung;		// Changed
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class StandardNutzer extends Nutzer implements Reservierer {
+public class StandardNutzer extends Nutzer implements Reservierer, Serializable {
 
     private ArrayList<Reservierung> reservierungen = new ArrayList<Reservierung>();
 
@@ -18,6 +19,10 @@ public class StandardNutzer extends Nutzer implements Reservierer {
         GlobaleMethoden.addReservierungtoArrayList(reservierungen, r);
     }
 
+    public void removeReservierung (Reservierung weg) {
+    	reservierungen.remove(weg);
+    }
+    
     public void setReservierungen(ArrayList<Reservierung> reservierungen) {
         this.reservierungen = reservierungen;
     }

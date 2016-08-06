@@ -3,6 +3,9 @@ package Verarbeitung;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Created by Alexander on 12.07.2016.
+ */
 public class GlobaleMethoden {
 
     public static void addReservierungtoArrayList (ArrayList<Reservierung> al, Reservierung neu) {

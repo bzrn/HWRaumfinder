@@ -9,7 +9,6 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class OnlineEinleser {
