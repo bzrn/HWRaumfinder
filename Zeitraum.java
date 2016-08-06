@@ -2,8 +2,10 @@ package Verarbeitung;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.zip.DataFormatException;
 
 //@SuppressWarnings("deprecation")
 public class Zeitraum implements Serializable {
@@ -16,11 +18,13 @@ public class Zeitraum implements Serializable {
 	
 	//Konstruktor
 	
-	public Zeitraum (Date start, Date ende){
-		this.start=start;
-		this.ende=ende;
-		this.dauer=berechneDauer(start, ende);
-		
+	public Zeitraum (Date start, Date ende) throws UnzulaessigerZeitraumException {
+		if (!ende.after(start)) throw new UnzulaessigerZeitraumException();
+		else {
+			this.start=start;
+			this.ende=ende;
+			this.dauer=berechneDauer(start, ende);
+		}
 	}
 	
 	//getter und setter
@@ -59,9 +63,15 @@ public class Zeitraum implements Serializable {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
 		erg += sdf.format(c.getTime()) + " von: ";
-		erg += Integer.toString(c.get(Calendar.HOUR_OF_DAY))+":"+Integer.toString(c.get(Calendar.MINUTE));
+		erg += Integer.toString(c.get(Calendar.HOUR_OF_DAY));
+		if (c.get(Calendar.HOUR_OF_DAY)==0) erg += "0";
+		erg += ":"+Integer.toString(c.get(Calendar.MINUTE));
+		if (c.get(Calendar.MINUTE)==0) erg += "0";
 		c.setTime(ende);
-		erg += " bis: " + Integer.toString(c.get(Calendar.HOUR_OF_DAY))+":"+Integer.toString(c.get(Calendar.MINUTE));
+		erg += " bis: " + Integer.toString(c.get(Calendar.HOUR_OF_DAY));
+		if (c.get(Calendar.HOUR_OF_DAY)==0) erg += "0";
+		erg += ":"+Integer.toString(c.get(Calendar.MINUTE));
+		if (c.get(Calendar.MINUTE)==0) erg += "0";
 
 		return erg;
 	}

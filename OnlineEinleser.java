@@ -293,8 +293,11 @@ public class OnlineEinleser {
 
         } catch (IndexOutOfBoundsException e) {
             System.err.println("Interner Fehler: Substring out of Bounds [readEvents]");
+            //e.printStackTrace();
+        } catch (UnzulaessigerZeitraumException e) {
+            System.err.println("Error: Fehlerhafter Zeitraum.");
+        } finally {
             errCounter++;
-            e.printStackTrace();
         }
 
         return reservierungen;

@@ -104,8 +104,13 @@ public class AAA_Test {
                     System.out.println("Endzeitpunkt im Format \"19960101T020000\" eingeben:");
                     eingabe = din.readLine();
                     Date t2 = rf.getOnEinleser().icsStringToDate(eingabe);
-                    if (rf.reservieren(r, (StandardNutzer)n, new Zeitraum(t1, t2))) System.out.println("Reservierung erfolgreich");
-                    else System.out.println("Error.");
+                    try {
+                        if (rf.reservieren(r, (StandardNutzer)n, new Zeitraum(t1, t2))) System.out.println("Reservierung erfolgreich");
+                        else System.err.println("Error: Sonstiger Reservierungsfehler.");
+                    } catch (UnzulaessigerZeitraumException e) {
+                        System.err.println("Error: Fehlerhafter Zeitraum.");
+                    }
+
                     break;
                 case 31:
                     System.out.println("Reservierungsnummer eingeben:");

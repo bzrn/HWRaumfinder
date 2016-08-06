@@ -151,7 +151,7 @@ public class Ausstattung implements Serializable {
 		erg[0][3] = "Smartboard";
 		erg[0][4] = "Whiteboard";
 		erg[0][5] = "Computerraum";
-		erg[0][6] = "Kapazit‰t";
+		erg[0][6] = "Kapazit√§t";
 
 		if (beamer) erg[1][0]="Ja";
 			else erg[1][0]="Nein";
