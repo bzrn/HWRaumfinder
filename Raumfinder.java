@@ -49,11 +49,11 @@ public class Raumfinder implements RaumfinderIF {
     	int offset = 0;
     	ConcurrentSkipListMap<Integer,String> erg = new ConcurrentSkipListMap<>();
 
-        // Durchlaufen aller R�ume
+        // Durchlaufen aller Räume
     	for (int i=0; i<raeume.size(); i++) {
     		Raum r = raeume.get(i);
     		int score = r.hatMindestausstattung(a);     // Bewertung der Relevanz des Suchergebnisses
-        	if (score > 0 && r.istFrei(s)) {            // bei erfülten Suchkriterien
+        	if (score > 0 && r.istFrei(s)) {            // bei erfÃ¼lten Suchkriterien
         		erg.put((score*1000)+(offset++) , r.getRaumBezeichnung());   // als Ergebnis abspeichern (invers geordnet nach Relevanz)
         	}
         }
@@ -82,7 +82,7 @@ public class Raumfinder implements RaumfinderIF {
         StandardNutzer sn = null;
         if  (neu.getInhaber() instanceof StandardNutzer) sn = (StandardNutzer)neu.getInhaber();
 
-        // mögliche Kollisionen suchen
+        // mÃ¶gliche Kollisionen suchen
         if (!raum.istFrei(zr)) kollisionRaum = true;
         if (sn != null) if (!sn.istFrei(zr))  kollisionInh = true;
 
@@ -211,8 +211,12 @@ public class Raumfinder implements RaumfinderIF {
     	return erg;
     }
 
-    public void addRaum(Raum a){    //könnte überflüssig sein... //nicht überflüssig, sortierung muss hier implementiert werden <alex>
+    public void addRaum(Raum a){    //kÃ¶nnte Ã¼berflÃ¼ssig sein... //nicht Ã¼berflÃ¼ssig, sortierung muss hier implementiert werden <alex>
         raeume.add(a);
+    }
+
+    public void loescheRaum (Raum a) {
+        raeume.remove(a);
     }
 
     public ArrayList<Raum> getRaeume() {
