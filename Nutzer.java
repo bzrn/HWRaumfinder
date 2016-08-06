@@ -1,4 +1,4 @@
-package Verarbeitung;
+package Verarbeitung;		// Changed
 
 import java.io.Serializable;
 import java.security.MessageDigest;
@@ -16,7 +16,6 @@ public abstract class Nutzer implements Serializable {
         nutzerNr = nutzerCounter++;
         this.name=name;
         this.sicherheitsFrage = sicherheitsFrage;
-        if (sicherheitsFrage.charAt(sicherheitsFrage.length()-1)!='?') sicherheitsFrage += "?";
 
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
@@ -57,7 +56,6 @@ public abstract class Nutzer implements Serializable {
 
     public void setSicherheitsFrage(String sicherheitsFrage) {
         this.sicherheitsFrage = sicherheitsFrage;
-        if (sicherheitsFrage.charAt(sicherheitsFrage.length()-1)!='?') sicherheitsFrage += "?";
     }
 
     public String getSicherheitsAntwortHash() {
