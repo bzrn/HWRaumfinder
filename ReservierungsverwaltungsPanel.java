@@ -49,7 +49,7 @@ public class ReservierungsverwaltungsPanel extends JPanel {
                     } else {
                         frame.zeigeReservierungsDetails(Long.parseLong(auswahl.substring(auswahl.indexOf("(")+1,auswahl.indexOf(")"))));
                     }
-                }	// möglicherweise: 2. Button für Stornierung?
+                }
             });
         } else {
         	footer.add(stornoBtn, BorderLayout.EAST);
@@ -85,7 +85,7 @@ public class ReservierungsverwaltungsPanel extends JPanel {
     
     private void popupAuswahlFehlt() {
     	JOptionPane.showMessageDialog(frame,
-                "Bitte eine Reservierung auswählen!",
+                "Bitte eine Reservierung auswÃ¤hlen!",
                 "Fehler",
                 JOptionPane.WARNING_MESSAGE);
     }

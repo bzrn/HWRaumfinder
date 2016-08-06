@@ -111,7 +111,7 @@ public class SuchPanel extends JPanel {
 		
 		
 		
-		JLabel lblMindestkapazitt = new JLabel("Mindestkapazit‰t");
+		JLabel lblMindestkapazitt = new JLabel("Mindestkapazit√§t");
 		GroupLayout gl_panel = new GroupLayout(this);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)

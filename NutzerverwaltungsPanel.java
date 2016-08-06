@@ -29,6 +29,8 @@ public class NutzerverwaltungsPanel extends JPanel {
     private String[] nutzer;
     private String[] bearbeiteterNutzerDaten = {"",""};
 
+    private JTextField nutzerNameText, frageText, passwordText, antwortText;
+
     public NutzerverwaltungsPanel (GUIFrame parent, String[] nutzer){
         frame = parent;
         this.nutzer = nutzer;
@@ -54,7 +56,8 @@ public class NutzerverwaltungsPanel extends JPanel {
         JButton nutzerWahlBtn = new JButton ("Nutzer bearbeiten >>");
         nutzerWahlBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.getNutzerDaten(ergebnisList.getSelectedValue());
+                bearbeiteterNutzerDaten = frame.getNutzerDaten(ergebnisList.getSelectedValue());
+                befuelleFelderNutzer();
             }
         });
         nutzerPanel.add(nutzerWahlBtn, BorderLayout.SOUTH);
@@ -67,29 +70,29 @@ public class NutzerverwaltungsPanel extends JPanel {
         	JLabel nutzerNameLbl = new JLabel ("Nutzername:");		// BORDERS FEHLEN
         	nutzerNameLbl.setBorder(new EmptyBorder(0,5,0,0));
         	nutzerBearbeitung.add(nutzerNameLbl);
-        	JTextField nutzerNameText = new JTextField(bearbeiteterNutzerDaten[0]);
+            nutzerNameText = new JTextField(bearbeiteterNutzerDaten[0]);
         	nutzerBearbeitung.add(nutzerNameText);
         	JLabel passwortLbl = new JLabel("Passwort:");
         	passwortLbl.setBorder(new EmptyBorder(0,5,0,0));
-        	passwortLbl.setToolTipText("Leer lassen, wenn keine Änderung gewünscht");
+        	passwortLbl.setToolTipText("Leer lassen, wenn keine Ã„nderung gewÃ¼nscht");
         	nutzerBearbeitung.add(passwortLbl);
-        	JPasswordField passwordText = new JPasswordField();
-        	passwordText.setToolTipText("Leer lassen, wenn keine Änderung gewünscht");
+        	passwordText = new JPasswordField();
+        	passwordText.setToolTipText("Leer lassen, wenn keine Ã„nderung gewÃ¼nscht");
         	nutzerBearbeitung.add(passwordText);
         	JLabel frageLbl = new JLabel("Sicherheitsfrage:");
         	frageLbl.setBorder(new EmptyBorder(0,5,0,0));
         	nutzerBearbeitung.add(frageLbl);
-        	JTextField frageText = new JTextField(bearbeiteterNutzerDaten[1]);
+        	frageText = new JTextField(bearbeiteterNutzerDaten[1]);
         	nutzerBearbeitung.add(frageText);
         	JLabel antwortLbl = new JLabel ("Antwort:");
         	antwortLbl.setBorder(new EmptyBorder(0,5,0,0));
-        	antwortLbl.setToolTipText("Leer lassen, wenn keine Änderung gewünscht");
+        	antwortLbl.setToolTipText("Leer lassen, wenn keine Ã„nderung gewÃ¼nscht");
         	nutzerBearbeitung.add(antwortLbl);
-        	JTextField antwortText = new JTextField();
-        	antwortText.setToolTipText("Leer lassen, wenn keine Änderung gewünscht");
+        	antwortText = new JTextField();
+        	antwortText.setToolTipText("Leer lassen, wenn keine Ã„nderung gewÃ¼nscht");
         	nutzerBearbeitung.add(antwortText);
         	
-        	JButton loeschBtn = new JButton ("Löschen");
+        	JButton loeschBtn = new JButton ("LÃ¶schen");
         	loeschBtn.setForeground(Color.red);
         	loeschBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -98,7 +101,7 @@ public class NutzerverwaltungsPanel extends JPanel {
             });
         	nutzerBearbeitung.add(loeschBtn);
         	
-        	JButton weiterBtn = new JButton ("Ändern");
+        	JButton weiterBtn = new JButton ("Ã„ndern");
         	weiterBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                 	if (!(nutzerNameText.getText().isEmpty() || frageText.getText().isEmpty())) popupInputFehlt();
@@ -108,6 +111,11 @@ public class NutzerverwaltungsPanel extends JPanel {
         	nutzerBearbeitung.add(weiterBtn);
         	
         	add (nutzerBearbeitung);
+    }
+
+    private void befuelleFelderNutzer() {
+        nutzerNameText.setText(bearbeiteterNutzerDaten[0]);
+        frageText.setText(bearbeiteterNutzerDaten[1]);
     }
     
     private ListCellRenderer<? super String> getRenderer() {
@@ -126,7 +134,7 @@ public class NutzerverwaltungsPanel extends JPanel {
     
     private void popupInputFehlt() {
     	JOptionPane.showMessageDialog(frame,
-                "Nutzername und Sicherheitsfrage dürfen nicht leer sein!",
+                "Nutzername und Sicherheitsfrage dÃ¼rfen nicht leer sein!",
                 "Fehler",
                 JOptionPane.WARNING_MESSAGE);
     }

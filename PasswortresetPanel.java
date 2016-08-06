@@ -40,19 +40,19 @@ public class PasswortresetPanel extends JPanel {
         fields.add(neuPW2);
         add(fields, BorderLayout.CENTER);
 
-        JButton okBtn = new JButton("Passwort zurücksetzen");
+        JButton okBtn = new JButton("Passwort zurÃ¼cksetzen");
         //okBtn.setBorder(new EmptyBorder(5,0,10,0));
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (!neuPW1.getText().equals(neuPW2.getText())){
                     JOptionPane.showMessageDialog(frame,
-                            "Die neuen Passwörter stimmen nicht überein.\nPasswort konnte nicht geändert werden.",
-                            "Änderung fehlgeschlagen",
+                            "Die neuen PasswÃ¶rter stimmen nicht Ã¼berein.\nPasswort konnte nicht geÃ¤ndert werden.",
+                            "Ã„nderung fehlgeschlagen",
                             JOptionPane.ERROR_MESSAGE);
                 } else if (AW.getText().isEmpty() || neuPW1.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(frame,
-                            "Alle Felder müssen ausgefüllt werden!",
-                            "Änderung fehlgeschlagen",
+                            "Alle Felder mÃ¼ssen ausgefÃ¼llt werden!",
+                            "Ã„nderung fehlgeschlagen",
                             JOptionPane.ERROR_MESSAGE);
                 } else if (neuPW1.getText().length()<8){
                 	JOptionPane.showMessageDialog(frame,

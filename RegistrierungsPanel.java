@@ -171,40 +171,5 @@ public class RegistrierungsPanel extends JPanel {
                 }
             }
         });
-
-
-       /* // Panel für Hauptmenü und Nutzernamen
-
-        panel_1 = new JPanel();
-        //this.add(panel_1, BorderLayout.NORTH);
-
-        lblAngemeldetAlsXxyy = new JLabel("Angemeldet als: XXYY");
-
-        JButton btnNewButton = new JButton("Hauptmenü");
-        btnNewButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if ()
-            }
-        });
-        GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-        gl_panel_1.setHorizontalGroup(
-                gl_panel_1.createParallelGroup(Alignment.TRAILING)
-                        .addGroup(Alignment.LEADING, gl_panel_1.createSequentialGroup()
-                                .addGap(14)
-                                .addComponent(lblAngemeldetAlsXxyy, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
-                                .addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
-                                .addGap(28))
-        );
-        gl_panel_1.setVerticalGroup(
-                gl_panel_1.createParallelGroup(Alignment.TRAILING)
-                        .addGroup(gl_panel_1.createSequentialGroup()
-                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-                                        .addComponent(lblAngemeldetAlsXxyy, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnNewButton))
-                                .addGap(5))
-        );
-        panel_1.setLayout(gl_panel_1);*/
     }
 }

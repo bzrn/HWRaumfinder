@@ -40,14 +40,14 @@ public class SicherheitsfragenaenderungsPanel extends JPanel {
         fields.add(neuAW);
         add(fields, BorderLayout.CENTER);
 
-        JButton okBtn = new JButton("Änderung durchführen");
+        JButton okBtn = new JButton("Ã„nderung durchfÃ¼hren");
         //okBtn.setBorder(new EmptyBorder(5,0,10,0));
         okBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (altAW.getText().isEmpty() || neuFrage.getText().isEmpty() || neuAW.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(frame,
-                            "Alle Felder müssen ausgefüllt werden!",
-                            "Änderung fehlgeschlagen",
+                            "Alle Felder mÃ¼ssen ausgefÃ¼llt werden!",
+                            "Ã„nderung fehlgeschlagen",
                             JOptionPane.ERROR_MESSAGE);
                 } else {
                     frame.sicherheitsfrageAendern(altAW.getText(), neuFrage.getText(), neuAW.getText());

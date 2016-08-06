@@ -18,17 +18,28 @@ public class ReservierungsPanel extends JPanel {
     private String[][] ausstattung;
     private String raumKennung;
 
-    String datumStr;
-    Calendar c1, c2;
-    SimpleDateFormat sdf;
-    JComboBox stundenVon, minutenVon, stundenBis, minutenBis;
-    JLabel verfuegbarkeit;
+    private String datumStr;
+    private Calendar c1, c2;
+    private SimpleDateFormat sdf;
+    private JComboBox stundenVon, minutenVon, stundenBis, minutenBis;
+    private JLabel verfuegbarkeit, titelLabel;
+    private JPanel ausstPanel;
 
     public ReservierungsPanel(GUIFrame parent) {
         frame = parent;
         raumKennung="Empty";
         start = new Date (System.currentTimeMillis());
-        ende = new Date (System.currentTimeMillis()+3600000);	// default: eine Stunde sp‰ter
+        ende = new Date (System.currentTimeMillis()+3600000);	// default: eine Stunde sp√§ter
+        ausstattung = new String[][]{{"","","","","","",""},{"","","","","","",""}};
+
+        c1 = Calendar.getInstance();
+        c1.setTime(start);
+        c2 = Calendar.getInstance();
+        c2.setTime(ende);
+        sdf = new SimpleDateFormat("dd.MM.yyyy");
+        datumStr = sdf.format(c1.getTime());
+
+        initialize();
     }
 
     public void setup (String raumKennung, Date start, Date ende, String[][] a){
@@ -36,38 +47,29 @@ public class ReservierungsPanel extends JPanel {
         this.start = start;
         this.ende = ende;
         ausstattung=a;
-        
-        c1 = Calendar.getInstance();
-        c1.setTime(start);
-        c2 = Calendar.getInstance();
-        c2.setTime(ende);
-        sdf = new SimpleDateFormat("dd.MM.yyyy");
-        datumStr = sdf.format(c1.getTime());
-        
-        initialize();
+
+        titelLabel.setText("Raum " + raumKennung);
+        erstelleAusstattungsPanel();
+        setSelectedZeitraum();
+        setVerfuegbarkeitLabel();
     }
 
     private void initialize() {
         setLayout(new BorderLayout());
         setBorder (new EmptyBorder (10,10,5,5));
 
-        JLabel titelLabel = new JLabel ("Raum " + raumKennung);
+        titelLabel = new JLabel ("Raum " + raumKennung);
         titelLabel.setFont(new Font(titelLabel.getFont().getName(), Font.BOLD, 15));
         titelLabel.setBorder(new EmptyBorder(0,5,5,0));
         add(titelLabel, BorderLayout.NORTH);
 
         JPanel body = new JPanel(new GridLayout(1,2));
-            JPanel ausstPanel = new JPanel(new GridLayout(ausstattung[0].length, 2));
+            ausstPanel = new JPanel(new GridLayout(ausstattung[0].length, 2));
                 ausstPanel.setBorder(BorderFactory.createTitledBorder("Ausstattung"));
-                for (int i = 0; i<ausstattung[0].length; i++){
-                	JLabel temp = new JLabel("  " + ausstattung[0][i]);
-                	ausstPanel.add(temp);
-                	temp = new JLabel(ausstattung[1][i]);
-                	ausstPanel.add(temp);
-                }
+                erstelleAusstattungsPanel();
             body.add(ausstPanel);
             JPanel zeitPanel = new JPanel(new GridLayout(5,1, 5,5));
-                zeitPanel.setBorder(BorderFactory.createTitledBorder("Verf¸gbarkeit pr¸fen"));
+                zeitPanel.setBorder(BorderFactory.createTitledBorder("Verf√ºgbarkeit pr√ºfen"));
                 	JPanel panelDatum = new JPanel (new GridLayout (1,2,5,5));
                     JLabel lblDatum1 = new JLabel("Datum:");
                     panelDatum.add(lblDatum1);
@@ -106,13 +108,11 @@ public class ReservierungsPanel extends JPanel {
                     JLabel lblVon = new JLabel("Beginn:");
                     vonPanel.add(lblVon);
                         stundenVon = new JComboBox(GUIFrame.hour);
-                            stundenVon.setSelectedItem(Integer.toString(c1.get(Calendar.HOUR_OF_DAY)));
                         vonPanel.add(stundenVon);
                         JLabel labelDPkt1 = new JLabel(":");
                         labelDPkt1.setHorizontalAlignment(JLabel.CENTER);
                         vonPanel.add(labelDPkt1);
                         minutenVon = new JComboBox(GUIFrame.min);
-                            minutenVon.setSelectedItem(Integer.toString(c1.get((Calendar.MINUTE / 15)*15)));
                         vonPanel.add(minutenVon);
                         JLabel lblUhr1 = new JLabel("Uhr");
                         lblUhr1.setHorizontalAlignment(JLabel.CENTER);
@@ -122,13 +122,11 @@ public class ReservierungsPanel extends JPanel {
                     JLabel lblBis = new JLabel("Ende");
                     bisPanel.add(lblBis);
                         stundenBis = new JComboBox(GUIFrame.hour);
-                            stundenBis.setSelectedItem(Integer.toString(c2.get(Calendar.HOUR_OF_DAY)));
                         bisPanel.add(stundenBis);
                         JLabel labelDPkt2 = new JLabel(":");
                         labelDPkt2.setHorizontalAlignment(JLabel.CENTER);
                         bisPanel.add(labelDPkt2);
                         minutenBis = new JComboBox(GUIFrame.min);
-                            minutenBis.setSelectedItem(Integer.toString(c2.get((Calendar.MINUTE / 15)*15)));
                         bisPanel.add(minutenBis);
                         JLabel lblUhr2 = new JLabel("Uhr");
                         lblUhr2.setHorizontalAlignment(JLabel.CENTER);
@@ -136,8 +134,8 @@ public class ReservierungsPanel extends JPanel {
                     zeitPanel.add(bisPanel);
                     verfuegbarkeit = new JLabel("");
                         verfuegbarkeit.setFont(new Font(verfuegbarkeit.getFont().getFontName(), verfuegbarkeit.getFont().BOLD, verfuegbarkeit.getFont().getSize()));
-                        setVerfuegbarkeitLabel();
                     zeitPanel.add(verfuegbarkeit);
+                    setSelectedZeitraum();
             body.add(zeitPanel);
         add(body, BorderLayout.CENTER);
 
@@ -161,6 +159,23 @@ public class ReservierungsPanel extends JPanel {
         setVisible(true);
     }
 
+    private void erstelleAusstattungsPanel(){
+        ausstPanel.removeAll();
+        for (int i = 0; i<ausstattung[0].length; i++){
+            JLabel temp2 = new JLabel("  " + ausstattung[0][i]);
+            ausstPanel.add(temp2);
+            temp2 = new JLabel(ausstattung[1][i]);
+            ausstPanel.add(temp2);
+        }
+    }
+
+    private void setSelectedZeitraum(){
+        stundenVon.setSelectedItem(Integer.toString(c1.get(Calendar.HOUR_OF_DAY)));
+        minutenVon.setSelectedItem(Integer.toString(c1.get((Calendar.MINUTE / 15)*15)));
+        stundenBis.setSelectedItem(Integer.toString(c2.get(Calendar.HOUR_OF_DAY)));
+        minutenBis.setSelectedItem(Integer.toString(c2.get((Calendar.MINUTE / 15)*15)));
+    }
+
     private void aktualisiereZeitraum(){
     	c1.set(Calendar.HOUR_OF_DAY, Integer.parseInt((String)stundenVon.getSelectedItem()));
     	c1.set(Calendar.MINUTE, Integer.parseInt((String)minutenVon.getSelectedItem()));
@@ -175,7 +190,7 @@ public class ReservierungsPanel extends JPanel {
     	if (frame.raumBuchbar(raumKennung)){
     		boolean frei = frame.pruefeVerfuegbarkeitRaum(raumKennung,start, ende);
             if (frei){
-                verfuegbarkeit.setText("Raum verf¸gbar!");
+                verfuegbarkeit.setText("Raum verf√ºgbar!");
                 verfuegbarkeit.setForeground(Color.GREEN);
                 //verfuegbarkeit.setBorder(new LineBorder(Color.green, 5));
             } else {

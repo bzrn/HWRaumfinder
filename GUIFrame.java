@@ -27,18 +27,18 @@ public class GUIFrame extends JFrame{
 
     //AnsichtsKonstanten:
     public static final String
-            HAUPTMENUE = "Hauptmenü",
+            HAUPTMENUE = "HauptmenÃ¼",
             LOGIN = "Log-In",
             REGISTRIERUNG = "Registrierung",
-            KRITERIENSUCHE = "Kriteriensuche",
+            KRITERIENSUCHE = "Suche nach Kriterien",
             ERGEBNISANZEIGE = "Suchergebnisse",
             RESERVIERUNG = "Raumreservierung",
             RESERVIERUNGSVERWALTUNG = "Reservierungsverwaltung",
-            PASSWORTAENDERUNG = "Passwort ändern",
-            SICHERHEITSFRAGE = "Sicherheitsfrage ändern",
+            PASSWORTAENDERUNG = "Passwort Ã¤ndern",
+            SICHERHEITSFRAGE = "Sicherheitsfrage Ã¤ndern",
             RAUMVERWALTUNG = "Raumverwaltung",
             NUTZERVERWALTUNG = "Nutzerverwaltung",
-    		PASSWORTRESET = "Passwort zurücksetzen";
+    		PASSWORTRESET = "Passwort zurÃ¼cksetzen";
 
     public static final String[] min={"00","15","30","45"};
     public static final String[] hour={"08","09","10","11","12","13","14","15","16","17","18","19"};
@@ -130,7 +130,7 @@ public class GUIFrame extends JFrame{
             		panelArgs = new String[rf.getReservierungen().size()];
                     for (int i=0; i<panelArgs.length; i++){
                     	Reservierung tempRes = rf.getReservierungen().get(i);
-                    	panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + tempRes.getZeitraum().toString() + " für Raum " + tempRes.getRaum() + " Reservierer: " + tempRes.getInhaber().getName());
+                    	panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + tempRes.getZeitraum().toString() + " fÃ¼r Raum " + tempRes.getRaum() + " Reservierer: " + tempRes.getInhaber().getName());
                     	if (tempRes.isStorniert()) panelArgs[i] += " <sto>";
                     	if (tempRes.isError()) panelArgs[i] += " <err>";
                     }
@@ -138,7 +138,7 @@ public class GUIFrame extends JFrame{
             		panelArgs = new String[((StandardNutzer)aktiverNutzer).getReservierungen().size()];
                     for (int i=0; i<panelArgs.length; i++){
                     	Reservierung tempRes = ((StandardNutzer)aktiverNutzer).getReservierungen().get(i);
-                    	panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + tempRes.getZeitraum().toString() + " für Raum " + tempRes.getRaum());
+                    	panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + tempRes.getZeitraum().toString() + " fÃ¼r Raum " + tempRes.getRaum());
                     }
             	}
                 aktuelleAnsicht = new ReservierungsverwaltungsPanel(this,panelArgs);
@@ -182,11 +182,11 @@ public class GUIFrame extends JFrame{
         if (aktuelleAnsicht instanceof LoginPanel) {
             header.setVisible(false);
         } else if (aktuelleAnsicht instanceof RegistrierungsPanel || aktuelleAnsicht instanceof PasswortresetPanel) {
-            headerBtn.setText("zurück zum Log-In");
+            headerBtn.setText("zurÃ¼ck zum Log-In");
             header.setVisible(true);
         } else if (aktiverNutzer == null) {
             JOptionPane.showMessageDialog(this,
-                    "Diese Ansicht ist nur für eingeloggte Nutzer erreichbar.",
+                    "Diese Ansicht ist nur fÃ¼r eingeloggte Nutzer erreichbar.",
                     "Zugriff verweigert",
                     JOptionPane.ERROR_MESSAGE);
             aktualisiereAnsicht(LOGIN);
@@ -200,7 +200,7 @@ public class GUIFrame extends JFrame{
         if (aktiverNutzer == null) {
             JOptionPane.showMessageDialog(this,
                     "Nutzername oder Passwort sind fehlerhaft.",
-                    "Log-In nicht möglich",
+                    "Log-In nicht mÃ¶glich",
                     JOptionPane.WARNING_MESSAGE);
         } else {
             aktualisiereAnsicht(HAUPTMENUE);
@@ -236,7 +236,7 @@ public class GUIFrame extends JFrame{
     public void startPwReset(){
     	String nutzername = JOptionPane.showInputDialog(this,
     								"Bitte Nutzernamen eingeben:",
-    								"Passwort zurücksetzen",
+    								"Passwort zurÃ¼cksetzen",
     								JOptionPane.OK_CANCEL_OPTION);
     	if (nutzername!=null){
     		Nutzer tempNutzer = rf.sucheNutzer(nutzername);
@@ -246,7 +246,7 @@ public class GUIFrame extends JFrame{
                         "Fehler",
                         JOptionPane.ERROR_MESSAGE);
         	} else {
-        		aktiverNutzer = tempNutzer;		// aktiverNutzer gesetzt, alter Kommentar: aktiverNutzer temporär gesetzt, wird bei aktualisiereAnsicht wieder entfernt
+        		aktiverNutzer = tempNutzer;		// aktiverNutzer gesetzt, alter Kommentar: aktiverNutzer temporÃ¤r gesetzt, wird bei aktualisiereAnsicht wieder entfernt
         		aktualisiereAnsicht(PASSWORTRESET);
         	}
     	}
@@ -256,7 +256,7 @@ public class GUIFrame extends JFrame{
     	if(aktiverNutzer.checkFrage(sicherheitsAntwort)){		// wenn Antwort stimmt
     		aktiverNutzer.setPwHash(neuPW);
     		JOptionPane.showMessageDialog(this,
-                    "Passwort zurückgesetzt!\nDu kannst dich nun einloggen!",
+                    "Passwort zurÃ¼ckgesetzt!\nDu kannst dich nun einloggen!",
                     "Erfolg",
                     JOptionPane.INFORMATION_MESSAGE,
                     new ImageIcon("checkMark.png"));
@@ -270,31 +270,40 @@ public class GUIFrame extends JFrame{
     }
 
     public void sucheNachKriterien (Date start, Date ende, boolean beamer, boolean ohp, boolean tafel, boolean smartb, boolean whiteb, boolean computerr, int kapazitaet){
-    	tempZeitraum = new Zeitraum (start, ende);	 //merken bis zur Raumansicht, damit als default-Wert in Reservierungsmaske eingetragen werden kann
-        ArrayList<String> tempPanelArgs = rf.suche(tempZeitraum, new Ausstattung(beamer,ohp,tafel,smartb,whiteb,computerr, kapazitaet));
-        panelArgs = tempPanelArgs.toArray(new String[tempPanelArgs.size()]);
-        aktualisiereAnsicht(ERGEBNISANZEIGE);
+    	try {
+            tempZeitraum = new Zeitraum (start, ende);	 //merken bis zur Raumansicht, damit als default-Wert in Reservierungsmaske eingetragen werden kann
+            ArrayList<String> tempPanelArgs = rf.suche(tempZeitraum, new Ausstattung(beamer,ohp,tafel,smartb,whiteb,computerr, kapazitaet));
+            panelArgs = tempPanelArgs.toArray(new String[tempPanelArgs.size()]);
+            aktualisiereAnsicht(ERGEBNISANZEIGE);
+        } catch (UnzulaessigerZeitraumException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Der Beginn des Reservierungszeitraum muss vor dessen Ende liegen!",
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     public void raumAuswaehlen (String kennung){
-        if (tempZeitraum == null) {
-            /*JOptionPane.showMessageDialog(this,
-                    "Interner Fehler. Bitte nochmal versuchen.",
-                    "Interner Fehler",
-                    JOptionPane.ERROR_MESSAGE);
-            aktualisiereAnsicht(HAUPTMENUE);*/		// raus, weil falsch wenn Aufruf über Kennungssuche
-        	tempZeitraum=new Zeitraum(new Date(System.currentTimeMillis()), new Date (System.currentTimeMillis()+3600000));
-        } else {
+        try{
+            if (tempZeitraum == null) tempZeitraum=new Zeitraum(new Date(System.currentTimeMillis()), new Date (System.currentTimeMillis()+3600000));
             aktualisiereAnsicht(RESERVIERUNG);
             ((ReservierungsPanel)aktuelleAnsicht).setup(kennung, tempZeitraum.getStart(), tempZeitraum.getEnde(), rf.sucheKennung(kennung).getAusstattung().toStringArray());
-            getContentPane().remove(aktuelleAnsicht);	// nicht schön,
-            add(aktuelleAnsicht,BorderLayout.CENTER);	// aber funktio-
-            repaint();									// niert so
+        } catch (UnzulaessigerZeitraumException e) {
+            System.err.println("Interner Fehler: Default-Zeitraum wurde falsch generiert.");
         }
     }
 
     public boolean pruefeVerfuegbarkeitRaum (String raumKennung, Date start, Date ende){
-        return rf.pruefeVerfuegbarkeitRaum(raumKennung, new Zeitraum(start, ende));
+        try{
+            return rf.pruefeVerfuegbarkeitRaum(raumKennung, new Zeitraum(start, ende));
+        } catch (UnzulaessigerZeitraumException e) {
+            JOptionPane.showMessageDialog(this,
+                    "Der Beginn des Reservierungszeitraum muss vor dessen Ende liegen!",
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
     }
     
     public boolean raumBuchbar (String raumKennung) {
@@ -302,17 +311,24 @@ public class GUIFrame extends JFrame{
     }
 
     public void reservieren(String raumKennung, Date start, Date ende){
-    	Zeitraum zr = new Zeitraum (start, ende);
-        if (rf.reservieren(rf.sucheKennung(raumKennung),(Reservierer)aktiverNutzer,zr)){
+        try {
+            Zeitraum zr = new Zeitraum (start, ende);
+            if (rf.reservieren(rf.sucheKennung(raumKennung),(Reservierer)aktiverNutzer,zr)){
+                JOptionPane.showMessageDialog(this,
+                        "Reservierung erfolgreich! \nZurÃ¼ck ins HauptmenÃ¼.",
+                        "Erfolg",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        new ImageIcon("checkMark.png"));
+                aktualisiereAnsicht(HAUPTMENUE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "Reservierung konnte nicht gebucht werden. \nMÃ¶glicherweise hast du in diesem Zeitraum schon einen Raum reserviert oder der Raum ist nicht buchbar.",
+                        "Fehler",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (UnzulaessigerZeitraumException e) {
             JOptionPane.showMessageDialog(this,
-                    "Reservierung erfolgreich! \nZurÃ¼ck ins HauptmenÃ¼.",
-                    "Erfolg",
-                    JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon("checkMark.png"));
-            aktualisiereAnsicht(HAUPTMENUE);
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Reservierung konnte nicht gebucht werden. \nMÃ¶glicherweise hast du in diesem Zeitraum schon einen Raum reserviert oder der Raum ist nicht buchbar.",
+                    "Der Beginn des Reservierungszeitraum muss vor dessen Ende liegen!",
                     "Fehler",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -322,14 +338,14 @@ public class GUIFrame extends JFrame{
         if (aktiverNutzer.checkPw(alt)){
             aktiverNutzer.setPwHash(neu);
             JOptionPane.showMessageDialog(this,
-                    "Passwort erfolgreich geÄndert!",
+                    "Passwort erfolgreich geÃ¤ndert!",
                     "Erfolg",
                     JOptionPane.INFORMATION_MESSAGE,
                     new ImageIcon("checkMark.png"));
             aktualisiereAnsicht(HAUPTMENUE);
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Falsches aktuelles Passwort! \nPasswort konnte nicht geÄndert werden.",
+                    "Falsches aktuelles Passwort! \nPasswort konnte nicht geÃ¤ndert werden.",
                     "Fehler",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -340,14 +356,14 @@ public class GUIFrame extends JFrame{
             aktiverNutzer.setSicherheitsFrage(neuFrage);
             aktiverNutzer.setSicherheitsAntwortHash(neuAW);
             JOptionPane.showMessageDialog(this,
-                    "Sicherheitsfrage/-antwort erfolgreich geÄndert!",
+                    "Sicherheitsfrage/-antwort erfolgreich geÃ¤ndert!",
                     "Erfolg",
                     JOptionPane.INFORMATION_MESSAGE,
                     new ImageIcon("checkMark.png"));
             aktualisiereAnsicht(HAUPTMENUE);
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Falsche Antwort auf aktuelle Sicherheitsfrage! \nÄnderung konnte nicht durchgeführt werden.",
+                    "Falsche Antwort auf aktuelle Sicherheitsfrage! \nÃ„nderung konnte nicht durchgefÃ¼hrt werden.",
                     "Fehler",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -411,7 +427,7 @@ public class GUIFrame extends JFrame{
         	aenderungen[3] = true;
         } else aenderungen [3] = false;
         
-        String bearbeitungsMessage = "Folgende Nutzerdaten wurden geändert:\n";
+        String bearbeitungsMessage = "Folgende Nutzerdaten wurden geÃ¤ndert:\n";
         if (aenderungen[0]) bearbeitungsMessage += "\tNutzername\n";
         if (aenderungen[1]) bearbeitungsMessage += "\tPasswort\n";
         if (aenderungen[2]) bearbeitungsMessage += "\tSicherheitsfrage\n";
@@ -419,14 +435,14 @@ public class GUIFrame extends JFrame{
         
         JOptionPane.showMessageDialog(this,
                 bearbeitungsMessage,
-                "Nutzerdaten geändert",
+                "Nutzerdaten geÃ¤ndert",
                 JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void loescheNutzer (String nutzername){
     	rf.loescheNutzer(rf.sucheNutzer(nutzername));
     	JOptionPane.showMessageDialog(this,
-                "Nutzer "+nutzername+" wurde gelöscht!",
+                "Nutzer "+nutzername+" wurde gelÃ¶scht!",
                 "Erfolg",
                 JOptionPane.INFORMATION_MESSAGE);
     }

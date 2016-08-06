@@ -54,7 +54,7 @@ public class PasswortaenderungsPanel extends JPanel {
                 } else if (neuPW1.getText().length()<8){
                 	JOptionPane.showMessageDialog(frame,
                             "Das Passwort ist zu kurz, bitte mindestens 8 Zeichen eingeben!",
-                            "Registrierung fehlgeschlagen",
+                            "Änderung fehlgeschlagen",
                             JOptionPane.WARNING_MESSAGE);
                 } else {
                     frame.passwortAendern(altPW.getText(), neuPW1.getText());

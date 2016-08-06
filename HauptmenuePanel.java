@@ -29,7 +29,7 @@ public class HauptmenuePanel extends JPanel {
         	JPanel grussPanel = new JPanel(new GridLayout(2,1,0,5));
             JLabel gruss1 = new JLabel("Hallo "+frame.getAktivenNutzerString()+"!");
             grussPanel.add(gruss1);
-            JLabel gruss2 = new JLabel("Wähle eine der folgenden Aktionen aus:");
+            JLabel gruss2 = new JLabel("WÃ¤hle eine der folgenden Aktionen aus:");
             grussPanel.add(gruss2);
             add (grussPanel, BorderLayout.NORTH);
         }
@@ -47,13 +47,15 @@ public class HauptmenuePanel extends JPanel {
                     String[] raeume = raeumeAL.toArray(new String[raeumeAL.size()]);
                     String eingabe = (String)JOptionPane.showInputDialog(
                             frame,
-                            "Raumkennung auswählen:",
+                            "Raumkennung auswÃ¤hlen:",
                             "Raumsuche nach Kennung",
                             JOptionPane.PLAIN_MESSAGE,
                             new ImageIcon("HWRaumfinder_Icon.png"),
                             raeume,
                             0);
-                    if (eingabe!=null) frame.raumAuswaehlen(eingabe);
+                    if (eingabe!=null) {
+                        frame.raumAuswaehlen(eingabe);
+                    }
                 }
             });
             suchPanel.add(kennungssucheBtn);
@@ -77,7 +79,7 @@ public class HauptmenuePanel extends JPanel {
                 }
             });
             verwaltungsPanel.add(reservierungenBtn);
-            JButton raumBtn = new JButton("Räume verwalten");
+            JButton raumBtn = new JButton("RÃ¤ume verwalten");
             raumBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     frame.aktualisiereAnsicht(GUIFrame.RAUMVERWALTUNG);
@@ -102,14 +104,14 @@ public class HauptmenuePanel extends JPanel {
             });
             verwaltungsPanel.add(reservierungenBtn);
         }
-        JButton passwortBtn = new JButton("Passwort ändern");
+        JButton passwortBtn = new JButton("Passwort Ã¤ndern");
         passwortBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.aktualisiereAnsicht(GUIFrame.PASSWORTAENDERUNG);
             }
         });
         verwaltungsPanel.add(passwortBtn);
-        JButton sicherheitsfrageBtn = new JButton("Sicherheitsfrage ändern");
+        JButton sicherheitsfrageBtn = new JButton("Sicherheitsfrage Ã¤ndern");
         sicherheitsfrageBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.aktualisiereAnsicht(GUIFrame.SICHERHEITSFRAGE);
@@ -120,7 +122,7 @@ public class HauptmenuePanel extends JPanel {
         body.add(verwaltungsPanel);
         add(body, BorderLayout.CENTER);
 
-        JLabel impressum = new JLabel("© 2016 HWRaumfinder GmbH & Co. KG");
+        JLabel impressum = new JLabel("Â© 2016 HWRaumfinder GmbH & Co. KG");
         impressum.setHorizontalAlignment(SwingConstants.CENTER);
         add(impressum, BorderLayout.SOUTH);
 
