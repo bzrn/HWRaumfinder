@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class Dozent implements Reservierer, Serializable {
 
-    String name;
+    private String name;
 
     public Dozent (String name) {
         this.name = name;
