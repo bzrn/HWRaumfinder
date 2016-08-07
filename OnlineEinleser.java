@@ -16,7 +16,7 @@ public class OnlineEinleser {
     private int fileCounter, errCounter;
     private Raumfinder raumfinder;  //RaumfinderIF
 
-    private final String SPEICHERORT = "C:\\Users\\Alexander\\Projekte\\IdeaProjects\\HWRaumfinder\\StundenplanFiles\\";
+    private final String SPEICHERORT = "StundenplanFiles/";
 
 
 	public static void main (String[] Args) throws IOException {

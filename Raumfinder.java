@@ -1,4 +1,4 @@
-package Verarbeitung;		// Changed
+package Verarbeitung;
 
 import Persistenz.*;
 
@@ -20,7 +20,7 @@ public class Raumfinder implements RaumfinderIF {
     private RaumfinderFileAdapterIF fileAdapter;
 
 
-   // Standardkonstruktor
+    // Standardkonstruktor
     public Raumfinder (boolean einlesen) {
 
         raeume = new ArrayList<Raum>();
@@ -28,7 +28,7 @@ public class Raumfinder implements RaumfinderIF {
         nutzer = new ArrayList<Nutzer>();
         onEinleser = new OnlineEinleser(this);
         fileAdapter = new RaumfinderFileAdapter(this);
-        
+
         if (einlesen) onlineEinlesen();
     }
 
@@ -40,27 +40,48 @@ public class Raumfinder implements RaumfinderIF {
         this.nutzer=nutzer;
         this.onEinleser = onEinleser;
         fileAdapter = new RaumfinderFileAdapter (this);
-        
+
         onlineEinlesen();
     }
+
+
+
+    // --------------------------------------------------
+    //              Abschnitt Suche
+    // --------------------------------------------------
 
     // Raumsuche anhand von Kriterien (Zeitraum || Ausstattung)
     public ArrayList<String> suche (Zeitraum s, Ausstattung a){
 
         // Variableninitialisierung
-    	int offset = 0;
-    	ConcurrentSkipListMap<Integer,String> erg = new ConcurrentSkipListMap<>();
+        int offset = 0;
+        ConcurrentSkipListMap<Integer,String> erg = new ConcurrentSkipListMap<>();
 
         // Durchlaufen aller Räume
-    	for (int i=0; i<raeume.size(); i++) {
-    		Raum r = raeume.get(i);
-    		int score = r.hatMindestausstattung(a);     // Bewertung der Relevanz des Suchergebnisses
-        	if (score > 0 && r.istFrei(s)) {            // bei erfülten Suchkriterien
-        		erg.put((score*1000)+(offset++) , r.getRaumBezeichnung());   // als Ergebnis abspeichern (invers geordnet nach Relevanz)
-        	}
+        for (int i=0; i<raeume.size(); i++) {
+            Raum r = raeume.get(i);
+            int score = r.hatMindestausstattung(a);     // Bewertung der Relevanz des Suchergebnisses
+            if (score > 0 && r.istFrei(s)) {            // bei erfülten Suchkriterien
+                erg.put((score*1000)+(offset++) , r.getRaumBezeichnung());   // als Ergebnis abspeichern (invers geordnet nach Relevanz)
+            }
         }
-    	return (new ArrayList<String>(erg.descendingMap().values()));     // Konstruktion und Reversion der Werte
+        return (new ArrayList<String>(erg.descendingMap().values()));     // Konstruktion und Reversion der Werte
     }
+
+    public Raum sucheKennung(String raumKennung){
+        for(int i = 0; i<raeume.size(); i++){
+            if(raumKennung.equalsIgnoreCase(raeume.get(i).getRaumBezeichnung())){
+                return raeume.get(i);
+            }
+        }
+        return null;
+    }
+
+
+
+    // --------------------------------------------------
+    //              Abschnitt Reservierungen
+    // --------------------------------------------------
 
     // automatische Erstellung einer Reservierung ohne Kommentar
     public boolean reservieren (Raum r, Reservierer n, Zeitraum s) {
@@ -70,8 +91,8 @@ public class Raumfinder implements RaumfinderIF {
 
     // automatische Erstellung einer Reservierung mit Kommentar
     public boolean reservieren (Raum r, Reservierer n, Zeitraum s, String kommentar) {
-    	Reservierung neu = new Reservierung (r, n, s, kommentar);
-    	return reservieren (neu, false);
+        Reservierung neu = new Reservierung (r, n, s, kommentar);
+        return reservieren (neu, false);
     }
 
     // interne bzw. manuelle Erstellung einer Reservierung
@@ -125,37 +146,6 @@ public class Raumfinder implements RaumfinderIF {
         if (r.getInhaber() instanceof StandardNutzer) ((StandardNutzer) r.getInhaber()).removeReservierung(r);
     }
 
-    public void onlineEinlesen(){
-        onEinleser.einlesen();
-    }
-
-    public void save(){
-    	fileAdapter.save();
-    }
-
-    public void load(){
-    	fileAdapter.load();
-    }
-
-    public Raum sucheKennung(String raumKennung){
-        for(int i = 0; i<raeume.size(); i++){
-            if(raumKennung.equalsIgnoreCase(raeume.get(i).getRaumBezeichnung())){
-                return raeume.get(i);
-            }
-        }
-        return null;
-    }
-  
-
-    public Nutzer sucheNutzer(String nutzerName){
-        for(int i = 0; i<nutzer.size(); i++){
-            if(nutzerName.equalsIgnoreCase(nutzer.get(i).getName())){
-                return nutzer.get(i);
-            }
-        }
-        return null;
-    }
-
     public Reservierung sucheReservierung(long reservierungsNummer){ //sucht Res nach Nr
         for(int i = 0; i<reservierungen.size(); i++){
             if(reservierungsNummer==reservierungen.get(i).getReservierungsNr()){
@@ -165,12 +155,69 @@ public class Raumfinder implements RaumfinderIF {
         return null;
     }
 
+    private void addReservierung(Reservierung neu){
+        GlobaleMethoden.addReservierungtoArrayList(reservierungen, neu);
+    }
+
+    public ArrayList<Reservierung> getReservierungen() {
+        return reservierungen;
+    }
+
+    public void setReservierungen (ArrayList<Reservierung> reservierungen) {
+        this. reservierungen = reservierungen;
+    }
+
+    public long getResCounter(){
+        return getResCounter();
+    }
+
+    public void setResCounter(long resCount){
+        Reservierung.setResCounter(resCount);
+    }
+
+
+
+    // --------------------------------------------------
+    //                  Abschnitt Räume
+    // --------------------------------------------------
+
     public boolean pruefeVerfuegbarkeitRaum (String raumKennung, Zeitraum zr){
         return sucheKennung(raumKennung).istFrei(zr);
     }
-    
+
     public boolean pruefeBuchbarkeitRaum (String raumKennung){
-    	return sucheKennung(raumKennung).isBuchbar();
+        return sucheKennung(raumKennung).isBuchbar();
+    }
+
+    // Raumverwaltung
+
+    public void addRaum(Raum a){
+        raeume.add(a);
+    }
+
+    public void loescheRaum (Raum a) { raeume.remove(a); }
+
+    public ArrayList<Raum> getRaeume() {
+        return raeume;
+    }
+
+    public void setRaeume (ArrayList<Raum> raeume) {
+        this.raeume = raeume;
+    }
+
+
+
+    // --------------------------------------------------
+    //                  Abschnitt Nutzer
+    // --------------------------------------------------
+
+    public Nutzer sucheNutzer(String nutzerName){
+        for(int i = 0; i<nutzer.size(); i++){
+            if(nutzerName.equalsIgnoreCase(nutzer.get(i).getName())){
+                return nutzer.get(i);
+            }
+        }
+        return null;
     }
 
     public Nutzer authentifiziereNutzer (String name, String password) {
@@ -186,9 +233,9 @@ public class Raumfinder implements RaumfinderIF {
             addNutzer(new StandardNutzer(name,password,sicherheitsFrage,sicherheitsAntwort));
         }
     }
-    
+
     public boolean loescheNutzer (Nutzer n) {
-    	if (n instanceof Admin) if (!((Admin) n).isDeletable()) return false;
+        if (n instanceof Admin) if (!((Admin) n).isDeletable()) return false;
 
         nutzer.remove(n);
         return true;
@@ -201,55 +248,49 @@ public class Raumfinder implements RaumfinderIF {
     public ArrayList<Nutzer> getNutzer() {
         return nutzer;
     }
-    
+
     public void setNutzer (ArrayList<Nutzer> nutzer) {
-    	this.nutzer = nutzer;
+        this.nutzer = nutzer;
     }
-    
+
     public String[] getNutzerString() {
-    	String[] erg = new String[nutzer.size()];
-    	for (int i=0; i<erg.length; i++) {
-    		Nutzer temp = nutzer.get(i);
+        String[] erg = new String[nutzer.size()];
+        for (int i=0; i<erg.length; i++) {
+            Nutzer temp = nutzer.get(i);
             erg[i] = temp.getName();
             if (temp instanceof Admin)  erg[i] += " <Admin>";
-    	}
-    	return erg;
+        }
+        return erg;
     }
 
-    public void addRaum(Raum a){    //könnte überflüssig sein... //nicht überflüssig, sortierung muss hier implementiert werden <alex>
-        raeume.add(a);
+
+
+    // --------------------------------------------------
+    //         Abschnitt Einlesen und Persistenz
+    // --------------------------------------------------
+
+    public void onlineEinlesen(){
+        onEinleser.einlesen();
     }
 
-    public void loescheRaum (Raum a) { raeume.remove(a); }
-
-    public ArrayList<Raum> getRaeume() {
-        return raeume;
-    }
-    
-    public void setRaeume (ArrayList<Raum> raeume) {
-    	this.raeume = raeume;
-    }
-    
-    public void addReservierung(Reservierung neu){
-    	GlobaleMethoden.addReservierungtoArrayList(reservierungen, neu);
-    	}
-
-    public ArrayList<Reservierung> getReservierungen() {
-        return reservierungen;
-    }
-    
-    public void setReservierungen (ArrayList<Reservierung> reservierungen) {
-    this. reservierungen = reservierungen;
-    }
-    
-    public static long getResCounter(){
-    	return getResCounter();
-    }
-    
-    public static void setResCounter(long resCount){
-    	Reservierung.setResCounter(resCount);
+    public void save(){
+        fileAdapter.save();
     }
 
+    public void load(){
+        fileAdapter.load();
+    }
 }
 
+/*
+public class Singleton {
+    private static Singleton ourInstance = new Singleton();
+
+    public static Singleton getInstance() {
+        return ourInstance;
+    }
+
+    private Singleton() {
+    }
 }
+*/

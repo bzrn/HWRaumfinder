@@ -1,3 +1,5 @@
+package Verarbeitung;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -55,7 +57,7 @@ public class Reservierung implements Serializable {
         this.error = false;
         this.storniert = false;
     }
-    
+
     // mit mauell gesetztem Zeitpunkt und Kommentar, für Verarbeitung.OnlineEinleser
     public Reservierung(Raum raum, Reservierer inhaber, Zeitraum zeitraum, Date zeitpunkt) {
 
@@ -119,36 +121,36 @@ public class Reservierung implements Serializable {
     public void setStorniert(boolean storniert) {
         this.storniert = storniert;
     }
-    
+
     public static long getResCounter(){
-    	return resCounter;
+        return resCounter;
     }
-    
+
     public static void setResCounter(long resCount){
-    	Reservierung.resCounter=resCount;
+        Reservierung.resCounter=resCount;
     }
-    
+
     public boolean kollidiert (Zeitraum zr) {
         if (error || storniert) return false;
         else return this.zeitraum.kollidiert(zr);
     }
 
     public String toString (boolean admin) {
-        String erg; 
+        String erg;
         erg =	"Nummer:     "  + reservierungsNr                       + "\n" +
                 "Raum:       "  + raum.getRaumBezeichnung()             + "\n" +
                 "Zeitraum:   "  + zeitraum.toString()      				+ "\n" +
                 "Kommentar:  ";
-        
+
         if (!kommentar.isEmpty()) erg += kommentar;
         else erg += "Kein Kommentar";
-        
+
         erg +=  "\n" +
-        		"reserviert am " + reservierungsZeitpunkt.toString() + "\n";
-        
+                "reserviert am " + reservierungsZeitpunkt.toString() + "\n";
+
         if (admin){
-        	erg +=	"Inhaber:    "  + inhaber.getName()                     + "\n" +
-        			"Error:      "  + error                                 + "\n" +
+            erg +=	"Inhaber:    "  + inhaber.getName()                     + "\n" +
+                    "Error:      "  + error                                 + "\n" +
                     "Storniert:  "  + storniert;
         }
 

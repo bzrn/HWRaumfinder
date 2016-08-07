@@ -18,9 +18,10 @@ public interface RaumfinderIF {
     boolean reservieren (Raum r, Reservierer n, Zeitraum s);
     void stornieren(Reservierung r);
     Reservierung sucheReservierung(long reservierungsNummer) ;
-    void addReservierung(Reservierung neu);
     ArrayList<Reservierung> getReservierungen();
     void setReservierungen(ArrayList<Reservierung> reservierungen);
+    long getResCounter();
+    void setResCounter(long resCount);
 
     // Nutzer-Methoden
     Nutzer sucheNutzer(String nutzerName);

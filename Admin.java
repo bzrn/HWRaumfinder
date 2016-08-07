@@ -1,7 +1,5 @@
 package Verarbeitung;
 
-import java.io.Serializable;
-
 public class Admin extends Nutzer {
 
     private boolean deletable;
