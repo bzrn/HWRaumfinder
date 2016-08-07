@@ -168,7 +168,7 @@ public class Raumfinder implements RaumfinderIF {
     }
 
     public long getResCounter(){
-        return getResCounter();
+        return Reservierung.getResCounter();
     }
 
     public void setResCounter(long resCount){
