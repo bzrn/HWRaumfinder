@@ -6,6 +6,6 @@ package Oberflaeche;
 public class A_GUI_Test {
 
     public static void main(String[] args) {
-        new GUIFrame(null);
+        new GUIFrame(null, false);
     }
 }
