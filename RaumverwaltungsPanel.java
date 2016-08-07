@@ -7,29 +7,17 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-
-import Verarbeitung.raum;
 
 public class RaumverwaltungsPanel extends JPanel {
     private GUIFrame frame;
     private String[] raum;
-    private String[] bearbeiteterraumDaten = {"",""};
+    private String[] bearbeiteterRaumDaten = {"",""};
 
-    private JTextField raumNameText, frageText, passwordText, antwortText;
+    private JTextField raumNameText, kapaText;
+    private JCheckBox chckbxBeamer, chckbxOhp, chckbxTafel, chckbxSmartboard, chckbxWhiteboard, chckbxComputerraum, chckbxBuchbar;
 
     public RaumverwaltungsPanel (GUIFrame parent, String[] raum){
         frame = parent;
@@ -53,69 +41,107 @@ public class RaumverwaltungsPanel extends JPanel {
         JScrollPane ergebnisPanel = new JScrollPane(ergebnisList);
         raumPanel.add(ergebnisPanel, BorderLayout.CENTER);
 
-        JButton raumWahlBtn = new JButton ("Raum bearbeiten >>");
+        JPanel footer = new JPanel (new BorderLayout(5,5));
+        
+        JButton neuerRaumBtn = new JButton ("Neu");
+        neuerRaumBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.erstelleLeerenRaum();
+            }
+        });
+        footer.add(neuerRaumBtn, BorderLayout.WEST);
+        
+        JButton raumWahlBtn = new JButton ("Bearbeiten >>");
         raumWahlBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                bearbeiteterraumDaten = frame.getraumDaten(ergebnisList.getSelectedValue());
-                befuelleFelderraum();
+                bearbeiteterRaumDaten = frame.getRaumDaten(ergebnisList.getSelectedValue());
+                befuelleFelderRaum();
             }
         });
-        raumPanel.add(raumWahlBtn, BorderLayout.SOUTH);
-
+        footer.add(raumWahlBtn, BorderLayout.CENTER);
+        
+        raumPanel.add(footer, BorderLayout.SOUTH);
+        
         add(raumPanel);
+    
+    // ------------------------------
 
-
-        JPanel raumBearbeitung = new JPanel(new GridLayout(5,2,5,5));
+        JPanel raumBearbeitung = new JPanel(new BorderLayout(5,5));
         raumBearbeitung.setBorder(BorderFactory.createTitledBorder(new LineBorder(Color.darkGray, 1), "Bearbeiten:"));
-        JLabel raumNameLbl = new JLabel ("Raumname:");		// BORDERS FEHLEN
-        raumNameLbl.setBorder(new EmptyBorder(0,5,0,0));
-        raumBearbeitung.add(raumNameLbl);
-        raumNameText = new JTextField(bearbeiteterraumDaten[0]);
-        raumBearbeitung.add(raumNameText);
-        JLabel passwortLbl = new JLabel("Passwort:");
-        passwortLbl.setBorder(new EmptyBorder(0,5,0,0));
-        passwortLbl.setToolTipText("Leer lassen, wenn keine Änderung gewünscht");
-        raumBearbeitung.add(passwortLbl);
-        passwordText = new JPasswordField();
-        passwordText.setToolTipText("Leer lassen, wenn keine Änderung gewünscht");
-        raumBearbeitung.add(passwordText);
-        JLabel frageLbl = new JLabel("Sicherheitsfrage:");
-        frageLbl.setBorder(new EmptyBorder(0,5,0,0));
-        raumBearbeitung.add(frageLbl);
-        frageText = new JTextField(bearbeiteterraumDaten[1]);
-        raumBearbeitung.add(frageText);
-        JLabel antwortLbl = new JLabel ("Antwort:");
-        antwortLbl.setBorder(new EmptyBorder(0,5,0,0));
-        antwortLbl.setToolTipText("Leer lassen, wenn keine Änderung gewünscht");
-        raumBearbeitung.add(antwortLbl);
-        antwortText = new JTextField();
-        antwortText.setToolTipText("Leer lassen, wenn keine Änderung gewünscht");
-        raumBearbeitung.add(antwortText);
-
-        JButton loeschBtn = new JButton ("Löschen");
-        loeschBtn.setForeground(Color.red);
-        loeschBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.loescheRaum(bearbeiteterraumDaten[0]);
-            }
-        });
-        raumBearbeitung.add(loeschBtn);
-
-        JButton weiterBtn = new JButton ("Ändern");
-        weiterBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (!(raumNameText.getText().isEmpty() || frageText.getText().isEmpty())) popupInputFehlt();
-                else frame.bearbeiteRaum(bearbeiteterraumDaten[0], raumNameText.getText(), passwordText.getText(), frageText.getText(), antwortText.getText());
-            }
-        });
-        raumBearbeitung.add(weiterBtn);
+        
+            JPanel bearbeitungTop = new JPanel (new GridLayout(3,1,5,5));
+                bearbeitungTop.setBorder(new EmptyBorder(0,5,0,0));
+                JPanel raumName = new JPanel (new GridLayout(1,2,5,5));
+                    JLabel raumNameLbl = new JLabel ("Raumname:");
+                    raumName.add(raumNameLbl);
+                    raumNameText = new JTextField(bearbeiteterRaumDaten[0]);
+                    raumName.add(raumNameText);
+                bearbeitungTop.add(raumName);
+                JPanel kapa = new JPanel (new GridLayout(1,2,5,5));
+                JLabel kapaLbl = new JLabel ("Kapazität:");
+                kapa.add(kapaLbl);
+                kapaText = new JTextField(bearbeiteterRaumDaten[1]);
+                kapa.add(kapaText);
+                bearbeitungTop.add(kapa);
+                chckbxBuchbar = new JCheckBox("Buchbar");
+                bearbeitungTop.add(chckbxBuchbar);
+            raumBearbeitung.add(bearbeitungTop, BorderLayout.NORTH);
+        
+            JPanel bearbeitungBody = new JPanel (new BorderLayout(5,5));
+            bearbeitungBody.setBorder(new EmptyBorder(0,5,0,0));
+                JPanel bb1 = new JPanel (new GridLayout(3,1,5,5));
+                    chckbxBeamer = new JCheckBox("Beamer");
+                bb1.add(chckbxBeamer);
+                    chckbxOhp = new JCheckBox("OHP");
+                bb1.add(chckbxOhp);
+                    chckbxTafel = new JCheckBox("Tafel");
+                bb1.add(chckbxTafel);
+            bearbeitungBody.add(bb1, BorderLayout.WEST);
+                JPanel bb2 = new JPanel (new GridLayout(3,1,5,5));
+                    chckbxSmartboard = new JCheckBox("Smartboard");
+                bb2.add(chckbxSmartboard);
+                    chckbxWhiteboard = new JCheckBox("Whiteboard");
+                bb2.add(chckbxWhiteboard);
+                    chckbxComputerraum = new JCheckBox("Computerraum");
+                bb2.add(chckbxComputerraum);
+            bearbeitungBody.add(bb2, BorderLayout.CENTER);
+            
+            raumBearbeitung.add(bearbeitungBody, BorderLayout.CENTER);
+        
+            JPanel bearbeitungFooter = new JPanel(new GridLayout(1,2,10,10));
+                JButton loeschBtn = new JButton ("Löschen");
+                loeschBtn.setForeground(Color.red);
+                loeschBtn.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        frame.loescheRaum(bearbeiteterRaumDaten[0]);
+                    }
+                });
+                bearbeitungFooter.add(loeschBtn);
+        
+                JButton weiterBtn = new JButton ("Ändern");
+                weiterBtn.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if (raumNameText.getText().isEmpty() || kapaText.getText().isEmpty()) popupInputFehlt();
+                        else frame.bearbeiteRaum(bearbeiteterRaumDaten[0], raumNameText.getText(), kapaText.getText(), chckbxBuchbar.isSelected(), chckbxBeamer.isSelected(), chckbxOhp.isSelected(), chckbxTafel.isSelected(), chckbxSmartboard.isSelected(), chckbxWhiteboard.isSelected(), chckbxComputerraum.isSelected());
+                    }
+                });
+                bearbeitungFooter.add(weiterBtn);
+            raumBearbeitung.add(bearbeitungFooter, BorderLayout.SOUTH);
 
         add (raumBearbeitung);
     }
 
     private void befuelleFelderRaum() {
-        raumNameText.setText(bearbeiteterraumDaten[0]);
-        frageText.setText(bearbeiteterraumDaten[1]);
+        raumNameText.setText(bearbeiteterRaumDaten[0]);
+        kapaText.setText(bearbeiteterRaumDaten[1]);
+
+        if (bearbeiteterRaumDaten[2].equals("true")) chckbxBuchbar.setSelected(true);
+        if (bearbeiteterRaumDaten[3].equals("true")) chckbxBeamer.setSelected(true);
+        if (bearbeiteterRaumDaten[4].equals("true")) chckbxOhp.setSelected(true);
+        if (bearbeiteterRaumDaten[5].equals("true")) chckbxTafel.setSelected(true);
+        if (bearbeiteterRaumDaten[6].equals("true")) chckbxSmartboard.setSelected(true);
+        if (bearbeiteterRaumDaten[7].equals("true")) chckbxWhiteboard.setSelected(true);
+        if (bearbeiteterRaumDaten[8].equals("true")) chckbxComputerraum.setSelected(true);
     }
 
     private ListCellRenderer<? super String> getRenderer() {
@@ -134,7 +160,7 @@ public class RaumverwaltungsPanel extends JPanel {
 
     private void popupInputFehlt() {
         JOptionPane.showMessageDialog(frame,
-                "raumname und Sicherheitsfrage dürfen nicht leer sein!",
+                "Name und Kapazität dürfen nicht leer sein!",
                 "Fehler",
                 JOptionPane.WARNING_MESSAGE);
     }

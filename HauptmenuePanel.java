@@ -13,9 +13,11 @@ import java.util.ArrayList;
  */
 public class HauptmenuePanel extends JPanel {
     private GUIFrame frame;
+    private String[] raeume;
 
-    public HauptmenuePanel (GUIFrame parent){
+    public HauptmenuePanel (GUIFrame parent, String[] raeume){
         frame = parent;
+        this.raeume = raeume;
         initialize();
     }
 
@@ -40,11 +42,6 @@ public class HauptmenuePanel extends JPanel {
             JButton kennungssucheBtn = new JButton("Suche nach Raumkennung");
             kennungssucheBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    ArrayList<String> raeumeAL = new ArrayList<String>();
-                    for (int i = 0; i < frame.getRaumfinder().getRaeume().size(); i++) {
-                        raeumeAL.add(frame.getRaumfinder().getRaeume().get(i).getRaumBezeichnung());
-                    }
-                    String[] raeume = raeumeAL.toArray(new String[raeumeAL.size()]);
                     String eingabe = (String)JOptionPane.showInputDialog(
                             frame,
                             "Raumkennung auswählen:",

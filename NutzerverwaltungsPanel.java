@@ -22,8 +22,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import Verarbeitung.Nutzer;
-
 public class NutzerverwaltungsPanel extends JPanel {
     private GUIFrame frame;
     private String[] nutzer;
@@ -56,7 +54,10 @@ public class NutzerverwaltungsPanel extends JPanel {
         JButton nutzerWahlBtn = new JButton ("Nutzer bearbeiten >>");
         nutzerWahlBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                bearbeiteterNutzerDaten = frame.getNutzerDaten(ergebnisList.getSelectedValue());
+                String name = ergebnisList.getSelectedValue();
+                int admin = name.indexOf(" <Admin>");
+                if (admin != -1) name = name.substring(0, admin);
+                bearbeiteterNutzerDaten = frame.getNutzerDaten(name);
                 befuelleFelderNutzer();
             }
         });
@@ -104,7 +105,7 @@ public class NutzerverwaltungsPanel extends JPanel {
         	JButton weiterBtn = new JButton ("Ändern");
         	weiterBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                	if (!(nutzerNameText.getText().isEmpty() || frageText.getText().isEmpty())) popupInputFehlt();
+                	if (nutzerNameText.getText().isEmpty() || frageText.getText().isEmpty()) popupInputFehlt();
                 	else frame.bearbeiteNutzer(bearbeiteterNutzerDaten[0], nutzerNameText.getText(), passwordText.getText(), frageText.getText(), antwortText.getText());
                 }
             });

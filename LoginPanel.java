@@ -45,7 +45,7 @@ public class LoginPanel extends JPanel {
             loginPanel.add(password);
             JButton loginBtn = new JButton("Login");
             loginBtn.addActionListener(loginListener);
-            loginBtn.setFocusPainted(true);
+            loginBtn.requestFocus();
             loginPanel.add(loginBtn);
 
         loginPanel.setBorder(new EmptyBorder(0,20,0,20));

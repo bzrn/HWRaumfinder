@@ -5,18 +5,17 @@ import Verarbeitung.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Date;
 
 /**
  * Created by Alexander on 26.07.2016.
  */
-public class GUIFrame extends JFrame{
+ class GUIFrame extends JFrame{
 
     private Nutzer aktiverNutzer;       // IF
-    private Raumfinder rf;              // IF
+    private RaumfinderIF rf;
     private Zeitraum tempZeitraum=null;	// IF
     
     private JPanel aktuelleAnsicht, header;
@@ -26,7 +25,7 @@ public class GUIFrame extends JFrame{
     private String aktuelleAnsichtStr;
 
     //AnsichtsKonstanten:
-    public static final String
+     static final String
             HAUPTMENUE = "Hauptmenü",
             LOGIN = "Log-In",
             REGISTRIERUNG = "Registrierung",
@@ -40,16 +39,17 @@ public class GUIFrame extends JFrame{
             NUTZERVERWALTUNG = "Nutzerverwaltung",
     		PASSWORTRESET = "Passwort zurücksetzen";
 
-    public static final String[] min={"00","15","30","45"};
-    public static final String[] hour={"08","09","10","11","12","13","14","15","16","17","18","19"};
-    public static final String[] kapazitaet={"0", "10","15", "20", "25", "30"};
+     static final String[] min={"00","15","30","45"};
+     static final String[] hour={"08","09","10","11","12","13","14","15","16","17","18","19"};
+     static final String[] kapazitaet={"0", "10","15", "20", "25", "30"};
 
 
-    public GUIFrame(Raumfinder rf) {     // IF
+     GUIFrame(Raumfinder rf, boolean defaultLoad) {     // IF
         super("HWRaumfinder");
         this.rf = rf;
         aktiverNutzer = null;
         initialize(LOGIN);
+        if(defaultLoad) load();
     }
 
     private void initialize(String AnsichtsKonstante) {
@@ -61,9 +61,22 @@ public class GUIFrame extends JFrame{
 
         setLayout(new BorderLayout(20,20));
         setBounds(100, 100, 450, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setIconImage(new ImageIcon("HWRaumfinder_Icon.png").getImage());
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (aktiverNutzerIsAdmin()) {
+                    showExitDialog(true);
+                    save();
+                    System.exit(0);
+                } else {
+                    showExitDialog(false);
+                }
+            }
+        });
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         setAktuelleAnsicht(AnsichtsKonstante);
         aktuelleAnsicht.setBorder(new EmptyBorder(0, 10, 5, 5));
@@ -79,23 +92,21 @@ public class GUIFrame extends JFrame{
             header.add(titelLabel, BorderLayout.CENTER);
 
             headerBtn = new JButton(HAUPTMENUE);
-            headerBtn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
+            headerBtn.addActionListener(e -> {
 
-                    switch (aktuelleAnsichtStr){
-                        case HAUPTMENUE:
-                            logout();
-                            break;
-                        case PASSWORTRESET:
-                        case REGISTRIERUNG:
-                            aktualisiereAnsicht(LOGIN);
-                            break;
-                        default:
-                            aktualisiereAnsicht(HAUPTMENUE);
-                            break;
-                    }
-                }
-            });
+               switch (aktuelleAnsichtStr){
+                   case HAUPTMENUE:
+                       logout();
+                       break;
+                   case PASSWORTRESET:
+                   case REGISTRIERUNG:
+                       aktualisiereAnsicht(LOGIN);
+                       break;
+                   default:
+                       aktualisiereAnsicht(HAUPTMENUE);
+                       break;
+               }
+           });
             header.add(headerBtn, BorderLayout.EAST);
 
         setVisible(true);
@@ -108,7 +119,11 @@ public class GUIFrame extends JFrame{
 
         switch (AnsichtsKonstante) {
             case HAUPTMENUE:
-                aktuelleAnsicht = new HauptmenuePanel(this);
+                panelArgs = new String[rf.getRaeume().size()];
+                for (int i=0; i<panelArgs.length; i++){
+                    panelArgs[i] = rf.getRaeume().get(i).getRaumBezeichnung();
+                }
+                aktuelleAnsicht = new HauptmenuePanel(this, panelArgs);
                 break;
             case LOGIN:
                 aktuelleAnsicht = new LoginPanel(this);
@@ -151,7 +166,11 @@ public class GUIFrame extends JFrame{
                 aktuelleAnsicht = new SicherheitsfragenaenderungsPanel(this, panelArgs);
                 break;
             case RAUMVERWALTUNG:
-            	// Hier fehlt!
+                panelArgs = new String[rf.getRaeume().size()];
+                for (int i=0; i<panelArgs.length; i++){
+                    panelArgs[i] = rf.getRaeume().get(i).getRaumBezeichnung();
+                }
+            	aktuelleAnsicht = new RaumverwaltungsPanel(this, panelArgs);
             	break;
             case NUTZERVERWALTUNG:
             	panelArgs = rf.getNutzerString();
@@ -162,12 +181,12 @@ public class GUIFrame extends JFrame{
             	aktuelleAnsicht = new PasswortresetPanel(this, panelArgs);
             	break;
             default:
-                System.err.println("Error: Seite existiert nicht.");
+                System.err.println("Interner Fehler: Seite existiert nicht.");
                 break;
         }
     }
 
-    public void aktualisiereAnsicht (String AnsichtsKonstante) {
+     void aktualisiereAnsicht (String AnsichtsKonstante) {
         getContentPane().remove(aktuelleAnsicht);
         setAktuelleAnsicht(AnsichtsKonstante);
         add(aktuelleAnsicht,BorderLayout.CENTER);
@@ -195,7 +214,7 @@ public class GUIFrame extends JFrame{
         }
     }
 
-    public void login (String name, String password) {
+     void login (String name, String password) {
         aktiverNutzer = rf.authentifiziereNutzer(name, password);
         if (aktiverNutzer == null) {
             JOptionPane.showMessageDialog(this,
@@ -216,7 +235,7 @@ public class GUIFrame extends JFrame{
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void registrieren (String name, String password, String sicherheitsFrage, String sicherheitsAntwort){
+     void registrieren (String name, String password, String sicherheitsFrage, String sicherheitsAntwort){
         if (rf.sucheNutzer(name)==null){
         	rf.legeNutzerAn(name,password,sicherheitsFrage,sicherheitsAntwort,false);
             JOptionPane.showMessageDialog(this,
@@ -233,7 +252,7 @@ public class GUIFrame extends JFrame{
         }
     }
     
-    public void startPwReset(){
+     void startPwReset(){
     	String nutzername = JOptionPane.showInputDialog(this,
     								"Bitte Nutzernamen eingeben:",
     								"Passwort zurücksetzen",
@@ -252,7 +271,7 @@ public class GUIFrame extends JFrame{
     	}
     }
     
-    public void setzePasswortZurueck (String sicherheitsAntwort, String neuPW){
+     void setzePasswortZurueck (String sicherheitsAntwort, String neuPW){
     	if(aktiverNutzer.checkFrage(sicherheitsAntwort)){		// wenn Antwort stimmt
     		aktiverNutzer.setPwHash(neuPW);
     		JOptionPane.showMessageDialog(this,
@@ -269,7 +288,7 @@ public class GUIFrame extends JFrame{
     	}
     }
 
-    public void sucheNachKriterien (Date start, Date ende, boolean beamer, boolean ohp, boolean tafel, boolean smartb, boolean whiteb, boolean computerr, int kapazitaet){
+     void sucheNachKriterien (Date start, Date ende, boolean beamer, boolean ohp, boolean tafel, boolean smartb, boolean whiteb, boolean computerr, int kapazitaet){
     	try {
             tempZeitraum = new Zeitraum (start, ende);	 //merken bis zur Raumansicht, damit als default-Wert in Reservierungsmaske eingetragen werden kann
             ArrayList<String> tempPanelArgs = rf.suche(tempZeitraum, new Ausstattung(beamer,ohp,tafel,smartb,whiteb,computerr, kapazitaet));
@@ -281,10 +300,54 @@ public class GUIFrame extends JFrame{
                     "Fehler",
                     JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
-    public void raumAuswaehlen (String kennung){
+     String[] getRaumDaten (String raumKennung) {
+        Raum r = rf.sucheKennung(raumKennung);
+
+        if (r == null) return new String[] {"","","","","","","","",""};
+        else {
+            Ausstattung a = r.getAusstattung();
+            return new String[] {r.getRaumBezeichnung(), Integer.toString(a.getKapazitaet()), Boolean.toString(r.isBuchbar()), Boolean.toString(a.isBeamer()), Boolean.toString(a.isOhp()), Boolean.toString(a.isTafel()), Boolean.toString(a.isSmartboard()), Boolean.toString(a.isWhiteboard()), Boolean.toString(a.isComputerraum())};
+        }
+    }
+
+     void erstelleLeerenRaum (){
+        rf.addRaum(new Raum("Neuer Raum", new Ausstattung(false,false,false,false,false,false,0), false));
+        JOptionPane.showMessageDialog(this,
+                "Leerer Raum wurde erstellt, bitte bearbeiten!",
+                "Erfolg",
+                JOptionPane.INFORMATION_MESSAGE);
+        aktualisiereAnsicht(HAUPTMENUE);
+        aktualisiereAnsicht(RAUMVERWALTUNG);
+    }
+
+     void bearbeiteRaum (String altName, String neuName, String kapa, boolean buchbar, boolean beamer, boolean ohp, boolean tafel, boolean smartboard, boolean whiteboard, boolean computerraum){
+        Raum tempRaum = rf.sucheKennung(altName);
+
+        if (tempRaum == null){
+            System.err.println("Interner Fehler: Zu ändernder Raum existiert nicht.");
+        } else {
+            tempRaum.setRaumBezeichnung(neuName);
+            tempRaum.setAusstattung(new Ausstattung(beamer, ohp, tafel, smartboard, whiteboard, computerraum, Integer.parseInt(kapa)));
+            tempRaum.setBuchbar(buchbar);
+        }
+        aktualisiereAnsicht(HAUPTMENUE);
+        aktualisiereAnsicht(RAUMVERWALTUNG);
+    }
+
+     void loescheRaum (String raumKennung) {
+        Raum r = rf.sucheKennung(raumKennung);
+        if (r == null) {
+            System.err.println("Interner Fehler: Zu löschender Raum existiert nicht.");
+        } else {
+            rf.loescheRaum(r);
+        }
+        aktualisiereAnsicht(HAUPTMENUE);
+        aktualisiereAnsicht(RAUMVERWALTUNG);
+    }
+
+     void raumAuswaehlen (String kennung){
         try{
             if (tempZeitraum == null) tempZeitraum=new Zeitraum(new Date(System.currentTimeMillis()), new Date (System.currentTimeMillis()+3600000));
             aktualisiereAnsicht(RESERVIERUNG);
@@ -294,7 +357,7 @@ public class GUIFrame extends JFrame{
         }
     }
 
-    public boolean pruefeVerfuegbarkeitRaum (String raumKennung, Date start, Date ende){
+    boolean pruefeVerfuegbarkeitRaum(String raumKennung, Date start, Date ende){
         try{
             return rf.pruefeVerfuegbarkeitRaum(raumKennung, new Zeitraum(start, ende));
         } catch (UnzulaessigerZeitraumException e) {
@@ -306,11 +369,11 @@ public class GUIFrame extends JFrame{
         return false;
     }
     
-    public boolean raumBuchbar (String raumKennung) {
+     boolean raumBuchbar (String raumKennung) {
     	return rf.pruefeBuchbarkeitRaum(raumKennung);
     }
 
-    public void reservieren(String raumKennung, Date start, Date ende){
+     void reservieren(String raumKennung, Date start, Date ende){
         try {
             Zeitraum zr = new Zeitraum (start, ende);
             if (rf.reservieren(rf.sucheKennung(raumKennung),(Reservierer)aktiverNutzer,zr)){
@@ -334,7 +397,7 @@ public class GUIFrame extends JFrame{
         }
     }
 
-    public void passwortAendern(String alt, String neu) {
+     void passwortAendern(String alt, String neu) {
         if (aktiverNutzer.checkPw(alt)){
             aktiverNutzer.setPwHash(neu);
             JOptionPane.showMessageDialog(this,
@@ -351,7 +414,7 @@ public class GUIFrame extends JFrame{
         }
     }
 
-    public void sicherheitsfrageAendern (String altAW, String neuFrage, String neuAW){
+    void sicherheitsfrageAendern (String altAW, String neuFrage, String neuAW){
         if (aktiverNutzer.checkFrage(altAW)){
             aktiverNutzer.setSicherheitsFrage(neuFrage);
             aktiverNutzer.setSicherheitsAntwortHash(neuAW);
@@ -369,7 +432,7 @@ public class GUIFrame extends JFrame{
         }
     }
 
-    public void zeigeReservierungsDetails (long reservierungsnr){
+     void zeigeReservierungsDetails (long reservierungsnr){
     	Reservierung tempRes = rf.sucheReservierung(reservierungsnr);		// IF
     	JOptionPane.showMessageDialog(this,
                 tempRes.toString(true),
@@ -378,7 +441,7 @@ public class GUIFrame extends JFrame{
                 new ImageIcon("HWRaumfinder_Icon.png"));
     }
     
-    public void storniereReservierung (long reservierungsnr) {
+     void storniereReservierung (long reservierungsnr) {
     	Reservierung tempRes = rf.sucheReservierung(reservierungsnr);
     	rf.stornieren(tempRes);
     	JOptionPane.showMessageDialog(this,
@@ -388,26 +451,22 @@ public class GUIFrame extends JFrame{
     	aktualisiereAnsicht(HAUPTMENUE);
     	aktualisiereAnsicht(RESERVIERUNGSVERWALTUNG);
     }
-
-    public Nutzer getAktivenNutzer(){
-        return aktiverNutzer;
-    }
     
-    public String getAktivenNutzerString(){
+     String getAktivenNutzerString(){
         return aktiverNutzer.getName();
     }
     
-    public boolean aktiverNutzerIsAdmin(){
+     boolean aktiverNutzerIsAdmin(){
     	if (aktiverNutzer instanceof Admin) return true;
     	else return false;
     }
     
-    public String[] getNutzerDaten (String nutzername){
+     String[] getNutzerDaten (String nutzername){
     	Nutzer tempNutzer = rf.sucheNutzer(nutzername);		// IF
     	return new String[]{tempNutzer.getName(), tempNutzer.getSicherheitsFrage()};
     }
     
-    public void bearbeiteNutzer (String nutzernameAlt, String nutzernameNeu, String passwort, String frage, String antwort) {
+     void bearbeiteNutzer (String nutzernameAlt, String nutzernameNeu, String passwort, String frage, String antwort) {
     	boolean[] aenderungen = new boolean[4];
     	Nutzer bearbeiteterNutzer = rf.sucheNutzer(nutzernameAlt);		//IF
         if (!nutzernameAlt.equals(nutzernameNeu)) {
@@ -437,17 +496,48 @@ public class GUIFrame extends JFrame{
                 bearbeitungsMessage,
                 "Nutzerdaten geändert",
                 JOptionPane.INFORMATION_MESSAGE);
+
+        aktualisiereAnsicht(HAUPTMENUE);
+        aktualisiereAnsicht(NUTZERVERWALTUNG);
     }
     
-    public void loescheNutzer (String nutzername){
-    	rf.loescheNutzer(rf.sucheNutzer(nutzername));
-    	JOptionPane.showMessageDialog(this,
-                "Nutzer "+nutzername+" wurde gelöscht!",
-                "Erfolg",
-                JOptionPane.INFORMATION_MESSAGE);
+     void loescheNutzer (String nutzername){
+        if (rf.loescheNutzer(rf.sucheNutzer(nutzername))){
+            JOptionPane.showMessageDialog(this,
+                    "Nutzer "+nutzername+" wurde gelöscht!",
+                    "Erfolg",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Dieser Admin ist nicht entfernbar!",
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        aktualisiereAnsicht(HAUPTMENUE);
+        aktualisiereAnsicht(NUTZERVERWALTUNG);
     }
 
-    public Raumfinder getRaumfinder(){		// IF
-        return rf;
+     public void save (){
+        rf.save();
+        System.out.println("Aktuelle Konfiguration gespeichert.");
+    }
+
+     public void load () {
+        rf.load();
+        System.out.println("Gespeicherte Konfiguration geladen.");
+    }
+
+    private void showExitDialog (boolean admin){
+        if (admin){
+            JOptionPane.showMessageDialog(this,
+                    "Programm wird gespeichert und geschlossen!",
+                    "Byebye",
+                    JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Nur ein Adminisrator kann den HWRaumfinder schließen!",
+                    "Zugriff verweigert",
+                    JOptionPane.WARNING_MESSAGE);
+        }
     }
 }
