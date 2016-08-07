@@ -1,5 +1,3 @@
-package Verarbeitung;	// Changed
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -120,6 +118,14 @@ public class Reservierung implements Serializable {
     }
     public void setStorniert(boolean storniert) {
         this.storniert = storniert;
+    }
+    
+    public static long getResCounter(){
+    	return resCounter;
+    }
+    
+    public static void setResCounter(long resCount){
+    	Reservierung.resCounter=resCount;
     }
     
     public boolean kollidiert (Zeitraum zr) {
