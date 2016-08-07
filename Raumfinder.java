@@ -1,4 +1,6 @@
-package Verarbeitung;
+package Verarbeitung;		// Changed
+
+import Persistenz.*;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -14,8 +16,8 @@ public class Raumfinder implements RaumfinderIF {
     private ArrayList<Raum> raeume;
     private ArrayList<Reservierung> reservierungen;
     private ArrayList<Nutzer> nutzer;
-    private OnlineEinleser onEinleser;        //muss Interface werden
-    private RaumfinderFileAdapter fileAdapter;	// IF!
+    private OnlineEinleser onEinleser;
+    private RaumfinderFileAdapterIF fileAdapter;
 
 
     // Standardkonstruktor
@@ -25,7 +27,7 @@ public class Raumfinder implements RaumfinderIF {
         reservierungen = new ArrayList<Reservierung>();
         nutzer = new ArrayList<Nutzer>();
         onEinleser = new OnlineEinleser(this);
-        fileAdapter = new RaumfinderFileAdapter (this);
+        fileAdapter = new RaumfinderFileAdapter(this);
         
         if (einlesen) onlineEinlesen();
     }
@@ -49,7 +51,7 @@ public class Raumfinder implements RaumfinderIF {
     	int offset = 0;
     	ConcurrentSkipListMap<Integer,String> erg = new ConcurrentSkipListMap<>();
 
-        // Durchlaufen aller R�ume
+        // Durchlaufen aller Räume
     	for (int i=0; i<raeume.size(); i++) {
     		Raum r = raeume.get(i);
     		int score = r.hatMindestausstattung(a);     // Bewertung der Relevanz des Suchergebnisses
@@ -192,7 +194,7 @@ public class Raumfinder implements RaumfinderIF {
         return true;
     }
 
-    private void addNutzer(Nutzer n){
+    public void addNutzer(Nutzer n){
         nutzer.add(n);
     }
 
@@ -228,7 +230,7 @@ public class Raumfinder implements RaumfinderIF {
     	this.raeume = raeume;
     }
     
-    private void addReservierung(Reservierung neu){
+    public void addReservierung(Reservierung neu){
     	GlobaleMethoden.addReservierungtoArrayList(reservierungen, neu);
     	}
 
@@ -239,7 +241,5 @@ public class Raumfinder implements RaumfinderIF {
     public void setReservierungen (ArrayList<Reservierung> reservierungen) {
     this. reservierungen = reservierungen;
     }
-     public OnlineEinleser getOnEinleser () {
-         return onEinleser;
-     }
+
 }

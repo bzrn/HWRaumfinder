@@ -49,6 +49,8 @@ public class Raum implements Serializable {
     public boolean isBuchbar() {
         return buchbar;
     }
+
+    public void setBuchbar (boolean buchbar) { this.buchbar = buchbar; }
     
     public int hatMindestausstattung (Ausstattung a) {
     	return ausstattung.hatMindestens(a);

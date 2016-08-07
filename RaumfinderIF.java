@@ -1,15 +1,39 @@
 package Verarbeitung;
 
-import Verarbeitung.Raum;
-
 import java.util.ArrayList;
 
-/**
- * Created by mwolff on 19.06.16.
- */
 public interface RaumfinderIF {
 
+    // Raum-Methoden
+    ArrayList<String> suche(Zeitraum s, Ausstattung a);
     Raum sucheKennung(String raumKennung);
-    ArrayList<Raum> getRaeume();
+    boolean pruefeVerfuegbarkeitRaum(String raumKennung, Zeitraum zr);
+    boolean pruefeBuchbarkeitRaum(String raumKennung);
     void addRaum(Raum a);
+    void loescheRaum(Raum a);
+    ArrayList<Raum> getRaeume();
+    void setRaeume(ArrayList<Raum> raeume);
+
+    // Reservierungs-Methoden
+    boolean reservieren (Raum r, Reservierer n, Zeitraum s);
+    void stornieren(Reservierung r);
+    Reservierung sucheReservierung(long reservierungsNummer) ;
+    void addReservierung(Reservierung neu);
+    ArrayList<Reservierung> getReservierungen();
+    void setReservierungen(ArrayList<Reservierung> reservierungen);
+
+    // Nutzer-Methoden
+    Nutzer sucheNutzer(String nutzerName);
+    Nutzer authentifiziereNutzer(String name, String password);
+    void legeNutzerAn(String name, String password, String sicherheitsFrage, String sicherheitsAntwort, boolean admin);
+    boolean loescheNutzer(Nutzer n);
+    void addNutzer(Nutzer n);
+    ArrayList<Nutzer> getNutzer();
+    void setNutzer(ArrayList<Nutzer> nutzer);
+    String[] getNutzerString();
+
+    // Sonstige Methoden
+    void onlineEinlesen();
+    void save();
+    void load();
 }

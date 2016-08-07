@@ -46,6 +46,7 @@ public class AAA_Test {
                     +"\t9 - neuer Nutzer\n"
                     +"\t99 - neuer Admin\n"
                     +"\t0 - verlassen\n"
+                    +"\nACHTUNG: RESERVIEREN FUNKTNIERT HIER NICHT MEHR!\n"
                     +"\nBitte entsprechende Ziffer eingeben: ");
 
             int modus = Integer.parseInt(din.readLine());
@@ -100,10 +101,10 @@ public class AAA_Test {
                     Raum r = rf.sucheKennung(eingabe);
                     System.out.println("Startzeitpunkt im Format \"19960101T020000\" eingeben:");
                     eingabe = din.readLine();
-                    Date t1 = rf.getOnEinleser().icsStringToDate(eingabe);
+                    Date t1 = new Date (System.currentTimeMillis()); //rf.getOnEinleser().icsStringToDate(eingabe);
                     System.out.println("Endzeitpunkt im Format \"19960101T020000\" eingeben:");
                     eingabe = din.readLine();
-                    Date t2 = rf.getOnEinleser().icsStringToDate(eingabe);
+                    Date t2 = new Date (System.currentTimeMillis()+3600000); //rf.getOnEinleser().icsStringToDate(eingabe);
                     try {
                         if (rf.reservieren(r, (StandardNutzer)n, new Zeitraum(t1, t2))) System.out.println("Reservierung erfolgreich");
                         else System.err.println("Error: Sonstiger Reservierungsfehler.");
