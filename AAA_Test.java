@@ -57,7 +57,7 @@ public class AAA_Test {
                     System.out.println("Fertig!");
                     break;
                 case 11:
-                    GUIFrame frame = new GUIFrame(rf);
+                    GUIFrame frame = new GUIFrame(rf, false);
                     break;
                 case 12:
                 	rf.save();
