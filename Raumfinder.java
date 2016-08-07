@@ -20,7 +20,7 @@ public class Raumfinder implements RaumfinderIF {
     private RaumfinderFileAdapterIF fileAdapter;
 
 
-    // Standardkonstruktor
+   // Standardkonstruktor
     public Raumfinder (boolean einlesen) {
 
         raeume = new ArrayList<Raum>();
@@ -241,5 +241,15 @@ public class Raumfinder implements RaumfinderIF {
     public void setReservierungen (ArrayList<Reservierung> reservierungen) {
     this. reservierungen = reservierungen;
     }
+    
+    public static long getResCounter(){
+    	return getResCounter();
+    }
+    
+    public static void setResCounter(long resCount){
+    	Reservierung.setResCounter(resCount);
+    }
+
+}
 
 }
