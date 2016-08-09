@@ -14,21 +14,14 @@ import java.util.Date;
 public class OnlineEinleser {
 
     private int fileCounter, errCounter;
-    private Raumfinder raumfinder;  //RaumfinderIF
+    private RaumfinderIF raumfinder;
 
     private final String SPEICHERORT = "StundenplanFiles/";
 
 
-	public static void main (String[] Args) throws IOException {
-
-        Raumfinder taaezt = new Raumfinder(true);
-		//OnlineEinleser el = new OnlineEinleser(null);
-		//el.einlesen();
-		//el.readEvents("C:\\Users\\Alexander\\Desktop\\elektrotechnik-semester1-kurs.ics");
-	}
-
-    public OnlineEinleser (Raumfinder parent){        //RaumfinderIF
-        this.raumfinder=parent;
+    public OnlineEinleser (){
+        raumfinder=Raumfinder.getInstance();
+        new File(SPEICHERORT).mkdir();
     }
 
     public void einlesen() {

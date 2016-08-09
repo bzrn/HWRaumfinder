@@ -11,6 +11,9 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 
 public class Raumfinder implements RaumfinderIF {
+	
+	// Singleton-Implementierung
+	private static Raumfinder ourInstance = new Raumfinder();
 
     //Attribute
     private ArrayList<Raum> raeume;
@@ -20,19 +23,22 @@ public class Raumfinder implements RaumfinderIF {
     private RaumfinderFileAdapterIF fileAdapter;
 
 
-    // Standardkonstruktor
-    public Raumfinder (boolean einlesen) {
+    // Singleton-Konstruktor
+    private Raumfinder () {
 
         raeume = new ArrayList<Raum>();
         reservierungen = new ArrayList<Reservierung>();
         nutzer = new ArrayList<Nutzer>();
-        onEinleser = new OnlineEinleser(this);
-        fileAdapter = new RaumfinderFileAdapter(this);
-
-        if (einlesen) onlineEinlesen();
+        onEinleser = new OnlineEinleser();
+        fileAdapter = new RaumfinderFileAdapter();
+    }
+    
+    // Singleton-getInstance
+    public static Raumfinder getInstance() {
+    	return ourInstance;
     }
 
-    // manueller Konstruktor
+    /*// manueller Konstruktor
     public Raumfinder(ArrayList<Raum> raeume, ArrayList<Reservierung> reservierungen, ArrayList<Nutzer> nutzer, OnlineEinleser onEinleser){
 
         this.raeume = raeume;
@@ -42,7 +48,7 @@ public class Raumfinder implements RaumfinderIF {
         fileAdapter = new RaumfinderFileAdapter (this);
 
         onlineEinlesen();
-    }
+    }*/
 
 
 
@@ -235,7 +241,7 @@ public class Raumfinder implements RaumfinderIF {
     }
 
     public boolean loescheNutzer (Nutzer n) {
-        if (n instanceof Admin) if (!((Admin) n).isDeletable()) return false;
+        if (nutzerIsAdmin(n)) if (!((Admin) n).isDeletable()) return false;
 
         nutzer.remove(n);
         return true;
@@ -258,9 +264,14 @@ public class Raumfinder implements RaumfinderIF {
         for (int i=0; i<erg.length; i++) {
             Nutzer temp = nutzer.get(i);
             erg[i] = temp.getName();
-            if (temp instanceof Admin)  erg[i] += " <Admin>";
+            if (nutzerIsAdmin(temp))  erg[i] += " <Admin>";
         }
         return erg;
+    }
+
+    public boolean nutzerIsAdmin (Nutzer n){
+        if (n instanceof Admin) return true;
+        else return false;
     }
 
 
@@ -281,16 +292,3 @@ public class Raumfinder implements RaumfinderIF {
         fileAdapter.load();
     }
 }
-
-/*
-public class Singleton {
-    private static Singleton ourInstance = new Singleton();
-
-    public static Singleton getInstance() {
-        return ourInstance;
-    }
-
-    private Singleton() {
-    }
-}
-*/

@@ -16,6 +16,8 @@ public interface RaumfinderIF {
 
     // Reservierungs-Methoden
     boolean reservieren (Raum r, Reservierer n, Zeitraum s);
+    //boolean reservieren (Raum r, Reservierer n, Zeitraum s, String kommentar);	// n�tig?
+    boolean reservieren (Reservierung neu, boolean overwrite);
     void stornieren(Reservierung r);
     Reservierung sucheReservierung(long reservierungsNummer) ;
     ArrayList<Reservierung> getReservierungen();
@@ -32,6 +34,7 @@ public interface RaumfinderIF {
     ArrayList<Nutzer> getNutzer();
     void setNutzer(ArrayList<Nutzer> nutzer);
     String[] getNutzerString();
+    boolean nutzerIsAdmin (Nutzer n);
 
     // Sonstige Methoden
     void onlineEinlesen();

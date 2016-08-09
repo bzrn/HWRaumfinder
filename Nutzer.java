@@ -6,14 +6,11 @@ import java.security.NoSuchAlgorithmException;
 
 public abstract class Nutzer implements Serializable {
 
-    protected static long nutzerCounter = 0;
-    protected long nutzerNr;
     protected String name, pwHash, sicherheitsFrage, sicherheitsAntwortHash;
     protected static MessageDigest messageDigest;		// more or less solved
 
     protected Nutzer (String name, String password, String sicherheitsFrage, String sicherheitsAntwort) {
 
-        nutzerNr = nutzerCounter++;
         this.name=name;
         this.sicherheitsFrage = sicherheitsFrage;
 
