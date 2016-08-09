@@ -30,8 +30,8 @@ public class SuchPanel extends JPanel {
     /**
      * Create the application.
      */
-    public SuchPanel(GUIFrame parent) {
-        frame = parent;
+    public SuchPanel() {
+        frame = GUIFrame.getInstance();
         start = new Date (System.currentTimeMillis());
         ende = new Date (System.currentTimeMillis()+3600000);
         

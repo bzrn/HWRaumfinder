@@ -19,8 +19,8 @@ public class RaumverwaltungsPanel extends JPanel {
     private JTextField raumNameText, kapaText;
     private JCheckBox chckbxBeamer, chckbxOhp, chckbxTafel, chckbxSmartboard, chckbxWhiteboard, chckbxComputerraum, chckbxBuchbar;
 
-    public RaumverwaltungsPanel (GUIFrame parent, String[] raum){
-        frame = parent;
+    public RaumverwaltungsPanel (String[] raum){
+        frame = GUIFrame.getInstance();
         this.raum = raum;
         initialize();
     }
@@ -113,7 +113,8 @@ public class RaumverwaltungsPanel extends JPanel {
                 loeschBtn.setForeground(Color.red);
                 loeschBtn.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        frame.loescheRaum(bearbeiteterRaumDaten[0]);
+                        if (raumNameText.getText().isEmpty() || kapaText.getText().isEmpty()) popupInputFehlt();
+                        else frame.loescheRaum(bearbeiteterRaumDaten[0]);
                     }
                 });
                 bearbeitungFooter.add(loeschBtn);
@@ -160,7 +161,7 @@ public class RaumverwaltungsPanel extends JPanel {
 
     private void popupInputFehlt() {
         JOptionPane.showMessageDialog(frame,
-                "Name und Kapazität dürfen nicht leer sein!",
+                "Bitte Raum auswählen!\nName und Kapazität dürfen nicht leer sein!",
                 "Fehler",
                 JOptionPane.WARNING_MESSAGE);
     }

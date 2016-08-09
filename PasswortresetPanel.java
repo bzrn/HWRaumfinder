@@ -13,8 +13,8 @@ public class PasswortresetPanel extends JPanel {
     private GUIFrame frame;
     private String aktuelleFrage;
 
-    public PasswortresetPanel(GUIFrame parent, String[] frage) {
-        frame = parent;
+    public PasswortresetPanel(String[] frage) {
+        frame = GUIFrame.getInstance();
         aktuelleFrage=frage[0];
         initialize();
     }

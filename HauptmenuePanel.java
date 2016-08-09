@@ -6,6 +6,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 /**
@@ -15,8 +16,8 @@ public class HauptmenuePanel extends JPanel {
     private GUIFrame frame;
     private String[] raeume;
 
-    public HauptmenuePanel (GUIFrame parent, String[] raeume){
-        frame = parent;
+    public HauptmenuePanel (String[] raeume){
+        frame = GUIFrame.getInstance();
         this.raeume = raeume;
         initialize();
     }
@@ -34,6 +35,15 @@ public class HauptmenuePanel extends JPanel {
             JLabel gruss2 = new JLabel("Wähle eine der folgenden Aktionen aus:");
             grussPanel.add(gruss2);
             add (grussPanel, BorderLayout.NORTH);
+        } else {
+            JButton closeButton = new JButton("HWRaumfinder speichern und schließen");
+            closeButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+                }
+            });
+            add (closeButton, BorderLayout.NORTH);
         }
         
         JPanel body = new JPanel(new GridLayout(1,2,20,0));

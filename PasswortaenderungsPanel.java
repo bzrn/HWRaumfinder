@@ -12,8 +12,8 @@ import java.awt.event.ActionListener;
 public class PasswortaenderungsPanel extends JPanel {
     private GUIFrame frame;
 
-    public PasswortaenderungsPanel(GUIFrame parent) {
-        frame = parent;
+    public PasswortaenderungsPanel() {
+        frame = GUIFrame.getInstance();
         initialize();
     }
 

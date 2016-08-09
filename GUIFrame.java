@@ -1,9 +1,18 @@
 package Oberflaeche;
 
-import Verarbeitung.*;
+import Verarbeitung.RaumfinderIF;
+import Verarbeitung.Raumfinder;
+import Verarbeitung.Reservierung;
+import Verarbeitung.Raum;
+import Verarbeitung.Zeitraum;
+import Verarbeitung.UnzulaessigerZeitraumException;
+import Verarbeitung.Ausstattung;
+import Verarbeitung.Nutzer;
+import Verarbeitung.StandardNutzer; // IF nur getReservierungen()
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -13,19 +22,26 @@ import java.util.Date;
  * Created by Alexander on 26.07.2016.
  */
  class GUIFrame extends JFrame{
-
+	 
+	// Singleton-Implementierung:
+	private static GUIFrame ourInstance = new GUIFrame();
+	 
+	// Attribute:
     private Nutzer aktiverNutzer;       // IF
-    private RaumfinderIF rf;
+    private static RaumfinderIF rf;
     private Zeitraum tempZeitraum=null;	// IF
-    
-    private JPanel aktuelleAnsicht, header;
+    private JPanel aktuelleAnsicht, header, contentPanel, fixedPanel;
     private JLabel titelLabel;
     private JButton headerBtn;
     private String[] panelArgs;
     private String aktuelleAnsichtStr;
+    private Timer automatischSpeichern;
 
-    //AnsichtsKonstanten:
-     static final String
+    // Konstanten:
+    static final String[] min={"00","15","30","45"};
+    static final String[] hour={"08","09","10","11","12","13","14","15","16","17","18","19"};
+    static final String[] kapazitaet={"0", "10","15", "20", "25", "30"};
+    static final String
             HAUPTMENUE = "Hauptmenü",
             LOGIN = "Log-In",
             REGISTRIERUNG = "Registrierung",
@@ -39,17 +55,27 @@ import java.util.Date;
             NUTZERVERWALTUNG = "Nutzerverwaltung",
     		PASSWORTRESET = "Passwort zurücksetzen";
 
-     static final String[] min={"00","15","30","45"};
-     static final String[] hour={"08","09","10","11","12","13","14","15","16","17","18","19"};
-     static final String[] kapazitaet={"0", "10","15", "20", "25", "30"};
 
-
-     GUIFrame(Raumfinder rf, boolean defaultLoad) {     // IF
+     // Singleton-Konstruktor
+     private GUIFrame() {
         super("HWRaumfinder");
-        this.rf = rf;
+        rf = Raumfinder.getInstance();
         aktiverNutzer = null;
+
         initialize(LOGIN);
-        if(defaultLoad) load();
+
+        automatischSpeichern = new Timer(300000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                save();
+            }
+        });
+         automatischSpeichern.start();
+    }
+     
+     // Singleton-getInstance()
+    public static GUIFrame getInstance() {
+    	return ourInstance;
     }
 
     private void initialize(String AnsichtsKonstante) {
@@ -59,9 +85,10 @@ import java.util.Date;
             System.err.println("Exception at setting of look and feel");
         }
 
-        setLayout(new BorderLayout(20,20));
-        setBounds(100, 100, 450, 300);
+        setLayout(new BorderLayout());
         setResizable(false);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setUndecorated(true);
         setIconImage(new ImageIcon("HWRaumfinder_Icon.png").getImage());
 
         addWindowListener(new WindowAdapter() {
@@ -70,6 +97,7 @@ import java.util.Date;
                 if (aktiverNutzerIsAdmin()) {
                     showExitDialog(true);
                     save();
+                    System.out.println("Programm geschlossen.");
                     System.exit(0);
                 } else {
                     showExitDialog(false);
@@ -78,14 +106,20 @@ import java.util.Date;
         });
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+        fixedPanel = new JPanel(new GridBagLayout());
+
+        contentPanel = new JPanel (new BorderLayout(20,20));
+        contentPanel.setPreferredSize(new Dimension(520,300));
+        contentPanel.setBorder(new LineBorder(Color.black, 2, true));
+
         setAktuelleAnsicht(AnsichtsKonstante);
         aktuelleAnsicht.setBorder(new EmptyBorder(0, 10, 5, 5));
-        add(aktuelleAnsicht, BorderLayout.CENTER);
+        contentPanel.add(aktuelleAnsicht, BorderLayout.CENTER);
 
         header = new JPanel();
         header.setLayout(new BorderLayout());
         header.setBorder(new EmptyBorder(10, 10, 0, 5));
-        add(header, BorderLayout.NORTH);
+        contentPanel.add(header, BorderLayout.NORTH);
 
             titelLabel = new JLabel(AnsichtsKonstante);
             titelLabel.setFont(new Font("Corbel", Font.BOLD, 20));
@@ -108,7 +142,8 @@ import java.util.Date;
                }
            });
             header.add(headerBtn, BorderLayout.EAST);
-
+        fixedPanel.add(contentPanel);
+        add(fixedPanel, BorderLayout.CENTER);
         setVisible(true);
         header.setVisible(false);
     }
@@ -123,22 +158,22 @@ import java.util.Date;
                 for (int i=0; i<panelArgs.length; i++){
                     panelArgs[i] = rf.getRaeume().get(i).getRaumBezeichnung();
                 }
-                aktuelleAnsicht = new HauptmenuePanel(this, panelArgs);
+                aktuelleAnsicht = new HauptmenuePanel(panelArgs);
                 break;
             case LOGIN:
-                aktuelleAnsicht = new LoginPanel(this);
+                aktuelleAnsicht = new LoginPanel();
                 break;
             case REGISTRIERUNG:
-                aktuelleAnsicht = new RegistrierungsPanel(this);
+                aktuelleAnsicht = new RegistrierungsPanel();
                 break;
             case KRITERIENSUCHE:
-                aktuelleAnsicht = new SuchPanel(this);
+                aktuelleAnsicht = new SuchPanel();
                 break;
             case ERGEBNISANZEIGE:
-                aktuelleAnsicht = new SuchErgebnisPanel(this, panelArgs);
+                aktuelleAnsicht = new SuchErgebnisPanel(panelArgs);
                 break;
             case RESERVIERUNG:
-                aktuelleAnsicht = new ReservierungsPanel(this);
+                aktuelleAnsicht = new ReservierungsPanel();
                 break;
             case RESERVIERUNGSVERWALTUNG:
             	if (aktiverNutzerIsAdmin()){
@@ -156,29 +191,29 @@ import java.util.Date;
                     	panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + tempRes.getZeitraum().toString() + " für Raum " + tempRes.getRaum());
                     }
             	}
-                aktuelleAnsicht = new ReservierungsverwaltungsPanel(this,panelArgs);
+                aktuelleAnsicht = new ReservierungsverwaltungsPanel(panelArgs);
                 break;
             case PASSWORTAENDERUNG:
-                aktuelleAnsicht = new PasswortaenderungsPanel(this);
+                aktuelleAnsicht = new PasswortaenderungsPanel();
                 break;
             case SICHERHEITSFRAGE:
                 panelArgs = new String[]{aktiverNutzer.getSicherheitsFrage()};
-                aktuelleAnsicht = new SicherheitsfragenaenderungsPanel(this, panelArgs);
+                aktuelleAnsicht = new SicherheitsfragenaenderungsPanel(panelArgs);
                 break;
             case RAUMVERWALTUNG:
                 panelArgs = new String[rf.getRaeume().size()];
                 for (int i=0; i<panelArgs.length; i++){
                     panelArgs[i] = rf.getRaeume().get(i).getRaumBezeichnung();
                 }
-            	aktuelleAnsicht = new RaumverwaltungsPanel(this, panelArgs);
+            	aktuelleAnsicht = new RaumverwaltungsPanel(panelArgs);
             	break;
             case NUTZERVERWALTUNG:
             	panelArgs = rf.getNutzerString();
-            	aktuelleAnsicht = new NutzerverwaltungsPanel(this, panelArgs);
+            	aktuelleAnsicht = new NutzerverwaltungsPanel(panelArgs);
             	break;
             case PASSWORTRESET:
             	panelArgs = new String[] {aktiverNutzer.getSicherheitsFrage()};
-            	aktuelleAnsicht = new PasswortresetPanel(this, panelArgs);
+            	aktuelleAnsicht = new PasswortresetPanel(panelArgs);
             	break;
             default:
                 System.err.println("Interner Fehler: Seite existiert nicht.");
@@ -187,10 +222,11 @@ import java.util.Date;
     }
 
      void aktualisiereAnsicht (String AnsichtsKonstante) {
-        getContentPane().remove(aktuelleAnsicht);
+
+        contentPanel.remove(aktuelleAnsicht);
         setAktuelleAnsicht(AnsichtsKonstante);
-        add(aktuelleAnsicht,BorderLayout.CENTER);
-        repaint();
+        contentPanel.add(aktuelleAnsicht,BorderLayout.CENTER);
+        contentPanel.repaint();
         header.setVisible(true);
 
         titelLabel.setText(AnsichtsKonstante);
@@ -225,7 +261,7 @@ import java.util.Date;
             aktualisiereAnsicht(HAUPTMENUE);
         }
     }
-    
+
     private void logout(){
     	aktiverNutzer = null;
         aktualisiereAnsicht(LOGIN);
@@ -251,7 +287,17 @@ import java.util.Date;
                     JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
+    void erstelleleerrenAdmin () {
+        rf.legeNutzerAn("Leerer Admin", "xxxx", "Sicherheitsfrage definieren!", "xxxx", true);
+        JOptionPane.showMessageDialog(this,
+                "Leerer Admin wurde erstellt, bitte bearbeiten!",
+                "Erfolg",
+                JOptionPane.INFORMATION_MESSAGE);
+        aktualisiereAnsicht(HAUPTMENUE);
+        aktualisiereAnsicht(NUTZERVERWALTUNG);
+    }
+
      void startPwReset(){
     	String nutzername = JOptionPane.showInputDialog(this,
     								"Bitte Nutzernamen eingeben:",
@@ -270,7 +316,7 @@ import java.util.Date;
         	}
     	}
     }
-    
+
      void setzePasswortZurueck (String sicherheitsAntwort, String neuPW){
     	if(aktiverNutzer.checkFrage(sicherheitsAntwort)){		// wenn Antwort stimmt
     		aktiverNutzer.setPwHash(neuPW);
@@ -368,33 +414,44 @@ import java.util.Date;
         }
         return false;
     }
-    
+
      boolean raumBuchbar (String raumKennung) {
     	return rf.pruefeBuchbarkeitRaum(raumKennung);
     }
 
      void reservieren(String raumKennung, Date start, Date ende){
-        try {
-            Zeitraum zr = new Zeitraum (start, ende);
-            if (rf.reservieren(rf.sucheKennung(raumKennung),(Reservierer)aktiverNutzer,zr)){
-                JOptionPane.showMessageDialog(this,
-                        "Reservierung erfolgreich! \nZurück ins Hauptmenü.",
-                        "Erfolg",
-                        JOptionPane.INFORMATION_MESSAGE,
-                        new ImageIcon("checkMark.png"));
-                aktualisiereAnsicht(HAUPTMENUE);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "Reservierung konnte nicht gebucht werden. \nMöglicherweise hast du in diesem Zeitraum schon einen Raum reserviert oder der Raum ist nicht buchbar.",
-                        "Fehler",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (UnzulaessigerZeitraumException e) {
-            JOptionPane.showMessageDialog(this,
-                    "Der Beginn des Reservierungszeitraum muss vor dessen Ende liegen!",
-                    "Fehler",
-                    JOptionPane.ERROR_MESSAGE);
-        }
+         Date jetzt = new Date(System.currentTimeMillis());
+         System.out.println("before: "+ende.before(jetzt));
+         System.out.println("after: "+ ende.after(jetzt));
+         if (ende.before(jetzt)){
+             try {
+                 Zeitraum zr = new Zeitraum (start, ende);
+                 if (rf.reservieren(rf.sucheKennung(raumKennung),(StandardNutzer)aktiverNutzer,zr)){     //StandardNutzer ist Reservierer
+                     JOptionPane.showMessageDialog(this,
+                             "Reservierung erfolgreich! \nZurück ins Hauptmenü.",
+                             "Erfolg",
+                             JOptionPane.INFORMATION_MESSAGE,
+                             new ImageIcon("checkMark.png"));
+                     aktualisiereAnsicht(HAUPTMENUE);
+                 } else {
+                     JOptionPane.showMessageDialog(this,
+                             "Reservierung konnte nicht gebucht werden. \nMöglicherweise hast du in diesem Zeitraum schon einen Raum reserviert oder der Raum ist nicht buchbar.",
+                             "Fehler",
+                             JOptionPane.ERROR_MESSAGE);
+                 }
+             } catch (UnzulaessigerZeitraumException e) {
+                 JOptionPane.showMessageDialog(this,
+                         "Der Beginn des Reservierungszeitraum muss vor dessen Ende liegen!",
+                         "Fehler",
+                         JOptionPane.ERROR_MESSAGE);
+             }
+         } else {
+             JOptionPane.showMessageDialog(this,
+                     "Reservierung konnte nicht gebucht werden. \nDer Reservierungszeitraum darf nicht in der Vergangenheit liegen.",
+                     "Fehler",
+                     JOptionPane.ERROR_MESSAGE);
+         }
+
     }
 
      void passwortAendern(String alt, String neu) {
@@ -440,10 +497,10 @@ import java.util.Date;
                 JOptionPane.INFORMATION_MESSAGE,
                 new ImageIcon("HWRaumfinder_Icon.png"));
     }
-    
+
      void storniereReservierung (long reservierungsnr) {
-    	Reservierung tempRes = rf.sucheReservierung(reservierungsnr);
-    	rf.stornieren(tempRes);
+    	Reservierung tempRes = Raumfinder.getInstance().sucheReservierung(reservierungsnr);
+    	Raumfinder.getInstance().stornieren(tempRes);
     	JOptionPane.showMessageDialog(this,
                 "Reservierung Nummer " + tempRes.getReservierungsNr() + " wurde storniert!",
                 "Erfolg",
@@ -451,21 +508,21 @@ import java.util.Date;
     	aktualisiereAnsicht(HAUPTMENUE);
     	aktualisiereAnsicht(RESERVIERUNGSVERWALTUNG);
     }
-    
+
      String getAktivenNutzerString(){
         return aktiverNutzer.getName();
     }
-    
+
      boolean aktiverNutzerIsAdmin(){
-    	if (aktiverNutzer instanceof Admin) return true;
+    	if (rf.nutzerIsAdmin(aktiverNutzer)) return true;
     	else return false;
     }
-    
+
      String[] getNutzerDaten (String nutzername){
     	Nutzer tempNutzer = rf.sucheNutzer(nutzername);		// IF
     	return new String[]{tempNutzer.getName(), tempNutzer.getSicherheitsFrage()};
     }
-    
+
      void bearbeiteNutzer (String nutzernameAlt, String nutzernameNeu, String passwort, String frage, String antwort) {
     	boolean[] aenderungen = new boolean[4];
     	Nutzer bearbeiteterNutzer = rf.sucheNutzer(nutzernameAlt);		//IF
@@ -485,13 +542,13 @@ import java.util.Date;
         	bearbeiteterNutzer.setSicherheitsAntwortHash(antwort);
         	aenderungen[3] = true;
         } else aenderungen [3] = false;
-        
+
         String bearbeitungsMessage = "Folgende Nutzerdaten wurden geändert:\n";
         if (aenderungen[0]) bearbeitungsMessage += "\tNutzername\n";
         if (aenderungen[1]) bearbeitungsMessage += "\tPasswort\n";
         if (aenderungen[2]) bearbeitungsMessage += "\tSicherheitsfrage\n";
         if (aenderungen[3]) bearbeitungsMessage += "\tSicherheitsantwort\n";
-        
+
         JOptionPane.showMessageDialog(this,
                 bearbeitungsMessage,
                 "Nutzerdaten geändert",
@@ -500,7 +557,7 @@ import java.util.Date;
         aktualisiereAnsicht(HAUPTMENUE);
         aktualisiereAnsicht(NUTZERVERWALTUNG);
     }
-    
+
      void loescheNutzer (String nutzername){
         if (rf.loescheNutzer(rf.sucheNutzer(nutzername))){
             JOptionPane.showMessageDialog(this,

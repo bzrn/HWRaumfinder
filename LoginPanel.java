@@ -11,12 +11,9 @@ import java.awt.event.FocusListener;
 
 public class LoginPanel extends JPanel {
 
-    private GUIFrame frame;
-
     private JTextField username, password;
 
-    public LoginPanel (GUIFrame parent){
-        frame = parent;
+    public LoginPanel (){
         initialize();
     }
 
@@ -32,7 +29,7 @@ public class LoginPanel extends JPanel {
         JPanel loginPanel = new JPanel(new GridLayout(3,1,0,10));
             ActionListener loginListener = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    frame.login(username.getText(), password.getText());
+                    GUIFrame.getInstance().login(username.getText(), password.getText());
                 }
             };
             username = new HintTextField("Nutzername");
@@ -55,16 +52,16 @@ public class LoginPanel extends JPanel {
         JButton pwVergessenBtn = new JButton ("Passwort-Reset");
         pwVergessenBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	frame.startPwReset();
+            	GUIFrame.getInstance().startPwReset();
             }
         });
         footer.add(pwVergessenBtn, BorderLayout.WEST);
-        JLabel registrierLabel = new JLabel("Noch keinen Account?  →");
+        JLabel registrierLabel = new JLabel("Noch keinen Account?  →", SwingConstants.CENTER);
         footer.add(registrierLabel, BorderLayout.CENTER);
         JButton registrierButton = new JButton("Registrieren");
         registrierButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.aktualisiereAnsicht(GUIFrame.REGISTRIERUNG);
+                GUIFrame.getInstance().aktualisiereAnsicht(GUIFrame.REGISTRIERUNG);
             }
         });
         footer.add(registrierButton, BorderLayout.EAST);

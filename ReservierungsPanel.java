@@ -7,6 +7,7 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,19 +26,17 @@ public class ReservierungsPanel extends JPanel {
     private JLabel verfuegbarkeit, titelLabel;
     private JPanel ausstPanel;
 
-    public ReservierungsPanel(GUIFrame parent) {
-        frame = parent;
+    public ReservierungsPanel() {
+        frame = GUIFrame.getInstance();
         raumKennung="Empty";
         start = new Date (System.currentTimeMillis());
         ende = new Date (System.currentTimeMillis()+3600000);	// default: eine Stunde später
         ausstattung = new String[][]{{"","","","","","",""},{"","","","","","",""}};
 
         c1 = Calendar.getInstance();
-        c1.setTime(start);
         c2 = Calendar.getInstance();
-        c2.setTime(ende);
         sdf = new SimpleDateFormat("dd.MM.yyyy");
-        datumStr = sdf.format(c1.getTime());
+        setupCalendar();
 
         initialize();
     }
@@ -47,6 +46,32 @@ public class ReservierungsPanel extends JPanel {
         this.start = start;
         this.ende = ende;
         ausstattung=a;
+
+        setupCalendar();
+
+        try {
+            Calendar today = Calendar.getInstance();
+            today.setTime(sdf.parse(datumStr));
+            while (c1.before(today)||c2.before(today)) {
+                c1.add(Calendar.DATE, 1);
+                c2.add(Calendar.DATE, 1);
+            }
+            today=c1;
+            today.set(Calendar.HOUR_OF_DAY, 19);
+            if (c1.after(today)||c2.after(today)) {
+                c1.set(Calendar.HOUR_OF_DAY, 8);
+                c2.set(Calendar.HOUR_OF_DAY, 9);
+            }
+            today.set(Calendar.HOUR_OF_DAY, 8);
+            if (c1.before(today)||c2.before(today)) {
+                c1.set(Calendar.HOUR_OF_DAY, 8);
+                c2.set(Calendar.HOUR_OF_DAY, 9);
+            }
+        } catch (ParseException e) {
+            System.err.println("Interner Fehler: Parsing DatumString");
+        }
+
+        setupCalendar();
 
         titelLabel.setText("Raum " + raumKennung);
         erstelleAusstattungsPanel();
@@ -174,6 +199,12 @@ public class ReservierungsPanel extends JPanel {
         minutenVon.setSelectedItem(Integer.toString(c1.get((Calendar.MINUTE / 15)*15)));
         stundenBis.setSelectedItem(Integer.toString(c2.get(Calendar.HOUR_OF_DAY)));
         minutenBis.setSelectedItem(Integer.toString(c2.get((Calendar.MINUTE / 15)*15)));
+    }
+
+    private void setupCalendar(){
+        c1.setTime(start);
+        c2.setTime(ende);
+        datumStr = sdf.format(c1.getTime());
     }
 
     private void aktualisiereZeitraum(){

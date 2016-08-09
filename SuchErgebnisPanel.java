@@ -13,8 +13,8 @@ public class SuchErgebnisPanel extends JPanel {
     private GUIFrame frame;
     private String[] ergebnisArray;
 
-    public SuchErgebnisPanel (GUIFrame parent, String[] ergebnisArray){
-        frame = parent;
+    public SuchErgebnisPanel (String[] ergebnisArray){
+        frame = GUIFrame.getInstance();
         this.ergebnisArray=ergebnisArray;
         initialize();
     }

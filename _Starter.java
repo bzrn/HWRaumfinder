@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 public class _Starter {
     static private BufferedReader din = new BufferedReader(new InputStreamReader(System.in));
     static private Raumfinder rf;
+    static private GUIFrame gui;
     static private Admin admin;
 
     static private boolean firstStart=false;
@@ -48,7 +49,6 @@ public class _Starter {
             System.out.println("Soll der Raumfinder vor dem Start die bestehende Raumbelegung seitens der HWR-Verwaltung\naus dem Internet herunterladen? (Y|N)");
             while (!(eingabe[0].equalsIgnoreCase("y")||eingabe[0].equalsIgnoreCase("n"))) eingabe[0] = din.readLine();
             if (eingabe[0].equalsIgnoreCase("y")) einlesen = true;
-
         }
 
         starteHWRaumfinder();
@@ -56,10 +56,17 @@ public class _Starter {
 
     private static void starteHWRaumfinder(){
         System.out.println("\nHWRaumfinder wird gestartet.");
-        if (einlesen) System.out.println("Daten werden eingelesen...");
-        rf = new Raumfinder (einlesen);
+        
+        rf = Raumfinder.getInstance();
+        if (einlesen) {
+        	System.out.println("Daten werden eingelesen...");
+        	rf.onlineEinlesen();
+        }
+        
+        gui = GUIFrame.getInstance();
         if (firstStart) rf.getNutzer().add(admin);
-        new GUIFrame(rf, !firstStart);
-        System.out.println("Fertig!");
+        else gui.load();
+        
+        System.out.println("Programm gestartet.");
     }
 }

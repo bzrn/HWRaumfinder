@@ -13,9 +13,9 @@ public class ReservierungsverwaltungsPanel extends JPanel {
     private GUIFrame frame;
     String[] reservierungen;
 
-    public ReservierungsverwaltungsPanel(GUIFrame parent, String[] reservierungen) {
+    public ReservierungsverwaltungsPanel(String[] reservierungen) {
         this.reservierungen=reservierungen;
-        frame = parent;
+        frame = GUIFrame.getInstance();
         initialize();
     }
 

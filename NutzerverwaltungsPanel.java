@@ -29,8 +29,8 @@ public class NutzerverwaltungsPanel extends JPanel {
 
     private JTextField nutzerNameText, frageText, passwordText, antwortText;
 
-    public NutzerverwaltungsPanel (GUIFrame parent, String[] nutzer){
-        frame = parent;
+    public NutzerverwaltungsPanel (String[] nutzer){
+        frame = GUIFrame.getInstance();
         this.nutzer = nutzer;
         initialize();
     }
@@ -50,8 +50,18 @@ public class NutzerverwaltungsPanel extends JPanel {
 
         JScrollPane ergebnisPanel = new JScrollPane(ergebnisList);
         nutzerPanel.add(ergebnisPanel, BorderLayout.CENTER);
-        
-        JButton nutzerWahlBtn = new JButton ("Nutzer bearbeiten >>");
+
+        JPanel footer = new JPanel (new BorderLayout(5,5));
+
+        JButton neuerRaumBtn = new JButton ("Neu");
+        neuerRaumBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.erstelleleerrenAdmin();
+            }
+        });
+        footer.add(neuerRaumBtn, BorderLayout.WEST);
+
+        JButton nutzerWahlBtn = new JButton ("Bearbeiten >>");
         nutzerWahlBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String name = ergebnisList.getSelectedValue();
@@ -61,7 +71,9 @@ public class NutzerverwaltungsPanel extends JPanel {
                 befuelleFelderNutzer();
             }
         });
-        nutzerPanel.add(nutzerWahlBtn, BorderLayout.SOUTH);
+        footer.add(nutzerWahlBtn, BorderLayout.CENTER);
+
+        nutzerPanel.add(footer, BorderLayout.SOUTH);
         
         add(nutzerPanel);
         
@@ -97,7 +109,9 @@ public class NutzerverwaltungsPanel extends JPanel {
         	loeschBtn.setForeground(Color.red);
         	loeschBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    frame.loescheNutzer(bearbeiteterNutzerDaten[0]);
+
+                    if (nutzerNameText.getText().isEmpty() || frageText.getText().isEmpty()) popupInputFehlt();
+                    else frame.loescheNutzer(bearbeiteterNutzerDaten[0]);
                 }
             });
         	nutzerBearbeitung.add(loeschBtn);
@@ -135,7 +149,7 @@ public class NutzerverwaltungsPanel extends JPanel {
     
     private void popupInputFehlt() {
     	JOptionPane.showMessageDialog(frame,
-                "Nutzername und Sicherheitsfrage dürfen nicht leer sein!",
+                "Bitte Nutzer Auswählen!\nNutzername und Sicherheitsfrage dürfen nicht leer sein!",
                 "Fehler",
                 JOptionPane.WARNING_MESSAGE);
     }

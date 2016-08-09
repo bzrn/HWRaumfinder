@@ -13,9 +13,9 @@ public class SicherheitsfragenaenderungsPanel extends JPanel {
     private GUIFrame frame;
     private String aktuelleFrage;
 
-    public SicherheitsfragenaenderungsPanel(GUIFrame parent, String[] frage) {
+    public SicherheitsfragenaenderungsPanel(String[] frage) {
         aktuelleFrage=frage[0];
-        frame = parent;
+        frame = GUIFrame.getInstance();
         initialize();
     }
 

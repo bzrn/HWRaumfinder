@@ -29,8 +29,8 @@ public class RegistrierungsPanel extends JPanel {
     /**
      * Create the application.
      */
-    public RegistrierungsPanel(GUIFrame parent) {
-        frame = parent;
+    public RegistrierungsPanel() {
+        frame = GUIFrame.getInstance();
         initialize();
     }
 
