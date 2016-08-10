@@ -421,9 +421,7 @@ import java.util.Date;
 
      void reservieren(String raumKennung, Date start, Date ende){
          Date jetzt = new Date(System.currentTimeMillis());
-         System.out.println("before: "+ende.before(jetzt));
-         System.out.println("after: "+ ende.after(jetzt));
-         if (ende.before(jetzt)){
+         if (ende.after(jetzt)){
              try {
                  Zeitraum zr = new Zeitraum (start, ende);
                  if (rf.reservieren(rf.sucheKennung(raumKennung),(StandardNutzer)aktiverNutzer,zr)){     //StandardNutzer ist Reservierer
