@@ -65,8 +65,13 @@ public class Raum implements Serializable {
         return GlobaleMethoden.findeKollisioninArrayList(belegung, zr);
     }
 
-    public void addReservierung(Reservierung neu){
-        GlobaleMethoden.addReservierungtoArrayList(belegung, neu);
+    public boolean addReservierung(Reservierung neu){
+        if (!belegung.contains(neu)) {
+            GlobaleMethoden.addReservierungtoArrayList(belegung, neu);
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public void removeReservierung (Reservierung weg) {

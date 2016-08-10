@@ -91,11 +91,17 @@ public class Zeitraum implements Serializable {
 		}
 	
 	public boolean kollidiert(Zeitraum engpass){
-		if (this.getStart().after(engpass.getStart())&&this.getStart().before(engpass.getEnde())){
+		Date e1 = engpass.getStart();
+		Date e2 = engpass.getEnde();
+		if (start.equals(e1) && ende.equals(e2)){
 			return true;
-		}else if(this.getEnde().after(engpass.getStart())&&this.getEnde().before(engpass.getEnde())){
+		}else if(start.before(e1) && ende.after(e2)){
 			return true;
-		}else if(this.getEnde().after(engpass.getEnde())||this.getEnde().equals(engpass.getEnde())&&this.getStart().before(engpass.getStart())||this.getStart().equals(engpass.getStart())){
+		}else if(start.after(e1) && ende.before(e2)){
+			return true;
+		}else if(ende.after(e1) && ende.before(e2)){
+			return true;
+		}else if(start.after(e1) && start.before(e2)){
 			return true;
 		}
 		return false;

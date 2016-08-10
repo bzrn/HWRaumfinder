@@ -1,7 +1,11 @@
 package Verarbeitung;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class StandardNutzer extends Nutzer implements Reservierer, Serializable {
 
@@ -15,8 +19,13 @@ public class StandardNutzer extends Nutzer implements Reservierer, Serializable 
         return reservierungen;
     }
 
-    public void addReservierung (Reservierung r) {
-        GlobaleMethoden.addReservierungtoArrayList(reservierungen, r);
+    public boolean addReservierung (Reservierung r) {
+        if (!reservierungen.contains(r)) {
+            GlobaleMethoden.addReservierungtoArrayList(reservierungen, r);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void removeReservierung (Reservierung weg) {
@@ -35,4 +44,25 @@ public class StandardNutzer extends Nutzer implements Reservierer, Serializable 
     public Reservierung findeKollision (Zeitraum zr) {
         return GlobaleMethoden.findeKollisioninArrayList(reservierungen, zr);
     }
+
+    /*
+    // Serializable-Implementierung
+
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        // default serialization
+        oos.defaultWriteObject();
+        // write the object
+        //Reservierung[] resSave = new Reservierung [reservierungen.size()];
+        //reservierungen.toArray(resSave);
+        //oos.writeObject(resSave);
+    }
+
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        // default deserialization
+        ois.defaultReadObject();
+        // read the objects
+        //Reservierung[] resLoad = (Reservierung[])ois.readObject();
+        //reservierungen = new ArrayList<Reservierung> (Arrays.asList(resLoad));
+    }
+    */
 }

@@ -156,6 +156,4 @@ public class Reservierung implements Serializable {
 
         return erg;
     }
-
-
 }

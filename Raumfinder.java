@@ -290,5 +290,16 @@ public class Raumfinder implements RaumfinderIF {
 
     public void load(){
         fileAdapter.load();
+        /*StandardNutzer tempNutzer;
+        Raum tempRaum;
+        for (int i=0; i<reservierungen.size(); i++) {
+            Reservierung tempRes = reservierungen.get(i);
+            if( tempRes.getInhaber() instanceof StandardNutzer) {
+                tempNutzer = (StandardNutzer)(tempRes.getInhaber());
+                tempNutzer.addReservierung(tempRes);
+            }
+            tempRaum = tempRes.getRaum();
+            tempRaum.addReservierung(tempRes);
+        }*/
     }
 }
