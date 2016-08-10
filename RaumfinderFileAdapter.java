@@ -39,14 +39,14 @@ public class RaumfinderFileAdapter implements RaumfinderFileAdapterIF {
 
 			ObjectOutputStream out;
 
+			out = new ObjectOutputStream (new FileOutputStream(nutzerdatei));
+			out.writeObject(speichernutzer);
+
 			out = new ObjectOutputStream (new FileOutputStream(raeumedatei));
 			out.writeObject(speicherraum);
 
 			out = new ObjectOutputStream (new FileOutputStream(reservierungendatei));
 			out.writeObject(speicherres);
-
-			out = new ObjectOutputStream (new FileOutputStream(nutzerdatei));
-			out.writeObject(speichernutzer);
 
 			out.close();
 
@@ -76,14 +76,14 @@ public class RaumfinderFileAdapter implements RaumfinderFileAdapterIF {
 		try {
 			ObjectInputStream in;
 
+			in = new ObjectInputStream (new FileInputStream(nutzerdatei));
+			Nutzer[] ladenutzer=(Nutzer[])in.readObject();
+
 			in = new ObjectInputStream (new FileInputStream(raeumedatei));
 			Raum[] laderaum=(Raum[])in.readObject();
 
 			in = new ObjectInputStream (new FileInputStream(reservierungendatei));
 			Reservierung[] laderes=(Reservierung[])in.readObject();
-
-			in = new ObjectInputStream (new FileInputStream(nutzerdatei));
-			Nutzer[] ladenutzer=(Nutzer[])in.readObject();
 			
 			in.close();
 
@@ -110,11 +110,11 @@ public class RaumfinderFileAdapter implements RaumfinderFileAdapterIF {
 
 			Raumfinder.getInstance().setResCounter(resCounter);		//Long.parseLong(resCounterString));
 
+			Raumfinder.getInstance().setNutzer(new ArrayList<Nutzer> (Arrays.asList(ladenutzer)));
+
 			Raumfinder.getInstance().setRaeume(new ArrayList<Raum> (Arrays.asList(laderaum)));
 
 			Raumfinder.getInstance().setReservierungen(new ArrayList<Reservierung> (Arrays.asList(laderes)));
-
-			Raumfinder.getInstance().setNutzer(new ArrayList<Nutzer> (Arrays.asList(ladenutzer)));
 
 		} catch (IOException e1) {
 			System.err.println("Es gab ein Problem beim Laden: IOException");
