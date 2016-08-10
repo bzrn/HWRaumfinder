@@ -26,11 +26,12 @@ public class _Starter {
         while (!(eingabe[0].equalsIgnoreCase("y")||eingabe[0].equalsIgnoreCase("n"))) eingabe[0] = din.readLine();
         if (eingabe[0].equalsIgnoreCase("y")){
             firstStart = true;
-            System.out.println("Wilkommen beim HWRaumfinder!");
-            Thread.sleep(2000);
+            System.out.println("Willkommen beim HWRaumfinder!");
+            Thread.sleep(500);
             System.out.println("Bevor der HWRaumfinder gestartet werden kann, muss ein Admin-Konto erstellt werden.");
+            Thread.sleep(500);
             System.out.println("Achtung: Dieses Nutzerkonto ist nicht löschbar.");
-            Thread.sleep(2000);
+            Thread.sleep(500);
             System.out.println("Bitte den gewünschten Nutzernamen eingeben:");
             eingabe[0] = din.readLine();
             while (eingabe[1].length()<8){
@@ -45,7 +46,7 @@ public class _Starter {
             admin = new Admin(eingabe[0],eingabe[1],eingabe[2], eingabe[3], false);
 
             System.out.println("\nVielen Dank!");
-            Thread.sleep(2000);
+            Thread.sleep(500);
             System.out.println("Soll der Raumfinder vor dem Start die bestehende Raumbelegung seitens der HWR-Verwaltung\naus dem Internet herunterladen? (Y|N)");
             while (!(eingabe[0].equalsIgnoreCase("y")||eingabe[0].equalsIgnoreCase("n"))) eingabe[0] = din.readLine();
             if (eingabe[0].equalsIgnoreCase("y")) einlesen = true;

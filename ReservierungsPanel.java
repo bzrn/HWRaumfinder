@@ -51,11 +51,11 @@ public class ReservierungsPanel extends JPanel {
 
         try {
             Calendar today = Calendar.getInstance();
-            today.setTime(sdf.parse(datumStr));
-            while (c1.before(today)||c2.before(today)) {
-                c1.add(Calendar.DATE, 1);
-                c2.add(Calendar.DATE, 1);
-            }
+            //today.setTime(sdf.parse(datumStr));
+            //while (c1.before(today)||c2.before(today)) {
+            //    c1.add(Calendar.DATE, 1);
+            //    c2.add(Calendar.DATE, 1);
+            //}
             today=c1;
             today.set(Calendar.HOUR_OF_DAY, 19);
             if (c1.after(today)||c2.after(today)) {
@@ -67,9 +67,9 @@ public class ReservierungsPanel extends JPanel {
                 c1.set(Calendar.HOUR_OF_DAY, 8);
                 c2.set(Calendar.HOUR_OF_DAY, 9);
             }
-        } catch (ParseException e) {
+        } finally {} /*catch (ParseException e) {
             System.err.println("Interner Fehler: Parsing DatumString");
-        }
+        }*/
 
         setupCalendar();
 
@@ -130,7 +130,7 @@ public class ReservierungsPanel extends JPanel {
                     zeitPanel.add(datumsWechselPnl);
                     
                     JPanel vonPanel = new JPanel(new GridLayout(1,5,0,2));
-                    JLabel lblVon = new JLabel("Beginn:");
+                    JLabel lblVon = new JLabel("Beginn: ");
                     vonPanel.add(lblVon);
                         stundenVon = new JComboBox(GUIFrame.hour);
                         vonPanel.add(stundenVon);
@@ -144,7 +144,7 @@ public class ReservierungsPanel extends JPanel {
                         vonPanel.add(lblUhr1);
                     zeitPanel.add(vonPanel);
                     JPanel bisPanel = new JPanel(new GridLayout(1,5,0,2));
-                    JLabel lblBis = new JLabel("Ende");
+                    JLabel lblBis = new JLabel("Ende: ");
                     bisPanel.add(lblBis);
                         stundenBis = new JComboBox(GUIFrame.hour);
                         bisPanel.add(stundenBis);
@@ -196,9 +196,9 @@ public class ReservierungsPanel extends JPanel {
 
     private void setSelectedZeitraum(){
         stundenVon.setSelectedItem(Integer.toString(c1.get(Calendar.HOUR_OF_DAY)));
-        minutenVon.setSelectedItem(Integer.toString(c1.get((Calendar.MINUTE / 15)*15)));
+        minutenVon.setSelectedItem(Integer.toString((c1.get(Calendar.MINUTE) / 15)*15));
         stundenBis.setSelectedItem(Integer.toString(c2.get(Calendar.HOUR_OF_DAY)));
-        minutenBis.setSelectedItem(Integer.toString(c2.get((Calendar.MINUTE / 15)*15)));
+        minutenBis.setSelectedItem(Integer.toString((c2.get(Calendar.MINUTE) / 15)*15));
     }
 
     private void setupCalendar(){

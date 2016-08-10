@@ -1,9 +1,12 @@
 package Oberflaeche;
 
+import javafx.scene.paint.*;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -37,6 +40,9 @@ public class HauptmenuePanel extends JPanel {
             add (grussPanel, BorderLayout.NORTH);
         } else {
             JButton closeButton = new JButton("HWRaumfinder speichern und schließen");
+            closeButton.setFont(new Font(closeButton.getFont().getName(), Font.BOLD, closeButton.getFont().getSize()));
+            closeButton.setForeground(Color.RED);
+            closeButton.setBackground(Color.RED);
             closeButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {

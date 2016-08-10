@@ -179,10 +179,10 @@ import java.util.Date;
             	if (aktiverNutzerIsAdmin()){
             		panelArgs = new String[rf.getReservierungen().size()];
                     for (int i=0; i<panelArgs.length; i++){
-                    	Reservierung tempRes = rf.getReservierungen().get(i);
-                    	panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + tempRes.getZeitraum().toString() + " für Raum " + tempRes.getRaum() + " Reservierer: " + tempRes.getInhaber().getName());
-                    	if (tempRes.isStorniert()) panelArgs[i] += " <sto>";
-                    	if (tempRes.isError()) panelArgs[i] += " <err>";
+                        Reservierung tempRes = rf.getReservierungen().get(i);
+                        panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + tempRes.getZeitraum().toString() + " für Raum " + tempRes.getRaum() + " Reservierer: " + tempRes.getInhaber().getName());
+                        if (tempRes.isStorniert()) panelArgs[i] += " <sto>";
+                        if (tempRes.isError()) panelArgs[i] += " <err>";
                     }
             	} else {
             		panelArgs = new String[((StandardNutzer)aktiverNutzer).getReservierungen().size()];
@@ -373,6 +373,11 @@ import java.util.Date;
 
         if (tempRaum == null){
             System.err.println("Interner Fehler: Zu ändernder Raum existiert nicht.");
+        } else if (rf.sucheKennung(neuName)!=null) {
+            JOptionPane.showMessageDialog(this,
+                    "Raumname existiert bereits!",
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE);
         } else {
             tempRaum.setRaumBezeichnung(neuName);
             tempRaum.setAusstattung(new Ausstattung(beamer, ohp, tafel, smartboard, whiteboard, computerraum, Integer.parseInt(kapa)));
@@ -522,38 +527,45 @@ import java.util.Date;
     }
 
      void bearbeiteNutzer (String nutzernameAlt, String nutzernameNeu, String passwort, String frage, String antwort) {
-    	boolean[] aenderungen = new boolean[4];
-    	Nutzer bearbeiteterNutzer = rf.sucheNutzer(nutzernameAlt);		//IF
-        if (!nutzernameAlt.equals(nutzernameNeu)) {
-        	bearbeiteterNutzer.setName(nutzernameNeu);
-        	aenderungen[0] = true;
-        } else aenderungen[0] = false;
-        if (!passwort.isEmpty()) {
-        	bearbeiteterNutzer.setPwHash(passwort);
-        	aenderungen[1] = true;
-        } else aenderungen[1] = false;
-        if (!frage.equals(bearbeiteterNutzer.getSicherheitsFrage())) {
-        	bearbeiteterNutzer.setSicherheitsFrage(frage);
-        	aenderungen[2] = true;
-        } else aenderungen[3] = false;
-        if (!antwort.isEmpty()) {
-        	bearbeiteterNutzer.setSicherheitsAntwortHash(antwort);
-        	aenderungen[3] = true;
-        } else aenderungen [3] = false;
+    	if (rf.sucheNutzer(nutzernameNeu)!=null){
+            JOptionPane.showMessageDialog(this,
+                    "Benutzername existiert bereits!",
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            boolean[] aenderungen = new boolean[4];
+            Nutzer bearbeiteterNutzer = rf.sucheNutzer(nutzernameAlt);		//IF
+            if (!nutzernameAlt.equals(nutzernameNeu)) {
+                bearbeiteterNutzer.setName(nutzernameNeu);
+                aenderungen[0] = true;
+            } else aenderungen[0] = false;
+            if (!passwort.isEmpty()) {
+                bearbeiteterNutzer.setPwHash(passwort);
+                aenderungen[1] = true;
+            } else aenderungen[1] = false;
+            if (!frage.equals(bearbeiteterNutzer.getSicherheitsFrage())) {
+                bearbeiteterNutzer.setSicherheitsFrage(frage);
+                aenderungen[2] = true;
+            } else aenderungen[3] = false;
+            if (!antwort.isEmpty()) {
+                bearbeiteterNutzer.setSicherheitsAntwortHash(antwort);
+                aenderungen[3] = true;
+            } else aenderungen [3] = false;
 
-        String bearbeitungsMessage = "Folgende Nutzerdaten wurden geändert:\n";
-        if (aenderungen[0]) bearbeitungsMessage += "\tNutzername\n";
-        if (aenderungen[1]) bearbeitungsMessage += "\tPasswort\n";
-        if (aenderungen[2]) bearbeitungsMessage += "\tSicherheitsfrage\n";
-        if (aenderungen[3]) bearbeitungsMessage += "\tSicherheitsantwort\n";
+            String bearbeitungsMessage = "Folgende Nutzerdaten wurden geändert:\n";
+            if (aenderungen[0]) bearbeitungsMessage += "\tNutzername\n";
+            if (aenderungen[1]) bearbeitungsMessage += "\tPasswort\n";
+            if (aenderungen[2]) bearbeitungsMessage += "\tSicherheitsfrage\n";
+            if (aenderungen[3]) bearbeitungsMessage += "\tSicherheitsantwort\n";
 
-        JOptionPane.showMessageDialog(this,
-                bearbeitungsMessage,
-                "Nutzerdaten geändert",
-                JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    bearbeitungsMessage,
+                    "Nutzerdaten geändert",
+                    JOptionPane.INFORMATION_MESSAGE);
 
-        aktualisiereAnsicht(HAUPTMENUE);
-        aktualisiereAnsicht(NUTZERVERWALTUNG);
+            aktualisiereAnsicht(HAUPTMENUE);
+            aktualisiereAnsicht(NUTZERVERWALTUNG);
+        }
     }
 
      void loescheNutzer (String nutzername){
