@@ -94,14 +94,11 @@ import java.util.Date;
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (aktiverNutzerIsAdmin()) {
-                    showExitDialog(true);
-                    save();
-                    System.out.println("Programm geschlossen.");
-                    System.exit(0);
-                } else {
-                    showExitDialog(false);
-                }
+                    if (showExitDialog()==JOptionPane.OK_OPTION){
+                    	save();
+                        System.out.println("Programm geschlossen.");
+                        System.exit(0);
+                    }
             }
         });
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -594,17 +591,18 @@ import java.util.Date;
         System.out.println("Gespeicherte Konfiguration geladen.");
     }
 
-    private void showExitDialog (boolean admin){
-        if (admin){
-            JOptionPane.showMessageDialog(this,
+    private int showExitDialog (){
+        if (aktiverNutzerIsAdmin()){
+            return JOptionPane.showConfirmDialog(this,
                     "Programm wird gespeichert und geschlossen!",
                     "Byebye",
-                    JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.OK_CANCEL_OPTION);
         } else {
             JOptionPane.showMessageDialog(this,
                     "Nur ein Adminisrator kann den HWRaumfinder schließen!",
                     "Zugriff verweigert",
                     JOptionPane.WARNING_MESSAGE);
+            return JOptionPane.CANCEL_OPTION;
         }
     }
 }

@@ -64,9 +64,10 @@ public class _Starter {
         	rf.onlineEinlesen();
         }
         
-        gui = GUIFrame.getInstance();
         if (firstStart) rf.getNutzer().add(admin);
-        else gui.load();
+        else rf.load();
+        
+        gui = GUIFrame.getInstance();
         
         System.out.println("Programm gestartet.");
     }
