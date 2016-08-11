@@ -11,7 +11,7 @@ import java.util.zip.DataFormatException;
  * <strong>Zweck:</strong> Ermöglicht das Erzeugen von Zeitraum-Objekten mit einer bestimmten Dauer, Start- und Endzeitpunkt
  * 
  * @version 2.2
- * @author Hanna Behnke, Alex Reichenbach
+ * @author Hanna Behnke, Alexander Reichenbach
  *<p> Änderungshistorie:</p>
  *
  */
