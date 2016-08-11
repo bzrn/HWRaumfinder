@@ -1,5 +1,7 @@
 package Persistenz;
 
+import Verarbeitung.RaumfinderIF;
+
 /**
  * Created by Alex on 07.08.2016.
  */
@@ -7,5 +9,5 @@ package Persistenz;
 public interface RaumfinderFileAdapterIF {
 
     void save();
-    void load();
+    RaumfinderIF load();
 }

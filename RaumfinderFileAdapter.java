@@ -9,22 +9,32 @@ import java.util.Scanner;
 
 public class RaumfinderFileAdapter implements RaumfinderFileAdapterIF {
 
+	// Singleton-Implementierung
+	private static RaumfinderFileAdapter ourInstance = new RaumfinderFileAdapter();
+	
 	private File raeumedatei;
 	private File reservierungendatei;
 	private File nutzerdatei;
 	private File rescounterdatei;
 
-	public RaumfinderFileAdapter () {
+	// Singleton-Konstruktor
+	private  RaumfinderFileAdapter () {
 		new File ("FileSaver/").mkdir();
 		raeumedatei = new File ("FileSaver/raeume.raumfind");
 		reservierungendatei = new File ("FileSaver/reservierungen.raumfind");
 		nutzerdatei = new File ("FileSaver/nutzer.raumfind");
 		rescounterdatei = new File ("FileSaver/rescounter.raumfind");
 	}
+	
+	// Singleton-getInstance
+    public static RaumfinderFileAdapter getInstance() {
+    	return ourInstance;
+    }
 
 	@SuppressWarnings({ "resource", "static-access" })
 	public void save(){
 
+		/*
 		Raum[]speicherraum=new Raum[Raumfinder.getInstance().getRaeume().size()];
 		Raumfinder.getInstance().getRaeume().toArray(speicherraum);
 
@@ -68,11 +78,21 @@ public class RaumfinderFileAdapter implements RaumfinderFileAdapterIF {
 			e.printStackTrace();
 			return;
 		}
+		*/
+		try {
+			ObjectOutputStream out = new ObjectOutputStream (new FileOutputStream(nutzerdatei));
+			out.writeObject(Raumfinder.getInstance());
+		} catch(IOException e) {
+
+			System.err.println("Es gab ein Problem beim Speichern: IOException");
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	@SuppressWarnings({ "resource", "static-access" })
-	public void load() {
-
+	public RaumfinderIF load() {
+		/*
 		try {
 			ObjectInputStream in;
 
@@ -107,7 +127,7 @@ public class RaumfinderFileAdapter implements RaumfinderFileAdapterIF {
 				System.err.println("Es gab ein Problem beim Einlesen des ResCounters: IOException");
 			}
 */
-
+/*
 			Raumfinder.getInstance().setResCounter(resCounter);		//Long.parseLong(resCounterString));
 
 			Raumfinder.getInstance().setNutzer(new ArrayList<Nutzer> (Arrays.asList(ladenutzer)));
@@ -122,5 +142,17 @@ public class RaumfinderFileAdapter implements RaumfinderFileAdapterIF {
 		} catch (ClassNotFoundException e2) {
 			System.err.println("Es gab ein Problem beim Laden: ClassNotFound");
 		}
+		*/
+
+		try {
+			ObjectInputStream in = new ObjectInputStream (new FileInputStream(nutzerdatei));
+			return (Raumfinder) in.readObject();
+		} catch (IOException e) {
+			System.err.println("Es gab ein Problem beim Einlesen des ResCounters: IOException");
+			e.printStackTrace();
+		} catch (ClassNotFoundException t){
+			System.err.println("Es gab ein Problem beim Laden: ClassNotFound");
+		}
+		return null;
 	}
 }
