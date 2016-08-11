@@ -1,7 +1,5 @@
 package Verarbeitung;
 
-import VerarbeitungInterfaces.ZeitraumIF;
-
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -78,16 +76,16 @@ public class Zeitraum implements Serializable {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
 		erg += sdf.format(c.getTime()) + " von: ";
+		if (c.get(Calendar.HOUR_OF_DAY)<=9) erg += "0";
 		erg += Integer.toString(c.get(Calendar.HOUR_OF_DAY));
-		if (c.get(Calendar.HOUR_OF_DAY)<=9) erg += "0";
-		erg += ":"+Integer.toString(c.get(Calendar.MINUTE));
 		if (c.get(Calendar.MINUTE)<=9) erg += "0";
+		erg += ":"+Integer.toString(c.get(Calendar.MINUTE));
 		c.setTime(ende);
-		erg += " bis: " + Integer.toString(c.get(Calendar.HOUR_OF_DAY));
 		if (c.get(Calendar.HOUR_OF_DAY)<=9) erg += "0";
-		erg += ":"+Integer.toString(c.get(Calendar.MINUTE));
+		erg += " bis: " + Integer.toString(c.get(Calendar.HOUR_OF_DAY));
 		if (c.get(Calendar.MINUTE)<=9) erg += "0";
-
+		erg += ":"+Integer.toString(c.get(Calendar.MINUTE));
+		
 		return erg;
 	}
 
