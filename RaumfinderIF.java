@@ -1,16 +1,21 @@
-package Verarbeitung;
+package VerarbeitungInterfaces;
+
+import Verarbeitung.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public interface RaumfinderIF {
 
     // Raum-Methoden
     ArrayList<String> suche(Zeitraum s, Ausstattung a);
+    ArrayList<String> suche (Date start, Date ende, boolean beamer, boolean ohp, boolean tafel, boolean smartb, boolean whiteb, boolean computerr, int kapazitaet) throws UnzulaessigerZeitraumException;
     Raum sucheKennung(String raumKennung);
     boolean pruefeVerfuegbarkeitRaum(String raumKennung, Zeitraum zr);
     boolean pruefeBuchbarkeitRaum(String raumKennung);
     void addRaum(Raum a);
-    void loescheRaum(Raum a);
+    void addRaum (String raumKennung, boolean beamer, boolean ohp, boolean tafel, boolean smartb, boolean whiteb, boolean computerr, int kapazitaet, boolean admin);
+        void loescheRaum(Raum a);
     ArrayList<Raum> getRaeume();
     void setRaeume(ArrayList<Raum> raeume);
 
@@ -34,7 +39,6 @@ public interface RaumfinderIF {
     ArrayList<Nutzer> getNutzer();
     void setNutzer(ArrayList<Nutzer> nutzer);
     String[] getNutzerString();
-    boolean nutzerIsAdmin (Nutzer n);
 
     // Sonstige Methoden
     void onlineEinlesen();
