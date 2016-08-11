@@ -7,6 +7,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.zip.DataFormatException;
 
+/**
+ * <strong>Zweck:</strong> Ermöglicht das Erzeugen von Zeitraum-Objekten mit einer bestimmten Dauer, Start- und Endzeitpunkt
+ * 
+ * @version 2.2
+ * @author Hanna Behnke, Alex Reichenbach
+ *<p> Änderungshistorie:</p>
+ *
+ */
+
 //@SuppressWarnings("deprecation")
 public class Zeitraum implements Serializable {
 	
@@ -27,7 +36,7 @@ public class Zeitraum implements Serializable {
 		}
 	}
 	
-	//getter und setter
+	//Getter und Setter
 	
 	public Date getStart() {
 		return start;
@@ -55,53 +64,73 @@ public class Zeitraum implements Serializable {
 		return dauer;
 	}
 
-	public String toString(){
+	public String toString() {
+		
 		String erg="";
-
 		Calendar c = Calendar.getInstance();
 		c.setTime(start);
 		SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
 		erg += sdf.format(c.getTime()) + " von: ";
 		erg += Integer.toString(c.get(Calendar.HOUR_OF_DAY));
-		if (c.get(Calendar.HOUR_OF_DAY)==0) erg += "0";
+		if (c.get(Calendar.HOUR_OF_DAY)<=9) {
+			erg += "0";
+		}
 		erg += ":"+Integer.toString(c.get(Calendar.MINUTE));
-		if (c.get(Calendar.MINUTE)==0) erg += "0";
+		if (c.get(Calendar.MINUTE)<=9) {
+			erg += "0";
+		}
 		c.setTime(ende);
 		erg += " bis: " + Integer.toString(c.get(Calendar.HOUR_OF_DAY));
-		if (c.get(Calendar.HOUR_OF_DAY)==0) erg += "0";
+		if (c.get(Calendar.HOUR_OF_DAY)<=9) { 
+			erg += "0";
+		}
 		erg += ":"+Integer.toString(c.get(Calendar.MINUTE));
-		if (c.get(Calendar.MINUTE)==0) erg += "0";
+		if (c.get(Calendar.MINUTE)<=9) { 
+			erg += "0";
+		}
 
 		return erg;
 	}
 
-
 	
-	//15 min Einheiten -> Pro Tag 4*24=96 (Schätzungsweise täglich 8-20 Uhr, sonntags geschlossen?!  32-80ste Einheit geöffnet
-	//über GUI mit dropdown realisieren, dass nur 8-19:45 uhr und 15min Intervalle möglich sind
-
-
-	//Methoden
-	public int berechneDauer(Date start, Date ende){
+/**
+ * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann.</p>
+ * <p><strong>Effekt:</strong> Die Dauer des Zeitraumes wird in Minuten berechnet.</p>
+ * @param start der Start des Zeitraumes wird als Datumsobjekt übergeben
+ * @param ende das Ende des Zeitraumes wird als Datumsobjekt übergeben
+ * @return <strong>dauer</strong> gibt die Dauer des Zeitraumes in Minuten zurück
+ */
+	
+	public int berechneDauer(Date start, Date ende) {
+		
 		int stunden=ende.getHours()-start.getHours();
 		int min=ende.getMinutes()-start.getMinutes();
 		dauer= stunden*60+min;
 		return dauer;
-		}
+	}
+	
+	/**
+	 * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann, außerdem muss ein Zeitraum "engpass" übergeben werden.</p>
+	 * <p><strong>Effekt:</strong> Die Dauer des Zeitraumes wird in Minuten berechnet.</p>
+	 * @param engpass ein zweiter Zeitraum, der auf Überschneidungen mit dem Zeitraum geprüft wird,auf den die Methode angewendet wird
+	 * @return <strong>true</strong>, wenn die Zeiträume kollidieren, <strong>false</strong>, wenn sie nicht kollidieren.
+	 */
 	
 	public boolean kollidiert(Zeitraum engpass){
-		Date e1 = engpass.getStart();
-		Date e2 = engpass.getEnde();
-		if (start.equals(e1) && ende.equals(e2)){
+		
+		Date engpassStart = engpass.getStart();
+		Date engpassEnde = engpass.getEnde();
+		
+		if (start.equals(engpassStart) && ende.equals(engpassEnde)){ 		// Kollision, da die Zeiträume identisch sind
 			return true;
-		}else if(start.before(e1) && ende.after(e2)){
+		}else if(start.before(engpassStart) && ende.after(engpassEnde)){	// Kollision, da der Zeitraum "engpass" innerhalb des betrachteten Zeitraumes liegt
 			return true;
-		}else if(start.after(e1) && ende.before(e2)){
+		}else if(start.after(engpassStart) && ende.before(engpassEnde)){	// Kollision, da der betrachtete Zeitraum innerhalb des Zeitraumes "engpass" liegt
 			return true;
-		}else if(ende.after(e1) && ende.before(e2)){
+		}else if(ende.after(engpassStart) && ende.before(engpassEnde)){		// Kollision, da sich die Zeiträume überschneiden, das Ende des betrachteten Zeitraumes liegt innerhalb des Zeitraumes "engpass"
 			return true;
-		}else if(start.after(e1) && start.before(e2)){
+		}else if(start.after(engpassStart) && start.before(engpassEnde)){	// Kollision, da sich die Zeiträume überschneiden, der Start des betrachteten Zeitraumes liegt innerhalb des Zeitraumes "engpass"
 			return true;
 		}
 		return false;
