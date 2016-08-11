@@ -2,6 +2,7 @@ package Verarbeitung;
 
 import Persistenz.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -10,7 +11,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 
 
-public class Raumfinder implements RaumfinderIF {
+public class Raumfinder implements RaumfinderIF, Serializable {
 	
 	// Singleton-Implementierung
 	private static Raumfinder ourInstance = new Raumfinder();
@@ -19,8 +20,8 @@ public class Raumfinder implements RaumfinderIF {
     private ArrayList<Raum> raeume;
     private ArrayList<Reservierung> reservierungen;
     private ArrayList<Nutzer> nutzer;
-    private OnlineEinleser onEinleser;
-    private RaumfinderFileAdapterIF fileAdapter;
+    transient private OnlineEinleser onEinleser;
+    transient private RaumfinderFileAdapterIF fileAdapter;
 
 
     // Singleton-Konstruktor
@@ -30,7 +31,7 @@ public class Raumfinder implements RaumfinderIF {
         reservierungen = new ArrayList<Reservierung>();
         nutzer = new ArrayList<Nutzer>();
         onEinleser = new OnlineEinleser();
-        fileAdapter = new RaumfinderFileAdapter();
+        fileAdapter = RaumfinderFileAdapter.getInstance();
     }
     
     // Singleton-getInstance
@@ -285,11 +286,11 @@ public class Raumfinder implements RaumfinderIF {
     }
 
     public void save(){
-        fileAdapter.save();
+    	RaumfinderFileAdapter.getInstance().save();
     }
 
     public void load(){
-        fileAdapter.load();
+        ourInstance = (Raumfinder)fileAdapter.load();
         /*StandardNutzer tempNutzer;
         Raum tempRaum;
         for (int i=0; i<reservierungen.size(); i++) {
@@ -301,5 +302,7 @@ public class Raumfinder implements RaumfinderIF {
             tempRaum = tempRes.getRaum();
             tempRaum.addReservierung(tempRes);
         }*/
+        onEinleser = new OnlineEinleser();
+        fileAdapter = RaumfinderFileAdapter.getInstance();
     }
 }
