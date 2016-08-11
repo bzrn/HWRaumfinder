@@ -4,21 +4,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Zweck:
- * @author
+ * <strong/>Zweck:<strong/>
+ * <p><strong>Änderungshistorie:</strong></p>
  * @version
- * Änderungshistorie:
- * Created by mwolff on 19.06.16.
- * Hanna am 23. Juni
+ * @author Alexander Reichenbach
+ * 
  */
-public class Raum implements Serializable {
 
+public class Raum implements Serializable {
+	
+	// Attribute
+	
     private String raumBezeichnung;
     private ArrayList<Reservierung> belegung;
     private Ausstattung ausstattung;
     private boolean buchbar;
 
-
+    // Konstruktor
+    
     public Raum(String raumBezeichnung, Ausstattung ausstattung, boolean buchbar){
         this.raumBezeichnung = raumBezeichnung;
         this.belegung = new ArrayList<Reservierung>();
@@ -26,6 +29,8 @@ public class Raum implements Serializable {
         this.buchbar = buchbar;
     }
 
+    //Getter und Setter
+    
     public String getRaumBezeichnung() {
         return raumBezeichnung;
     }
@@ -50,21 +55,48 @@ public class Raum implements Serializable {
         return buchbar;
     }
 
-    public void setBuchbar (boolean buchbar) { this.buchbar = buchbar; }
+    public void setBuchbar (boolean buchbar) { 
+    	this.buchbar = buchbar; 
+    }
+    
+    /**
+     * 
+     * @param a
+     * @return
+     */
     
     public int hatMindestausstattung (Ausstattung a) {
     	return ausstattung.hatMindestens(a);
     }
+    
+    /**
+     * 
+     * @param zr
+     * @return
+     */
     
     public boolean istFrei(Zeitraum zr) {
     	if (findeKollision(zr)==null) return true;
     	else return false;
     }
 
+    /**
+     * 
+     * @param zr
+     * @return
+     */
+    
     public Reservierung findeKollision (Zeitraum zr) {
         return GlobaleMethoden.findeKollisioninArrayList(belegung, zr);
     }
 
+    
+    /**
+     * 
+     * @param neu
+     * @return
+     */
+    
     public boolean addReservierung(Reservierung neu){
         if (!belegung.contains(neu)) {
             GlobaleMethoden.addReservierungtoArrayList(belegung, neu);
@@ -73,6 +105,11 @@ public class Raum implements Serializable {
             return false;
         }
     }
+    
+    /**
+     * 
+     * @param weg
+     */
     
     public void removeReservierung (Reservierung weg) {
     	belegung.remove(weg);
