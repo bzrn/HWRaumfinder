@@ -77,9 +77,9 @@ public class Zeitraum implements Serializable {
 
 		erg += sdf.format(c.getTime()) + " von: ";
 		if (c.get(Calendar.HOUR_OF_DAY)<=9) erg += "0";
-		erg += Integer.toString(c.get(Calendar.HOUR_OF_DAY));
+		erg += Integer.toString(c.get(Calendar.HOUR_OF_DAY))+":";
 		if (c.get(Calendar.MINUTE)<=9) erg += "0";
-		erg += ":"+Integer.toString(c.get(Calendar.MINUTE))+ " bis: ";
+		erg += Integer.toString(c.get(Calendar.MINUTE))+ " bis: ";
 		c.setTime(ende);
 		if (c.get(Calendar.HOUR_OF_DAY)<=9) erg += "0";
 		erg +=  Integer.toString(c.get(Calendar.HOUR_OF_DAY));
