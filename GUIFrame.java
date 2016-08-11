@@ -572,12 +572,10 @@ import java.util.Date;
 
      public void save (){
         rf.save();
-        System.out.println("Aktuelle Konfiguration gespeichert.");
     }
 
      public void load () {
         rf.load();
-        System.out.println("Gespeicherte Konfiguration geladen.");
     }
 
     public boolean aktiverNutzerIsAdmin() {
