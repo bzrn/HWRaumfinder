@@ -294,22 +294,13 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
 
     public void save(){
     	RaumfinderFileAdapter.getInstance().save();
+        System.out.println("Aktuelle Konfiguration gespeichert.");
     }
 
     public void load(){
         ourInstance = (Raumfinder)fileAdapter.load();
-        /*StandardNutzer tempNutzer;
-        Raum tempRaum;
-        for (int i=0; i<reservierungen.size(); i++) {
-            Reservierung tempRes = reservierungen.get(i);
-            if( tempRes.getInhaber() instanceof StandardNutzer) {
-                tempNutzer = (StandardNutzer)(tempRes.getInhaber());
-                tempNutzer.addReservierung(tempRes);
-            }
-            tempRaum = tempRes.getRaum();
-            tempRaum.addReservierung(tempRes);
-        }*/
         onEinleser = new OnlineEinleser();
         fileAdapter = RaumfinderFileAdapter.getInstance();
+        System.out.println("Gespeicherte Konfiguration geladen.");
     }
 }
