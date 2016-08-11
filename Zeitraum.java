@@ -19,6 +19,8 @@ import java.util.zip.DataFormatException;
 //@SuppressWarnings("deprecation")
 public class Zeitraum implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+	
 	//Attribute
 	
 	private Date start;
