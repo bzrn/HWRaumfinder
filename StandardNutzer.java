@@ -1,20 +1,19 @@
 package Verarbeitung;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import VerarbeitungInterfaces.StandardNutzerIF;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * <strong/>Zweck:<strong/>
  * <p><strong>Änderungshistorie:</strong></p>
  * @version
  * @author Alexander Reichenbach
- * 
+ *
  */
 
-public class StandardNutzer extends Nutzer implements Reservierer, Serializable {
+public class StandardNutzer extends Nutzer implements VerarbeitungInterfaces.StandardNutzerIF, Reservierer, Serializable {
 
     private ArrayList<Reservierung> reservierungen = new ArrayList<Reservierung>();
 
@@ -52,4 +51,24 @@ public class StandardNutzer extends Nutzer implements Reservierer, Serializable 
         return GlobaleMethoden.findeKollisioninArrayList(reservierungen, zr);
     }
 
+    /*
+    // Serializable-Implementierung
+
+    private void writeObject(ObjectOutputStream oos) throws IOException {
+        // default serialization
+        oos.defaultWriteObject();
+        // write the object
+        //Reservierung[] resSave = new Reservierung [reservierungen.size()];
+        //reservierungen.toArray(resSave);
+        //oos.writeObject(resSave);
+    }
+
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+        // default deserialization
+        ois.defaultReadObject();
+        // read the objects
+        //Reservierung[] resLoad = (Reservierung[])ois.readObject();
+        //reservierungen = new ArrayList<Reservierung> (Arrays.asList(resLoad));
+    }
+    */
 }

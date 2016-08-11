@@ -2,16 +2,17 @@ package Verarbeitung;
 
 import java.io.Serializable;
 
+
 /**
  * <strong/>Zweck:</strong> Ermöglicht es, Ausstattungsobjekte zu erstellen, die Ausstattung und Kapazität eines Raumes beschreiben
  * <p><strong>Änderungshistorie:</strong> ...</p>
  * @version 2.1
  * @author Hanna Behnke, Alexander Reichenbach
- * 
+ *
  */
 
 
-public class Ausstattung implements Serializable {
+public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serializable {
 
 
 	//Attribute
@@ -107,14 +108,14 @@ public class Ausstattung implements Serializable {
 	public void setKapazitaet(int kapazitaet) {
 		this.kapazitaet = kapazitaet;
 	}
-	
+
 	/**
 	 * <p><strong>Vorbedingungen:</strong> Es muss ein Ausstattungs-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann und eines, welches als "anforderung" übergeben wird.</p>
- * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, wie gut die Ausstattung (eines Raumes) den Anforderungen (des Nutzers) entspricht.</p>
-	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände vom Nutzer gefordert werden (wird mit Austattung der Räume verglichen) 
+	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, wie gut die Ausstattung (eines Raumes) den Anforderungen (des Nutzers) entspricht.</p>
+	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände vom Nutzer gefordert werden (wird mit Austattung der Räume verglichen)
 	 * @return erfuellteAnforderungen zählt, wie viele Anforderungen erfüllt werden, wird also hochgesetzt, wenn eine Anforderung erfüllt ist, aber auch, wenn der Raum eine Ausstattung hat, die nicht gefordert ist
-	 * 
-	 * <p><strong>Anmerkung:</strong> Es wurde mit der in Java nicht integrierten, logischen Verknüpfung der Implikaition gearbeitet, 
+	 *
+	 * <p><strong>Anmerkung:</strong> Es wurde mit der in Java nicht integrierten, logischen Verknüpfung der Implikaition gearbeitet,
 	 * welche mit den vorhandenen logischen Operatoren der Bool'schen Algebra realisiert wurde.</p>
 	 */
 	
@@ -130,23 +131,17 @@ public class Ausstattung implements Serializable {
 						&& (!anforderung.computerraum || this.computerraum)
 						&& (anforderung.getKapazitaet()<=this.getKapazitaet()))
 		{
-			if (anforderung.beamer && this.beamer) erfuellteAnforderungen ++;
+			if (anforderung.beamer && this.beamer) erfuellteAnforderungen ++;	//+= 2;
 			if (anforderung.ohp && this.ohp) erfuellteAnforderungen++;
 			if (anforderung.tafel && this.tafel) erfuellteAnforderungen++;
-			if (anforderung.smartboard && this.smartboard) erfuellteAnforderungen ++;
+			if (anforderung.smartboard && this.smartboard) erfuellteAnforderungen ++;	//+= 2;
 			if (anforderung.whiteboard && this.whiteboard) erfuellteAnforderungen++;
-			if (anforderung.computerraum && this.computerraum) erfuellteAnforderungen ++;	
+			if (anforderung.computerraum && this.computerraum) erfuellteAnforderungen ++;	//+= 3;
 			if (anforderung.getKapazitaet()<=this.getKapazitaet()) erfuellteAnforderungen++;
 		}
 		
 		return erfuellteAnforderungen;
 	}
-	
-	/**
-	 * <p><strong>Vorbedingungen:</strong>
-	 * <p><strong>Effekt:</strong> ... </p>
-	 * @return <strong>erg </strong> 
-	 */
 
 	public String[][] toStringArray() {
 		String[][] erg = new String[2][7];

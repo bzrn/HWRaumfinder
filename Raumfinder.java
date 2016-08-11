@@ -1,9 +1,11 @@
 package Verarbeitung;
 
 import Persistenz.*;
+import VerarbeitungInterfaces.RaumfinderIF;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
@@ -11,7 +13,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 
 
-public class Raumfinder implements RaumfinderIF, Serializable {
+public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializable {
 	
 	// Singleton-Implementierung
 	private static Raumfinder ourInstance = new Raumfinder();
@@ -75,6 +77,12 @@ public class Raumfinder implements RaumfinderIF, Serializable {
         return (new ArrayList<String>(erg.descendingMap().values()));     // Konstruktion und Reversion der Werte
     }
 
+    // Raumsuche anhand von Kriterien ohne Zeitraum/Aussattungs-Objekte
+    public ArrayList<String> suche (Date start, Date ende, boolean beamer, boolean ohp, boolean tafel, boolean smartb, boolean whiteb, boolean computerr, int kapazitaet) throws UnzulaessigerZeitraumException {
+        return suche (new Zeitraum(start, ende), new Ausstattung(beamer, ohp, tafel, smartb, whiteb, computerr, kapazitaet));
+    }
+
+    // Raumsuche über Raumkennung
     public Raum sucheKennung(String raumKennung){
         for(int i = 0; i<raeume.size(); i++){
             if(raumKennung.equalsIgnoreCase(raeume.get(i).getRaumBezeichnung())){
@@ -202,6 +210,10 @@ public class Raumfinder implements RaumfinderIF, Serializable {
         raeume.add(a);
     }
 
+    public void addRaum (String raumKennung, boolean beamer, boolean ohp, boolean tafel, boolean smartb, boolean whiteb, boolean computerr, int kapazitaet, boolean admin){
+        addRaum (new Raum (raumKennung, new Ausstattung(beamer, ohp, tafel, smartb, whiteb, computerr, kapazitaet), admin));
+    }
+
     public void loescheRaum (Raum a) { raeume.remove(a); }
 
     public ArrayList<Raum> getRaeume() {
@@ -242,7 +254,7 @@ public class Raumfinder implements RaumfinderIF, Serializable {
     }
 
     public boolean loescheNutzer (Nutzer n) {
-        if (nutzerIsAdmin(n)) if (!((Admin) n).isDeletable()) return false;
+        if (n.isAdmin()) if (!((Admin) n).isDeletable()) return false;
 
         nutzer.remove(n);
         return true;
@@ -265,14 +277,9 @@ public class Raumfinder implements RaumfinderIF, Serializable {
         for (int i=0; i<erg.length; i++) {
             Nutzer temp = nutzer.get(i);
             erg[i] = temp.getName();
-            if (nutzerIsAdmin(temp))  erg[i] += " <Admin>";
+            if (temp.isAdmin())  erg[i] += " <Admin>";
         }
         return erg;
-    }
-
-    public boolean nutzerIsAdmin (Nutzer n){
-        if (n instanceof Admin) return true;
-        else return false;
     }
 
 

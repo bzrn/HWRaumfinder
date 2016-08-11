@@ -1,5 +1,7 @@
 package Verarbeitung;
 
+import VerarbeitungInterfaces.ReservierungIF;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,7 +16,7 @@ import java.util.Date;
 
 // Attribute
 
-public class Reservierung implements Serializable {
+public class Reservierung implements VerarbeitungInterfaces.ReservierungIF, Serializable {
 
     private static long resCounter = 0;
 

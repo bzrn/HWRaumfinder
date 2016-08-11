@@ -1,5 +1,7 @@
 package Verarbeitung;
 
+import VerarbeitungInterfaces.RaumfinderIF;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -38,13 +40,7 @@ public class OnlineEinleser {
             raumfinder.reservieren(resses.get(i), true);
         }
 
-        /*
-        for (int i=0; i<resses.size(); i=i+2) {
-            System.out.println(resses.get(i).toString());
-            System.out.println("-----------");
-        }
-        System.err.println("Error Count: "+errCounter);
-        */
+        System.out.println("OnlineEinleser: "+resses.size()+" Reservierungen eingelesen.");
     }
 
     private void download(){
@@ -259,13 +255,12 @@ public class OnlineEinleser {
  //                   System.out.println("Fuck.");
   //              }
 
-                if (strRaum.isEmpty()) strRaum = "kein Raum";
+                if (strRaum.isEmpty()) strRaum = "Ohne Raum";
                 tempRaum = raumfinder.sucheKennung(strRaum);
-                //tempRaum = null;    // Test
                     if (tempRaum == null) {
                         tempRaum = new Raum (
                                         strRaum,
-                                        null,       // Ausstattung null
+                                        new Ausstattung(false, false, false, false, false, false, 0),       // Ausstattung null
                                         true        // buchbar true
                         );
                         raumfinder.addRaum(tempRaum);
