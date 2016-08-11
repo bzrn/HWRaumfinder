@@ -1,5 +1,13 @@
 package Verarbeitung;
 
+/**
+ * <strong/>Zweck: Gibt Administratoren zusätzlich zu den regulären Nutzer-Attributen die Eigenschaft, löschbar oder nicht löschbar zu sein <strong/>
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 2.0
+ * @author Alexander Reichenbach
+ * 
+ */
+ 
 public class Admin extends Nutzer {
 
     private boolean deletable;
