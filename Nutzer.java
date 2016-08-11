@@ -4,11 +4,21 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * <strong/>Zweck:</strong> Definiert einen Nutzer, dem Name, verschlüsseltes Passwort, eine Sicherheitsfrage und die verschlüsselte Antwort darauf zugeordnet sind
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 
+ * @author Alexander Reichenbach
+ * 
+ */
+
 public abstract class Nutzer implements Serializable {
 
+	// Attribute
     protected String name, pwHash, sicherheitsFrage, sicherheitsAntwortHash;
     protected static MessageDigest messageDigest;		// more or less solved
 
+    // Konstruktor
     protected Nutzer (String name, String password, String sicherheitsFrage, String sicherheitsAntwort) {
 
         this.name=name;
@@ -71,11 +81,17 @@ public abstract class Nutzer implements Serializable {
         sicherheitsAntwortHash = new String(messageDigest.digest());
     }
 
+    /**
+     * 
+     * @param password
+     * @return
+     */
+    
     public boolean checkPw (String password){
     	if (messageDigest==null) {
     		try {
                 messageDigest = MessageDigest.getInstance("SHA-256");
-            } catch (NoSuchAlgorithmException wtf){
+            } catch (NoSuchAlgorithmException wtf){ //ummm vllt nicht wtf? :D
                 System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
             }
     	}
@@ -84,6 +100,12 @@ public abstract class Nutzer implements Serializable {
         else return false;
     }
 
+    /**
+     * 
+     * @param antwort
+     * @return
+     */
+    
     public boolean checkFrage (String antwort){
     	if (messageDigest==null) {
     		try {
