@@ -17,7 +17,7 @@ public class _Starter {
     static private Admin admin;
 
     static private boolean firstStart=false;
-    static private boolean einlesen=true;       //FALSE
+    static private boolean einlesen=false;
     static private String[] eingabe = {"","","",""};
 
     public static void main(String[] Args) throws IOException, InterruptedException {
