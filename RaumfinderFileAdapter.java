@@ -1,7 +1,7 @@
 package Persistenz;
 
 import Verarbeitung.Raumfinder;
-import Verarbeitung.RaumfinderIF;
+import VerarbeitungInterfaces.RaumfinderIF;
 
 import java.io.*;
 

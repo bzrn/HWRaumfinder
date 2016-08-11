@@ -1,6 +1,6 @@
 package Persistenz;
 
-import Verarbeitung.RaumfinderIF;
+import VerarbeitungInterfaces.RaumfinderIF;
 
 /**
  * Created by Alex on 07.08.2016.
