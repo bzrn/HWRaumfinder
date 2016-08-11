@@ -17,7 +17,7 @@ public class _Starter {
     static private Admin admin;
 
     static private boolean firstStart=false;
-    static private boolean einlesen=false;
+    static private boolean einlesen=true;       //FALSE
     static private String[] eingabe = {"","","",""};
 
     public static void main(String[] Args) throws IOException, InterruptedException {
@@ -59,14 +59,15 @@ public class _Starter {
         System.out.println("\nHWRaumfinder wird gestartet.");
         
         rf = Raumfinder.getInstance();
-        if (einlesen) {
-        	System.out.println("Daten werden eingelesen...");
-        	rf.onlineEinlesen();
-        }
         
         if (firstStart) rf.getNutzer().add(admin);
         else rf.load();
-        
+
+        if (einlesen) {
+            System.out.println("Daten werden eingelesen...");
+            rf.onlineEinlesen();
+        }
+
         gui = GUIFrame.getInstance();
         
         System.out.println("Programm gestartet.");

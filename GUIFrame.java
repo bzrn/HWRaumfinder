@@ -1,14 +1,10 @@
 package Oberflaeche;
 
-import Verarbeitung.RaumfinderIF;
 import Verarbeitung.Raumfinder;
-import Verarbeitung.Reservierung;
-import Verarbeitung.Raum;
 import Verarbeitung.Zeitraum;
+import Verarbeitung.Reservierer;
 import Verarbeitung.UnzulaessigerZeitraumException;
-import Verarbeitung.Ausstattung;
-import Verarbeitung.Nutzer;
-import Verarbeitung.StandardNutzer; // IF nur getReservierungen()
+import VerarbeitungInterfaces.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,9 +23,10 @@ import java.util.Date;
 	private static GUIFrame ourInstance = new GUIFrame();
 	 
 	// Attribute:
-    private Nutzer aktiverNutzer;       // IF
-    private static RaumfinderIF rf;
+    private NutzerIF aktiverNutzer;       // IF
+    private RaumfinderIF rf;
     private Zeitraum tempZeitraum=null;	// IF
+
     private JPanel aktuelleAnsicht, header, contentPanel, fixedPanel;
     private JLabel titelLabel;
     private JButton headerBtn;
@@ -176,15 +173,15 @@ import java.util.Date;
             	if (aktiverNutzerIsAdmin()){
             		panelArgs = new String[rf.getReservierungen().size()];
                     for (int i=0; i<panelArgs.length; i++){
-                        Reservierung tempRes = rf.getReservierungen().get(i);
-                        panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + tempRes.getZeitraum().toString() + " für Raum " + tempRes.getRaum() + " Reservierer: " + tempRes.getInhaber().getName());
+                        ReservierungIF tempRes = rf.getReservierungen().get(i);
+                        panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + (tempRes.getZeitraum()).toString() + " für Raum " + tempRes.getRaum() + " Reservierer: " + tempRes.getInhaber().getName());
                         if (tempRes.isStorniert()) panelArgs[i] += " <sto>";
                         if (tempRes.isError()) panelArgs[i] += " <err>";
                     }
             	} else {
-            		panelArgs = new String[((StandardNutzer)aktiverNutzer).getReservierungen().size()];
+            		panelArgs = new String[((StandardNutzerIF)aktiverNutzer).getReservierungen().size()];
                     for (int i=0; i<panelArgs.length; i++){
-                    	Reservierung tempRes = ((StandardNutzer)aktiverNutzer).getReservierungen().get(i);
+                    	ReservierungIF tempRes = ((StandardNutzerIF)aktiverNutzer).getReservierungen().get(i);
                     	panelArgs[i] = ("("+Long.toString(tempRes.getReservierungsNr()) + ")  " + tempRes.getZeitraum().toString() + " für Raum " + tempRes.getRaum());
                     }
             	}
@@ -301,7 +298,7 @@ import java.util.Date;
     								"Passwort zurücksetzen",
     								JOptionPane.OK_CANCEL_OPTION);
     	if (nutzername!=null){
-    		Nutzer tempNutzer = rf.sucheNutzer(nutzername);
+    		NutzerIF tempNutzer = rf.sucheNutzer(nutzername);
         	if (tempNutzer==null){
         		JOptionPane.showMessageDialog(this,
                         "Nutzer existiert nicht. Bitte erneut versuchen oder den Admin kontaktieren.",
@@ -333,8 +330,7 @@ import java.util.Date;
 
      void sucheNachKriterien (Date start, Date ende, boolean beamer, boolean ohp, boolean tafel, boolean smartb, boolean whiteb, boolean computerr, int kapazitaet){
     	try {
-            tempZeitraum = new Zeitraum (start, ende);	 //merken bis zur Raumansicht, damit als default-Wert in Reservierungsmaske eingetragen werden kann
-            ArrayList<String> tempPanelArgs = rf.suche(tempZeitraum, new Ausstattung(beamer,ohp,tafel,smartb,whiteb,computerr, kapazitaet));
+            ArrayList<String> tempPanelArgs = rf.suche(start, ende,beamer,ohp,tafel,smartb,whiteb,computerr, kapazitaet);
             panelArgs = tempPanelArgs.toArray(new String[tempPanelArgs.size()]);
             aktualisiereAnsicht(ERGEBNISANZEIGE);
         } catch (UnzulaessigerZeitraumException e) {
@@ -346,17 +342,17 @@ import java.util.Date;
     }
 
      String[] getRaumDaten (String raumKennung) {
-        Raum r = rf.sucheKennung(raumKennung);
+        RaumIF r = rf.sucheKennung(raumKennung);
 
         if (r == null) return new String[] {"","","","","","","","",""};
         else {
-            Ausstattung a = r.getAusstattung();
+            AusstattungIF a = r.getAusstattung();
             return new String[] {r.getRaumBezeichnung(), Integer.toString(a.getKapazitaet()), Boolean.toString(r.isBuchbar()), Boolean.toString(a.isBeamer()), Boolean.toString(a.isOhp()), Boolean.toString(a.isTafel()), Boolean.toString(a.isSmartboard()), Boolean.toString(a.isWhiteboard()), Boolean.toString(a.isComputerraum())};
         }
     }
 
      void erstelleLeerenRaum (){
-        rf.addRaum(new Raum("Neuer Raum", new Ausstattung(false,false,false,false,false,false,0), false));
+        rf.addRaum("Neuer Raum", false,false,false,false,false,false,0, false);
         JOptionPane.showMessageDialog(this,
                 "Leerer Raum wurde erstellt, bitte bearbeiten!",
                 "Erfolg",
@@ -366,7 +362,7 @@ import java.util.Date;
     }
 
      void bearbeiteRaum (String altName, String neuName, String kapa, boolean buchbar, boolean beamer, boolean ohp, boolean tafel, boolean smartboard, boolean whiteboard, boolean computerraum){
-        Raum tempRaum = rf.sucheKennung(altName);
+        RaumIF tempRaum = rf.sucheKennung(altName);
 
         if (tempRaum == null){
             System.err.println("Interner Fehler: Zu ändernder Raum existiert nicht.");
@@ -377,7 +373,7 @@ import java.util.Date;
                     JOptionPane.ERROR_MESSAGE);
         } else {
             tempRaum.setRaumBezeichnung(neuName);
-            tempRaum.setAusstattung(new Ausstattung(beamer, ohp, tafel, smartboard, whiteboard, computerraum, Integer.parseInt(kapa)));
+            tempRaum.setAusstattung(beamer, ohp, tafel, smartboard, whiteboard, computerraum, Integer.parseInt(kapa));
             tempRaum.setBuchbar(buchbar);
         }
         aktualisiereAnsicht(HAUPTMENUE);
@@ -385,11 +381,10 @@ import java.util.Date;
     }
 
      void loescheRaum (String raumKennung) {
-        Raum r = rf.sucheKennung(raumKennung);
-        if (r == null) {
+        if (rf.sucheKennung(raumKennung) == null) {
             System.err.println("Interner Fehler: Zu löschender Raum existiert nicht.");
         } else {
-            rf.loescheRaum(r);
+            rf.loescheRaum(rf.sucheKennung(raumKennung));
         }
         aktualisiereAnsicht(HAUPTMENUE);
         aktualisiereAnsicht(RAUMVERWALTUNG);
@@ -425,8 +420,8 @@ import java.util.Date;
          Date jetzt = new Date(System.currentTimeMillis());
          if (ende.after(jetzt)){
              try {
-                 Zeitraum zr = new Zeitraum (start, ende);
-                 if (rf.reservieren(rf.sucheKennung(raumKennung),(StandardNutzer)aktiverNutzer,zr)){     //StandardNutzer ist Reservierer
+                 Zeitraum zr = new Zeitraum(start, ende);
+                 if (rf.reservieren(rf.sucheKennung(raumKennung),(Reservierer)aktiverNutzer,zr)){     //StandardNutzer ist Reservierer
                      JOptionPane.showMessageDialog(this,
                              "Reservierung erfolgreich! \nZurück ins Hauptmenü.",
                              "Erfolg",
@@ -490,7 +485,7 @@ import java.util.Date;
     }
 
      void zeigeReservierungsDetails (long reservierungsnr){
-    	Reservierung tempRes = rf.sucheReservierung(reservierungsnr);		// IF
+    	ReservierungIF tempRes = rf.sucheReservierung(reservierungsnr);		// IF
     	JOptionPane.showMessageDialog(this,
                 tempRes.toString(true),
                 "Reservierung" + tempRes.getReservierungsNr(),
@@ -499,10 +494,9 @@ import java.util.Date;
     }
 
      void storniereReservierung (long reservierungsnr) {
-    	Reservierung tempRes = Raumfinder.getInstance().sucheReservierung(reservierungsnr);
-    	Raumfinder.getInstance().stornieren(tempRes);
+    	Raumfinder.getInstance().stornieren(Raumfinder.getInstance().sucheReservierung(reservierungsnr));
     	JOptionPane.showMessageDialog(this,
-                "Reservierung Nummer " + tempRes.getReservierungsNr() + " wurde storniert!",
+                "Reservierung Nummer " + reservierungsnr + " wurde storniert!",
                 "Erfolg",
                 JOptionPane.WARNING_MESSAGE);
     	aktualisiereAnsicht(HAUPTMENUE);
@@ -513,13 +507,8 @@ import java.util.Date;
         return aktiverNutzer.getName();
     }
 
-     boolean aktiverNutzerIsAdmin(){
-    	if (rf.nutzerIsAdmin(aktiverNutzer)) return true;
-    	else return false;
-    }
-
      String[] getNutzerDaten (String nutzername){
-    	Nutzer tempNutzer = rf.sucheNutzer(nutzername);		// IF
+    	NutzerIF tempNutzer = rf.sucheNutzer(nutzername);		// IF
     	return new String[]{tempNutzer.getName(), tempNutzer.getSicherheitsFrage()};
     }
 
@@ -531,7 +520,7 @@ import java.util.Date;
                     JOptionPane.ERROR_MESSAGE);
         } else {
             boolean[] aenderungen = new boolean[4];
-            Nutzer bearbeiteterNutzer = rf.sucheNutzer(nutzernameAlt);		//IF
+            NutzerIF bearbeiteterNutzer = rf.sucheNutzer(nutzernameAlt);		//IF
             if (!nutzernameAlt.equals(nutzernameNeu)) {
                 bearbeiteterNutzer.setName(nutzernameNeu);
                 aenderungen[0] = true;
@@ -589,6 +578,11 @@ import java.util.Date;
      public void load () {
         rf.load();
         System.out.println("Gespeicherte Konfiguration geladen.");
+    }
+
+    public boolean aktiverNutzerIsAdmin() {
+        if (aktiverNutzer.isAdmin()) return true;
+        else return false;
     }
 
     private int showExitDialog (){
