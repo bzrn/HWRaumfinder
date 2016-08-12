@@ -109,7 +109,7 @@ public class Zeitraum implements Serializable {
 	/**
 	 * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann, außerdem muss ein Zeitraum "engpass" übergeben werden.</p>
 	 * <p><strong>Effekt:</strong> Die Dauer des Zeitraumes wird in Minuten berechnet.</p>
-	 * @param engpass ein zweiter Zeitraum, der auf Überschneidungen mit dem Zeitraum geprüft wird,auf den die Methode angewendet wird
+	 * @param engpass ein zweiter Zeitraum, der auf Überschneidungen mit dem Zeitraum geprüft wird, auf den die Methode angewendet wird
 	 * @return <strong>true</strong>, wenn die Zeiträume kollidieren, <strong>false</strong>, wenn sie nicht kollidieren.
 	 */
 
