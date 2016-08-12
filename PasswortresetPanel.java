@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten des Passwortreset-Panels
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten des Passwortreset-Panels
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.1
  * @author Alexander Reichenbach
