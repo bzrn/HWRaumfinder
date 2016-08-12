@@ -55,7 +55,7 @@ public class StandardNutzer extends Nutzer implements VerarbeitungInterfaces.Sta
     }
 
     /**
-     * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum übergeben werden und es muss einen Standartnutzer geben, auf den die Methode angewendet wird.</p>
+     * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum übergeben werden und es muss einen Standardnutzer geben, auf den die Methode angewendet wird.</p>
 	 * <p><strong>Effekt:</strong> Prüft, ob der Zeitraum mit einer der Reservierungen des Nutzers kollidiert.</p>
      * @param zr Zeitraum, der auf Kollision mit den Reservierungen des Nutzers geprüft wird
      * @return <strong>true</strong> wenn Zeitraum und Reservierungen nicht kollidieren, <strong>false</strong> wenn sie kollidieren
@@ -66,7 +66,7 @@ public class StandardNutzer extends Nutzer implements VerarbeitungInterfaces.Sta
     }
 
     /**
-     * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum übergeben werden und es muss einen Standartnutzer geben, auf den die Methode angewendet wird.</p>
+     * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum übergeben werden und es muss einen Standardnutzer geben, auf den die Methode angewendet wird.</p>
 	 * <p><strong>Effekt:</strong> Prüft, ob der Zeitraum mit einer der Reservierungen des Nutzers kollidiert.</p>
      * @param zr Zeitraum, der auf Kollision mit den Reservierungen des Nutzers geprüft wird
      * @return das Reservierungsobjekt, mit dem der Zeitraum kollidiert, wenn eine Kollision vorliegt und "null", wenn keine Kollision vorliegt
