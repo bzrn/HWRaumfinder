@@ -15,7 +15,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Alexander on 26.07.2016.
+ * <strong/>Zweck:<strong/> 
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 2.5
+ * @author Alexander Reichenbach
+ *
  */
  class GUIFrame extends JFrame{
 	 
