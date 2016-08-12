@@ -7,7 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Alexander on 27.07.2016.
+ * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten der Reservierungsverwaltung
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 2.4
+ * @author Alexander Reichenbach
+ *
  */
 public class ReservierungsverwaltungsPanel extends JPanel {
     private GUIFrame frame;
