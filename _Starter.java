@@ -8,7 +8,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Created by Alex on 07.08.2016.
+ * <strong/>Zweck:<strong/> Leitet den Start des Raumfinders mittels Konsolenabfragen ein
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 2.1
+ * @author Alexander Reichenbach
+ *
  */
 public class _Starter {
     static private BufferedReader din = new BufferedReader(new InputStreamReader(System.in));
