@@ -8,16 +8,20 @@ import java.security.NoSuchAlgorithmException;
 /**
  * <strong/>Zweck:</strong> Definiert einen Nutzer, dem Name, verschlüsseltes Passwort, eine Sicherheitsfrage und die verschlüsselte Antwort darauf zugeordnet sind
  * <p><strong>Änderungshistorie:</strong></p>
- * @version
+ * @version 2.5
  * @author Alexander Reichenbach
  *
  */
 
 public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Serializable {
 
-    protected String name, pwHash, sicherheitsFrage, sicherheitsAntwortHash;
-    protected static MessageDigest messageDigest;		// more or less solved
+    // Attribute
+	private static final long serialVersionUID = 6677969877407899039L;
+	
+	protected String name, pwHash, sicherheitsFrage, sicherheitsAntwortHash;
+    protected static MessageDigest messageDigest;		
 
+    // Konstruktor
     protected Nutzer (String name, String password, String sicherheitsFrage, String sicherheitsAntwort) {
 
         this.name=name;
@@ -32,6 +36,7 @@ public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Seriali
         }
     }
 
+    // Getter und Setter
     public String getName() {
         return name;
     }
@@ -82,13 +87,14 @@ public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Seriali
 
 
     /**
-     *
-     * @param password
-     * @return
+     *<p><strong>Vorbedingungen:</strong> Es muss ein Passwort übergeben werden und einen Nutzer geben, auf den die Methode angewandt wird.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob der Passwort-Hash des Nutzers mit dem Hash des übergebenen Passwortes übereinstimmt.</p>
+     * @param password übergebener String Passwort
+     * @return <strong>true</strong> wenn die Passwort-Hashes übereinstimmen und <strong>false</strong>, falls das nicht der Fall ist
      */
 
     public boolean checkPw (String password){
-    	if (messageDigest==null) {
+    	if (messageDigest==null) { //Fehlermeldung wird generiert, falls kein Passwort-Hash vorhanden ist
     		try {
                 messageDigest = MessageDigest.getInstance("SHA-256");
             } catch (NoSuchAlgorithmException wtf){
@@ -96,19 +102,20 @@ public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Seriali
             }
     	}
         messageDigest.update(password.getBytes());
-        if (pwHash.equals(new String (messageDigest.digest()))) return true;
+        if (pwHash.equals(new String (messageDigest.digest()))) return true; //prüft, ob Passwort-Hash des Nutzers mit dem Hash des übergebenen Passwortes übereinstimmt
         else return false;
     }
 
 
     /**
-     *
-     * @param antwort
-     * @return
+     *<p><strong>Vorbedingungen:</strong> Es muss die Antwort auf eine Sicherheitsfrage übergeben werden und einen Nutzer geben, auf den die Methode angewandt wird.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob der Antwort-Hash des Nutzers mit dem Hash der übergebenen Antwort übereinstimmt.</p>
+     * @param antwort übergebener String Antwort auf Sicherheitsfrage
+     * @return <strong>true</strong> wenn die Antwort-Hashes übereinstimmen und <strong>false</strong>, falls das nicht der Fall ist
      */
 
     public boolean checkFrage (String antwort){
-    	if (messageDigest==null) {
+    	if (messageDigest==null) { //Fehlermeldung wird generiert, falls kein Antwort-Hash vorhanden ist
     		try {
                 messageDigest = MessageDigest.getInstance("SHA-256");
             } catch (NoSuchAlgorithmException wtf){
@@ -116,7 +123,7 @@ public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Seriali
             }
     	}
         messageDigest.update(antwort.getBytes());
-        if (sicherheitsAntwortHash.equals(new String (messageDigest.digest()))) return true;
+        if (sicherheitsAntwortHash.equals(new String (messageDigest.digest()))) return true; //prüft, ob Antwort-Hash des Nutzers mit dem Hash der übergebenen Antwort übereinstimmt
         else return false;
     }
 
