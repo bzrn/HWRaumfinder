@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * <strong/>Zweck:</strong> Definiert globale Methoden zum sortierten Einfügen von Resevierungen in eine ArrayList 
- * und zum Überprüfen von möglichen Zeitraumkollisionen in einer Reservierungsliste. 
+ * <strong/>Zweck:</strong> Definiert globale Methoden zum sortierten Einfügen von Resevierungen in eine ArrayList
+ * und zum Überprüfen von möglichen Zeitraumkollisionen in einer Reservierungsliste.
  * Die Methoden finden in mehreren verschiedenen Klassen Anwendung.
  * <p><strong>Änderungshistorie:</strong> ...</p>
  * @version 1.2
@@ -14,13 +14,13 @@ import java.util.Date;
  */
 public class GlobaleMethoden {
 
-	
-	/**
-	 * <p><strong>Vorbedingungen:</strong> Es müssen eine ArrayList vom Typ Reservierung und ein Zeitraum übergeben werden.</p>
-	 * <p><strong>Effekt:</strong> Prüft, ob das Zeitraumobjekt mit einem Element der Reservierungsliste kollidiert.</p>
-	 * @param al
-	 * @param neu
-	 */
+
+    /**
+     * <p><strong>Vorbedingungen:</strong> Es müssen eine ArrayList vom Typ Reservierung und ein Zeitraum übergeben werden.</p>
+     * <p><strong>Effekt:</strong> Prüft, ob das Zeitraumobjekt mit einem Element der Reservierungsliste kollidiert.</p>
+     * @param al
+     * @param neu
+     */
     public static void addReservierungtoArrayList (ArrayList<Reservierung> al, Reservierung neu) {
         Date neuStart=neu.getZeitraum().getStart(), tempStart;
 
@@ -28,7 +28,7 @@ public class GlobaleMethoden {
             al.add(neu);
             return;
         }
-        else if (al.size()<=10) { //???
+        else {
             for (int i=0; i<al.size(); i++) {
                 tempStart = al.get(i).getZeitraum().getStart();
                 if (neuStart.before(tempStart)) {
@@ -42,11 +42,11 @@ public class GlobaleMethoden {
 
     /**
      * <p><strong>Vorbedingungen:</strong> Es müssen eine ArrayList vom Typ Reservierung und ein Zeitraum übergeben werden.</p>
-	 * <p><strong>Effekt:</strong> Prüft, ob das Zeitraumobjekt mit einem Element der Reservierungsliste kollidiert.</p>
+     * <p><strong>Effekt:</strong> Prüft, ob das Zeitraumobjekt mit einem Element der Reservierungsliste kollidiert.</p>
      * @param al eine ArrayList vom Typ Reservierung, die in der Methode durchlafen wird
      * @param zr ein Zeitraum, der auf Kollision geprüft wird
-     * @return bei einer Kollision wird das Reservierungsobjekt aus der ArrayList zurückgegeben, mit dem der Zeitraum kollidiert, 
-     * gibt es keine Kollision, wird "null" zurückgegeben 
+     * @return bei einer Kollision wird das Reservierungsobjekt aus der ArrayList zurückgegeben, mit dem der Zeitraum kollidiert,
+     * gibt es keine Kollision, wird "null" zurückgegeben
      */
     public static Reservierung findeKollisioninArrayList (ArrayList<Reservierung> al, Zeitraum zr) {
         for (int i=0; i<al.size(); i++) {
