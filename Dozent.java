@@ -13,7 +13,9 @@ import java.io.Serializable;
 
 public class Dozent implements Reservierer, Serializable {
 	
-	// Attribut
+	// Attribute
+	private static final long serialVersionUID = 5041998765042794345L;
+	
     private String name;
 
     // Kontruktor
