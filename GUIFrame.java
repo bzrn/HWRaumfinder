@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * <strong/>Zweck:<strong/> 
+ * <strong>Zweck:</strong> 
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.5
  * @author Alexander Reichenbach
