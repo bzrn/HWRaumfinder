@@ -10,8 +10,9 @@ package Verarbeitung;
 
 public class Admin extends Nutzer {
 
+	private static final long serialVersionUID = -2810077478929159349L;
 	
-    private boolean deletable;
+	private boolean deletable;
 
     // Konstruktor: Admin ist löschbar
     public Admin (String name, String password, String sicherheitsFrage, String sicherheitsAntwort) {
