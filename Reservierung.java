@@ -133,6 +133,12 @@ public class Reservierung implements VerarbeitungInterfaces.ReservierungIF, Seri
         Reservierung.resCounter=resCount;
     }
 
+    /**
+     * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum übergeben werden und es muss einen Reservierung geben, auf den die Methode angewendet wird.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob die Reservierung mit übergebenen Zeitraum kollidiert</p>
+     * @param zr übergebener Zeitraum
+     * @return <strong>false </strong> wenn die Reservierung storniert oder fehlerhaft ist oder keine Kollision vorliegt; <strong>true</strong>, wenn Zeitraum und Reservierung kollidieren
+     */
     public boolean kollidiert (Zeitraum zr) {
         if (error || storniert) return false;
         else return this.zeitraum.kollidiert(zr);
