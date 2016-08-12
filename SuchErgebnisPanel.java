@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * <strong/>Zweck:<strong/> Definiert das Design der gelieferten Ergebnisse einer Suche
+ * <strong>Zweck:</strong> Definiert das Design der gelieferten Ergebnisse einer Suche
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.1
  * @author Alexander Reichenbach
