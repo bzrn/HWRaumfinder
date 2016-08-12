@@ -54,7 +54,6 @@ public class StandardNutzer extends Nutzer implements VerarbeitungInterfaces.Sta
         this.reservierungen = reservierungen;
     }
 
-    //prüft, ob eine Reservierung in der Reservierungsliste mit dem übergebenen Zeitraum kollidiert
     /**
      * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum übergeben werden und es muss einen Standartnutzer geben, auf den die Methode angewendet wird.</p>
 	 * <p><strong>Effekt:</strong> Prüft, ob der Zeitraum mit einer der Reservierungen des Nutzers kollidiert.</p>
