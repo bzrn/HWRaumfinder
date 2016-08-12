@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 /**
- * <strong/>Zweck:</strong> Ermöglicht es, Ausstattungsobjekte zu erstellen, die Ausstattung und Kapazität (eines Raumes) beschreiben
+ * <strong/>Zweck:</strong> Ermöglicht es, Ausstattungsobjekte zu erstellen, die Ausstattung und Kapazität eines Raumes beschreiben
  * <p><strong>Änderungshistorie:</strong> ...</p>
  * @version 2.1
  * @author Hanna Behnke, Alexander Reichenbach
@@ -16,8 +16,6 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 
 
 	//Attribute
-	
-	private static final long serialVersionUID = -7112512876696375565L;
 	
 	private boolean beamer;
 	private boolean ohp;
@@ -113,11 +111,11 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 
 	/**
 	 * <p><strong>Vorbedingungen:</strong> Es muss ein Ausstattungs-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann und eines, welches als "anforderung" übergeben wird.</p>
-	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, wie gut die Ausstattung den Anforderungen entspricht. Je höher der Wert, desto höher ist die Übereinstimmung und desto besser ist die Ausstattung.</p>
-	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände gefordert werden
-	 * @return erfuellteAnforderungen zählt, wie viele Anforderungen erfüllt werden, wird also hochgesetzt, wenn eine Anforderung erfüllt ist, aber auch, wenn Ausstattungsgegenstände vorhanden sind, die über die Anforderungen hinaus gehen
+	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, wie gut die Ausstattung (eines Raumes) den Anforderungen (des Nutzers) entspricht.</p>
+	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände vom Nutzer gefordert werden (wird mit Austattung der Räume verglichen)
+	 * @return erfuellteAnforderungen zählt, wie viele Anforderungen erfüllt werden, wird also hochgesetzt, wenn eine Anforderung erfüllt ist, aber auch, wenn der Raum eine Ausstattung hat, die nicht gefordert ist
 	 *
-	 * <p><strong>Anmerkung zur Implementierung:</strong> Es wurde mit der in Java nicht integrierten, logischen Verknüpfung der Implikaition gearbeitet,
+	 * <p><strong>Anmerkung:</strong> Es wurde mit der in Java nicht integrierten, logischen Verknüpfung der Implikaition gearbeitet,
 	 * welche mit den vorhandenen logischen Operatoren der Bool'schen Algebra realisiert wurde.</p>
 	 */
 	

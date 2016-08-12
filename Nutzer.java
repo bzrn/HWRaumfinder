@@ -47,7 +47,7 @@ public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Seriali
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
             messageDigest.update(password.getBytes());
-            pwHash = new String(MessageDigest.getInstance("SHA-256").digest());
+            pwHash = new String(messageDigest.digest());
         } catch (NoSuchAlgorithmException wtf){
             System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
         }
@@ -86,7 +86,6 @@ public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Seriali
     public boolean checkPw (String password){
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest = MessageDigest.getInstance("SHA-256");
             messageDigest.update(password.getBytes());
             if (pwHash.equals(new String (messageDigest.digest()))) return true;
             else return false;

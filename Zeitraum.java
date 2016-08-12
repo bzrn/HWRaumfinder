@@ -109,27 +109,25 @@ public class Zeitraum implements Serializable {
 	/**
 	 * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann, außerdem muss ein Zeitraum "engpass" übergeben werden.</p>
 	 * <p><strong>Effekt:</strong> Die Dauer des Zeitraumes wird in Minuten berechnet.</p>
-	 * @param engpass ein zweiter Zeitraum, der auf Überschneidungen mit dem Zeitraum geprüft wird, auf den die Methode angewendet wird
+	 * @param engpass ein zweiter Zeitraum, der auf Überschneidungen mit dem Zeitraum geprüft wird,auf den die Methode angewendet wird
 	 * @return <strong>true</strong>, wenn die Zeiträume kollidieren, <strong>false</strong>, wenn sie nicht kollidieren.
 	 */
 
 	public boolean kollidiert(Zeitraum engpass){
-		
-		Date engpassStart = engpass.getStart();
-		Date engpassEnde = engpass.getEnde();
+		Date e1 = engpass.getStart();
+		Date e2 = engpass.getEnde();
+		if (start.equals(e1) && ende.equals(e2)){
+			return true;
+		}else if(start.before(e1) && ende.after(e2)){
+			return true;
+		}else if(start.after(e1) && ende.before(e2)){
+			return true;
+		}else if(ende.after(e1) && ende.before(e2)){
+			return true;
+		}else if(start.after(e1) && start.before(e2)){
+			return true;
+		}
+		return false;
+	}
 	
-	
-		if (start.equals(engpassStart) && ende.equals(engpassEnde)){ 		// Kollision, da die Zeiträume identisch sind
-  			return true;
-		}else if(start.before(engpassStart) && ende.after(engpassEnde)){	// Kollision, da der Zeitraum "engpass" innerhalb des betrachteten Zeitraumes liegt
-  			return true;
- 		}else if(start.after(engpassStart) && ende.before(engpassEnde)){	// Kollision, da der betrachtete Zeitraum innerhalb des Zeitraumes "engpass" liegt
-  			return true;
- 		}else if(ende.after(engpassStart) && ende.before(engpassEnde)){		// Kollision, da sich die Zeiträume überschneiden, das Ende des betrachteten Zeitraumes liegt innerhalb des Zeitraumes "engpass"
-  			return true;
- 		}else if(start.after(engpassStart) && start.before(engpassEnde)){	// Kollision, da sich die Zeiträume überschneiden, der Start des betrachteten Zeitraumes liegt innerhalb des Zeitraumes "engpass"
-  			return true;
-  		}
-  		return false;
-  	}
 }

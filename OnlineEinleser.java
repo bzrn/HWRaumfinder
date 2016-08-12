@@ -35,12 +35,13 @@ public class OnlineEinleser {
         for (int i=0; i<fileCounter; i++) {
             resses.addAll(readEvents(SPEICHERORT + "events_" + i + ".ics"));
         }
-
+/*
         for (int i=0; i<resses.size(); i++){
             raumfinder.reservieren(resses.get(i), true);
         }
 
         System.out.println("OnlineEinleser: "+resses.size()+" Reservierungen eingelesen.");
+        */
     }
 
     private void download(){
@@ -269,14 +270,15 @@ public class OnlineEinleser {
                 tempBesitzer = new Dozent (strBesitzer);
                 tempZeitraum = new Zeitraum(icsStringToDate(strStart), icsStringToDate(strEnde));
 
-                reservierungen.add(
+                /*reservierungen.add(
                         new Reservierung(
                                 tempRaum,
                                 tempBesitzer,
                                 tempZeitraum,
                                 strName
                         )
-                );
+                );*/
+                raumfinder.reservieren(new Reservierung(tempRaum, tempBesitzer, tempZeitraum, strName), true);
             }
 
         } catch (IndexOutOfBoundsException e) {
