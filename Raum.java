@@ -14,12 +14,18 @@ import java.util.ArrayList;
  */
 public class Raum implements VerarbeitungInterfaces.RaumIF, Serializable {
 
-    private String raumBezeichnung;
+    // Attribute
+	
+	private static final long serialVersionUID = -1970365805954633424L;
+	
+	private String raumBezeichnung;
     private ArrayList<Reservierung> belegung;
     private Ausstattung ausstattung;
     private boolean buchbar;
 
 
+    // Konstruktor
+    
     public Raum(String raumBezeichnung, Ausstattung ausstattung, boolean buchbar){
         this.raumBezeichnung = raumBezeichnung;
         this.belegung = new ArrayList<Reservierung>();
@@ -27,6 +33,8 @@ public class Raum implements VerarbeitungInterfaces.RaumIF, Serializable {
         this.buchbar = buchbar;
     }
 
+    // Getter und Setter
+    
     public String getRaumBezeichnung() {
         return raumBezeichnung;
     }
@@ -59,10 +67,12 @@ public class Raum implements VerarbeitungInterfaces.RaumIF, Serializable {
 
 
     /**
-     *
-     * @param a
-     * @return
-     */
+	 * <p><strong>Vorbedingungen:</strong> Es muss ein Raum-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann 
+	 * und ein Ausstattungs-Objekt, welches als "anforderung" übergeben wird.</p>
+	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, ob die Ausstattung des Raumes die Anforderungen erfüllt und wenn ja, wie umfangreich der Raum ausgestattet ist. </p>
+	 * @param a ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände gefordert werden
+	 * @return zurückgegeben wird ein Integer-Wert, der =0 ist, wenn die Anforderungen nicht erfüllt sind; ansonsten gilt: je höher der Wert, desto besser ist der Raum ausgestattet
+	 */
 
     public int hatMindestausstattung (Ausstattung a) {
     	return ausstattung.hatMindestens(a);
@@ -70,11 +80,11 @@ public class Raum implements VerarbeitungInterfaces.RaumIF, Serializable {
 
 
     /**
-     *
-     * @param zr
-     * @return
+     * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum übergeben werden und es muss einen Raum geben, auf den die Methode angewendet wird.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob der Raum im übergebenen Zeitraum belegt ist.</p>
+     * @param zr Zeitraum, der auf Kollision mit der Belegung des Raumes geprüft wird
+     * @return <strong>true</strong> wenn Zeitraum und Belegung/Reservierungen nicht kollidieren, <strong>false</strong> wenn sie kollidieren
      */
-
     public boolean istFrei(Zeitraum zr) {
     	if (findeKollision(zr)==null) return true;
     	else return false;
@@ -82,9 +92,10 @@ public class Raum implements VerarbeitungInterfaces.RaumIF, Serializable {
 
 
     /**
-     *
-     * @param zr
-     * @return
+     * <p><strong>Vorbedingungen:</strong> Es muss ein Zeitraum übergeben werden und es muss einen Raum geben, auf den die Methode angewendet wird.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob der Raum im übergebenen Zeitraum belegt ist.</p>
+     * @param zr Zeitraum, der auf Kollision mit der Belegung des Raumes geprüft wird
+     * @return das Reservierungsobjekt, mit dem der Zeitraum kollidiert, wenn eine Kollision vorliegt und "null", wenn keine Kollision vorliegt
      */
 
     public Reservierung findeKollision (Zeitraum zr) {
@@ -93,11 +104,12 @@ public class Raum implements VerarbeitungInterfaces.RaumIF, Serializable {
 
 
     /**
-     *
-     * @param neu
-     * @return
+     * <p><strong>Vorbedingungen:</strong> Es muss eine Reservierung übergeben werden und es muss einen Raum geben, auf den die Methode angewendet werden kann.</p>
+	 * <p><strong>Effekt:</strong> Fügt das Reservierung sortiert in die Reservierungs-/Belegungsiste ein, falls es nicht ohnehin schon in der Liste vorhanden ist.</p>
+     * @param neu Reservierung, die der Belegungs-/Reservierungsliste des Raumes hinzugefügt werden soll
+     * @return <strong>true</strong> wenn die Reservierung der Liste hinzugefügt wurde, <strong>false</strong> wenn die Reservierung nicht hinzugefügt wurde, da sie bereits in der Liste vorhanden war
      */
-
+    
     public boolean addReservierung(Reservierung neu){
         if (!belegung.contains(neu)) {
             GlobaleMethoden.addReservierungtoArrayList(belegung, neu);
@@ -109,7 +121,7 @@ public class Raum implements VerarbeitungInterfaces.RaumIF, Serializable {
 
 
    
-
+    //entfernt eine Reservierung aus der Liste
     public void removeReservierung (Reservierung weg) {
     	belegung.remove(weg);
     }
