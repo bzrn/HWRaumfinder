@@ -86,7 +86,7 @@ import java.util.Date;
         setResizable(false);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
-        setIconImage(new ImageIcon("HWRaumfinder_Icon.png").getImage());
+        setIconImage(new ImageIcon("images/HWRaumfinder_Icon.png").getImage());
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -272,7 +272,7 @@ import java.util.Date;
                     "Nutzeraccount erstellt!\nDu kannst dich nun einloggen!",
                     "Erfolg",
                     JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon("checkMark.png"));
+                    new ImageIcon("images/checkMark.png"));
             aktualisiereAnsicht(LOGIN);
         } else {
         	JOptionPane.showMessageDialog(this,
@@ -318,7 +318,7 @@ import java.util.Date;
                     "Passwort zurückgesetzt!\nDu kannst dich nun einloggen!",
                     "Erfolg",
                     JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon("checkMark.png"));
+                    new ImageIcon("images/checkMark.png"));
             aktualisiereAnsicht(LOGIN);
     	} else {
     		JOptionPane.showMessageDialog(this,
@@ -366,7 +366,7 @@ import java.util.Date;
 
         if (tempRaum == null){
             System.err.println("Interner Fehler: Zu ändernder Raum existiert nicht.");
-        } else if (rf.sucheKennung(neuName)!=null) {
+        } else if (!neuName.equals(altName) && rf.sucheKennung(neuName)!=null) {
             JOptionPane.showMessageDialog(this,
                     "Raumname existiert bereits!",
                     "Fehler",
@@ -426,7 +426,7 @@ import java.util.Date;
                              "Reservierung erfolgreich! \nZurück ins Hauptmenü.",
                              "Erfolg",
                              JOptionPane.INFORMATION_MESSAGE,
-                             new ImageIcon("checkMark.png"));
+                             new ImageIcon("images/checkMark.png"));
                      aktualisiereAnsicht(HAUPTMENUE);
                  } else {
                      JOptionPane.showMessageDialog(this,
@@ -456,7 +456,7 @@ import java.util.Date;
                     "Passwort erfolgreich geändert!",
                     "Erfolg",
                     JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon("checkMark.png"));
+                    new ImageIcon("images/checkMark.png"));
             aktualisiereAnsicht(HAUPTMENUE);
         } else {
             JOptionPane.showMessageDialog(this,
@@ -474,7 +474,7 @@ import java.util.Date;
                     "Sicherheitsfrage/-antwort erfolgreich geändert!",
                     "Erfolg",
                     JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon("checkMark.png"));
+                    new ImageIcon("images/checkMark.png"));
             aktualisiereAnsicht(HAUPTMENUE);
         } else {
             JOptionPane.showMessageDialog(this,
@@ -490,7 +490,7 @@ import java.util.Date;
                 tempRes.toString(true),
                 "Reservierung" + tempRes.getReservierungsNr(),
                 JOptionPane.INFORMATION_MESSAGE,
-                new ImageIcon("HWRaumfinder_Icon.png"));
+                new ImageIcon("images/HWRaumfinder_Icon.png"));
     }
 
      void storniereReservierung (long reservierungsnr) {

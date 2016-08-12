@@ -63,7 +63,7 @@ public class HauptmenuePanel extends JPanel {
                             "Raumkennung auswählen:",
                             "Raumsuche nach Kennung",
                             JOptionPane.PLAIN_MESSAGE,
-                            new ImageIcon("HWRaumfinder_Icon.png"),
+                            new ImageIcon("images/HWRaumfinder_Icon.png"),
                             raeume,
                             0);
                     if (eingabe!=null) {

@@ -21,7 +21,7 @@ public class LoginPanel extends JPanel {
         setLayout(new BorderLayout());
 
         JLabel logoLabel = new JLabel();
-            ImageIcon logo = new ImageIcon("HWRaumfinder_Logo.png");
+            ImageIcon logo = new ImageIcon("images/HWRaumfinder_Logo.png");
             logoLabel.setIcon(logo);
             logoLabel.setHorizontalAlignment(JTextField.CENTER);
         logoLabel.setBorder(new EmptyBorder(20,15,40,15));
