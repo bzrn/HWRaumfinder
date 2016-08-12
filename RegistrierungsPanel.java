@@ -13,6 +13,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten des Registrierungspanels
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 2.2
+ * @author Alexander Reichenbach
+ *
+ */
 public class RegistrierungsPanel extends JPanel {
 
     GUIFrame frame;
