@@ -8,7 +8,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-
+/**
+ * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten des Login-Panels
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 2.2
+ * @author Alexander Reichenbach
+ *
+ */
 public class LoginPanel extends JPanel {
 
     private JTextField username, password;
