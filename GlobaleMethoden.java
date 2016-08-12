@@ -15,12 +15,12 @@ import java.util.Date;
 public class GlobaleMethoden {
 
 
-    /**
-     * <p><strong>Vorbedingungen:</strong> Es müssen eine ArrayList vom Typ Reservierung und ein Zeitraum übergeben werden.</p>
-     * <p><strong>Effekt:</strong> Prüft, ob das Zeitraumobjekt mit einem Element der Reservierungsliste kollidiert.</p>
-     * @param al
-     * @param neu
-     */
+   /**
+	 * <p><strong>Vorbedingungen:</strong> Es müssen eine ArrayList vom Typ Reservierung und eine neue Reservierung als Parameter übergeben werden.</p>
+	 * <p><strong>Effekt:</strong> Die neue Reservierung wird sortiert in die Liste eingefügt, chronologisch geordnet nach Startpunkt des reservierten Zeitraumes. </p>
+	 * @param al ArrayList vom Typ Reservierung, in die die neue Reservierung eingefügt wird
+	 * @param neu Reservierung, die in die ArrayList eingefügt wird
+	 */
     public static void addReservierungtoArrayList (ArrayList<Reservierung> al, Reservierung neu) {
         Date neuStart=neu.getZeitraum().getStart(), tempStart;
 
