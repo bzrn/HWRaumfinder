@@ -1,6 +1,3 @@
-/**
- * Created by Alexander on 25.06.2016.
- */
 
 package Verarbeitung;
 
@@ -13,15 +10,18 @@ import java.io.Serializable;
  * @author Alexander Reichenbach
  *
  */
- 
-public class Dozent implements Reservierer, Serializable {
 
+public class Dozent implements Reservierer, Serializable {
+	
+	// Attribut
     private String name;
 
+    // Kontruktor
     public Dozent (String name) {
         this.name = name;
     }
 
+    // Getter und Setter
 	public String getName() {
 		return name;
 	}
