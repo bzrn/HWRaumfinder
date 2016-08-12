@@ -121,17 +121,13 @@ public class Zeitraum implements Serializable {
 	
 		if (start.equals(engpassStart) && ende.equals(engpassEnde)){ 		// Kollision, da die Zeiträume identisch sind
   			return true;
- -		}else if(start.before(e1) && ende.after(e2)){
- +		}else if(start.before(engpassStart) && ende.after(engpassEnde)){	// Kollision, da der Zeitraum "engpass" innerhalb des betrachteten Zeitraumes liegt
+		}else if(start.before(engpassStart) && ende.after(engpassEnde)){	// Kollision, da der Zeitraum "engpass" innerhalb des betrachteten Zeitraumes liegt
   			return true;
- -		}else if(start.after(e1) && ende.before(e2)){
- +		}else if(start.after(engpassStart) && ende.before(engpassEnde)){	// Kollision, da der betrachtete Zeitraum innerhalb des Zeitraumes "engpass" liegt
+ 		}else if(start.after(engpassStart) && ende.before(engpassEnde)){	// Kollision, da der betrachtete Zeitraum innerhalb des Zeitraumes "engpass" liegt
   			return true;
- -		}else if(ende.after(e1) && ende.before(e2)){
- +		}else if(ende.after(engpassStart) && ende.before(engpassEnde)){		// Kollision, da sich die Zeiträume überschneiden, das Ende des betrachteten Zeitraumes liegt innerhalb des Zeitraumes "engpass"
+ 		}else if(ende.after(engpassStart) && ende.before(engpassEnde)){		// Kollision, da sich die Zeiträume überschneiden, das Ende des betrachteten Zeitraumes liegt innerhalb des Zeitraumes "engpass"
   			return true;
- -		}else if(start.after(e1) && start.before(e2)){
- +		}else if(start.after(engpassStart) && start.before(engpassEnde)){	// Kollision, da sich die Zeiträume überschneiden, der Start des betrachteten Zeitraumes liegt innerhalb des Zeitraumes "engpass"
+ 		}else if(start.after(engpassStart) && start.before(engpassEnde)){	// Kollision, da sich die Zeiträume überschneiden, der Start des betrachteten Zeitraumes liegt innerhalb des Zeitraumes "engpass"
   			return true;
   		}
   		return false;
