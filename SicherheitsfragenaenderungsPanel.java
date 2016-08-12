@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten des Sicherheitsfragenänderungs-Panels
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten des Sicherheitsfragenänderungs-Panels
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.0
  * @author Alexander Reichenbach
