@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten der Reservierungsverwaltung
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten der Reservierungsverwaltung
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.4
  * @author Alexander Reichenbach
