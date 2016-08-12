@@ -20,7 +20,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
 /**
- * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten der Suche
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten der Suche
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.4
  * @author Alexander Reichenbach
