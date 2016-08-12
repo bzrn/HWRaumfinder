@@ -13,7 +13,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 /**
- * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten des Hauptmenü-Panels
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten des Hauptmenü-Panels
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.4
  * @author Alexander Reichenbach
