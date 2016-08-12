@@ -7,7 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Alexander on 27.07.2016.
+ * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten des Passwortreset-Panels
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 2.1
+ * @author Alexander Reichenbach
+ *
  */
 public class PasswortresetPanel extends JPanel {
     private GUIFrame frame;
