@@ -4,18 +4,31 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Created by Alexander on 12.07.2016.
+ * <strong/>Zweck:</strong> Definiert globale Methoden zum sortierten Einfügen von Resevierungen in eine ArrayList 
+ * und zum Überprüfen von möglichen Zeitraumkollisionen in einer Reservierungsliste. 
+ * Die Methoden finden in mehreren verschiedenen Klassen Anwendung.
+ * <p><strong>Änderungshistorie:</strong> ...</p>
+ * @version 1.2
+ * @author Alexander Reichenbach
+ *
  */
 public class GlobaleMethoden {
 
+	
+	/**
+	 * <p><strong>Vorbedingungen:</strong> Es müssen eine ArrayList vom Typ Reservierung und ein Zeitraum übergeben werden.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob das Zeitraumobjekt mit einem Element der Reservierungsliste kollidiert.</p>
+	 * @param al
+	 * @param neu
+	 */
     public static void addReservierungtoArrayList (ArrayList<Reservierung> al, Reservierung neu) {
         Date neuStart=neu.getZeitraum().getStart(), tempStart;
 
-        if (al.size()==0) {
+        if (al.size()==0) { //Wenn die Reservierungsliste leer ist, wird das Reservierungsobjekt sofort hinzugefügt
             al.add(neu);
             return;
         }
-        else if (al.size()<=10) {
+        else if (al.size()<=10) { //???
             for (int i=0; i<al.size(); i++) {
                 tempStart = al.get(i).getZeitraum().getStart();
                 if (neuStart.before(tempStart)) {
@@ -25,33 +38,16 @@ public class GlobaleMethoden {
             }
             al.add(neu);
         }
-        /*else {
-
-    		int i=0, j=reservierungen.size()-1, tempIndex;
-
-    		while (i<=j) {
-
-    			tempIndex=(i+j)/2;
-    			tempStart= reservierungen.get(tempIndex).getZeitraum().getStart();
-
-//    			if (tempStart.equals(neuStart) || (reservierungen.get(i).getZeitraum().getStart().before(neuStart)&&reservierungen.get(j).getZeitraum().getStart().after(neuStart))){
-//    				reservierungen.add(tempIndex, neu);
-//    				return;
-//    			}
-
-    			if (neuStart.after(tempStart)) {
-    				if (neuStart.before(reservierungen.get(j).getZeitraum().getStart())) i=tempIndex+1;
-    				else
-
-    			}
-    			else if (neuStart.before(tempStart) && neuStart.after (reservierungen.get(j).getZeitraum().getStart()))	j=tempIndex-1;
-    			else {
-    				reservierungen.add(tempIndex, neu);
-    			}
-    		}
-    	}*/
     }
 
+    /**
+     * <p><strong>Vorbedingungen:</strong> Es müssen eine ArrayList vom Typ Reservierung und ein Zeitraum übergeben werden.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob das Zeitraumobjekt mit einem Element der Reservierungsliste kollidiert.</p>
+     * @param al eine ArrayList vom Typ Reservierung, die in der Methode durchlafen wird
+     * @param zr ein Zeitraum, der auf Kollision geprüft wird
+     * @return bei einer Kollision wird das Reservierungsobjekt aus der ArrayList zurückgegeben, mit dem der Zeitraum kollidiert, 
+     * gibt es keine Kollision, wird "null" zurückgegeben 
+     */
     public static Reservierung findeKollisioninArrayList (ArrayList<Reservierung> al, Zeitraum zr) {
         for (int i=0; i<al.size(); i++) {
             if (al.get(i).kollidiert(zr)) return al.get(i);
