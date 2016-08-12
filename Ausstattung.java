@@ -17,6 +17,8 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 
 	//Attribute
 	
+	private static final long serialVersionUID = -7112512876696375565L;
+	
 	private boolean beamer;
 	private boolean ohp;
 	private boolean tafel;
