@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * <strong/>Zweck:<strong/>
+ * <strong>Zweck:</strong> Ermöglicht die Erstellung von Raum-Objekten, denen ein Name, eine bestimmte Ausstattung sowie Informationen über Buchbarkeit und Belegung zugeordnet sind. 
  * <p><strong>Änderungshistorie:</strong></p>
- * @version
+ * @version 3.2
  * @author Alexander Reichenbach
  *
  */
@@ -108,10 +108,7 @@ public class Raum implements VerarbeitungInterfaces.RaumIF, Serializable {
     }
 
 
-    /**
-     *
-     * @param weg
-     */
+   
 
     public void removeReservierung (Reservierung weg) {
     	belegung.remove(weg);

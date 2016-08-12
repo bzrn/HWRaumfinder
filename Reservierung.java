@@ -6,19 +6,20 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Zweck:
- * @author
- * @version
- * Änderungshistorie:
- * Created by mwolff on 19.06.16.
- * Hanna am 3. Juni
+ * <strong>Zweck:</strong> Ermöglicht die Erstellung von Reservierungsobjekten, denen eine eindeutige Reservierungsnummer sowie ein Zeitraum, ein Reservierer und ein Raum zugeordnet sind.
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 3.4
+ * @author Alexander Reichenbach
+ *
  */
 
-// Attribute
 
 public class Reservierung implements VerarbeitungInterfaces.ReservierungIF, Serializable {
 
-    private static long resCounter = 0;
+    // Attribute
+	private static final long serialVersionUID = 8584156051140726334L;
+
+	private static long resCounter = 0;
 
     private long reservierungsNr;
     private Raum raum;
@@ -60,7 +61,7 @@ public class Reservierung implements VerarbeitungInterfaces.ReservierungIF, Seri
         this.storniert = false;
     }
 
-    // mit mauell gesetztem Zeitpunkt und Kommentar, für Verarbeitung.OnlineEinleser
+    // mit manuell gesetztem Zeitpunkt und Kommentar, für Verarbeitung.OnlineEinleser
     public Reservierung(Raum raum, Reservierer inhaber, Zeitraum zeitraum, Date zeitpunkt) {
 
         this.reservierungsNr = resCounter++;

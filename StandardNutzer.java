@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * <strong/>Zweck:<strong/>
- * <p><strong>Änderungshistorie:</strong></p>
- * @version
+ * <strong/>Zweck:</strong> StandardNutzer-Objekten können im Gegensatz zu Objekten der Mutterklasse "Nutzer" Reservierungen zugeorndet werden. Diese werden als Liste gespeichert.
+ * <p><strong>Änderungshistorie:</strong> </p>
+ * @version 2.3
  * @author Alexander Reichenbach
  *
  */

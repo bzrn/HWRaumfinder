@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 /**
- * <strong/>Zweck:</strong> Ermöglicht es, Ausstattungsobjekte zu erstellen, die Ausstattung und Kapazität eines Raumes beschreiben
+ * <strong/>Zweck:</strong> Ermöglicht es, Ausstattungsobjekte zu erstellen, die Ausstattung und Kapazität (eines Raumes) beschreiben
  * <p><strong>Änderungshistorie:</strong> ...</p>
  * @version 2.1
  * @author Hanna Behnke, Alexander Reichenbach
@@ -109,12 +109,11 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 		this.kapazitaet = kapazitaet;
 	}
 
-/**
-	 * <p><strong>Vorbedingungen:</strong> Es muss ein Ausstattungs-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann 
-	 * und eines, welches als "anforderung" übergeben wird.</p>
-	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, ob die Ausstattung die Anforderungen erfüllt und wenn ja, wie Umfangreich die Ausstattung ist. </p>
+	/**
+	 * <p><strong>Vorbedingungen:</strong> Es muss ein Ausstattungs-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann und eines, welches als "anforderung" übergeben wird.</p>
+	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, wie gut die Ausstattung den Anforderungen entspricht. Je höher der Wert, desto höher ist die Übereinstimmung und desto besser ist die Ausstattung.</p>
 	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände gefordert werden
-	 * @return <strong>erfuellteAnforderungen</strong> ist (int erfuellteAnforderungen=0) sind die Anforderungen nicht erfüllt, ansonsten gilt: je höher erfuellteAnforderungen, desto besser die Ausstattung
+	 * @return erfuellteAnforderungen zählt, wie viele Anforderungen erfüllt werden, wird also hochgesetzt, wenn eine Anforderung erfüllt ist, aber auch, wenn Ausstattungsgegenstände vorhanden sind, die über die Anforderungen hinaus gehen
 	 *
 	 * <p><strong>Anmerkung zur Implementierung:</strong> Es wurde mit der in Java nicht integrierten, logischen Verknüpfung der Implikaition gearbeitet,
 	 * welche mit den vorhandenen logischen Operatoren der Bool'schen Algebra realisiert wurde.</p>
@@ -124,7 +123,7 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 		
 		int erfuellteAnforderungen=0;
 	
-		if ((!anforderung.beamer || this.beamer)	// nicht gefordert oder existiert
+		if ((!anforderung.beamer || this.beamer)	// Ausstattungsobjekt ist nicht gefordert oder existiert, wenn 
 						&& (!anforderung.ohp || this.ohp)
 						&& (!anforderung.tafel || this.tafel)
 						&& (!anforderung.smartboard || this.smartboard)
@@ -132,12 +131,12 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 						&& (!anforderung.computerraum || this.computerraum)
 						&& (anforderung.getKapazitaet()<=this.getKapazitaet()))
 		{
-			if (anforderung.beamer && this.beamer) erfuellteAnforderungen ++;	//+= 2;
+			if (anforderung.beamer && this.beamer) erfuellteAnforderungen ++;	
 			if (anforderung.ohp && this.ohp) erfuellteAnforderungen++;
 			if (anforderung.tafel && this.tafel) erfuellteAnforderungen++;
-			if (anforderung.smartboard && this.smartboard) erfuellteAnforderungen ++;	//+= 2;
+			if (anforderung.smartboard && this.smartboard) erfuellteAnforderungen ++;	
 			if (anforderung.whiteboard && this.whiteboard) erfuellteAnforderungen++;
-			if (anforderung.computerraum && this.computerraum) erfuellteAnforderungen ++;	//+= 3;
+			if (anforderung.computerraum && this.computerraum) erfuellteAnforderungen ++;
 			if (anforderung.getKapazitaet()<=this.getKapazitaet()) erfuellteAnforderungen++;
 		}
 		

@@ -16,9 +16,10 @@ import java.security.NoSuchAlgorithmException;
 public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Serializable {
 
     // Attribute
-    private static final long serialVersionUID = 6677969877407899039L;
-
-    protected String name, pwHash, sicherheitsFrage, sicherheitsAntwortHash;
+	private static final long serialVersionUID = 6677969877407899039L;
+	
+	protected String name, pwHash, sicherheitsFrage, sicherheitsAntwortHash;
+    protected static MessageDigest messageDigest;		
 
     // Konstruktor
     protected Nutzer (String name, String password, String sicherheitsFrage, String sicherheitsAntwort) {
@@ -26,8 +27,13 @@ public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Seriali
         this.name=name;
         this.sicherheitsFrage = sicherheitsFrage;
 
-        setPwHash(password);
-        setSicherheitsAntwortHash(sicherheitsAntwort);
+        try {
+            messageDigest = MessageDigest.getInstance("SHA-256");
+            setPwHash(password);
+            setSicherheitsAntwortHash(sicherheitsAntwort);
+        } catch (NoSuchAlgorithmException wtf){
+            System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+        }
     }
 
     // Getter und Setter
@@ -44,13 +50,15 @@ public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Seriali
     }
 
     public void setPwHash(String password) {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(password.getBytes());
-            pwHash = new String(messageDigest.digest());
-        } catch (NoSuchAlgorithmException wtf){
-            System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
-        }
+    	if (messageDigest==null) {
+    		try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException wtf){
+                System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+            }
+    	}
+        messageDigest.update(password.getBytes());
+        pwHash = new String(messageDigest.digest());
     }
 
     public String getSicherheitsFrage() {
@@ -66,53 +74,57 @@ public abstract class Nutzer implements VerarbeitungInterfaces.NutzerIF, Seriali
     }
 
     public void setSicherheitsAntwortHash(String sicherheitsAntwort) {
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(sicherheitsAntwort.getBytes());
-            sicherheitsAntwortHash = new String(messageDigest.digest());
-        } catch (NoSuchAlgorithmException wtf){
-            System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
-        }
+    	if (messageDigest==null) {
+    		try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException wtf){
+                System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+            }
+    	}
+        messageDigest.update(sicherheitsAntwort.getBytes());
+        sicherheitsAntwortHash = new String(messageDigest.digest());
     }
 
 
     /**
      *<p><strong>Vorbedingungen:</strong> Es muss ein Passwort übergeben werden und einen Nutzer geben, auf den die Methode angewandt wird.</p>
-     * <p><strong>Effekt:</strong> Prüft, ob der Passwort-Hash des Nutzers mit dem Hash des übergebenen Passwortes übereinstimmt.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob der Passwort-Hash des Nutzers mit dem Hash des übergebenen Passwortes übereinstimmt.</p>
      * @param password übergebener String Passwort
      * @return <strong>true</strong> wenn die Passwort-Hashes übereinstimmen und <strong>false</strong>, falls das nicht der Fall ist
      */
 
     public boolean checkPw (String password){
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(password.getBytes());
-            if (pwHash.equals(new String (messageDigest.digest()))) return true;
-            else return false;
-        } catch (NoSuchAlgorithmException wtf){
-            System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
-            return false;
-        }
+    	if (messageDigest==null) { //Fehlermeldung wird generiert, falls kein Passwort-Hash vorhanden ist
+    		try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException wtf){
+                System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+            }
+    	}
+        messageDigest.update(password.getBytes());
+        if (pwHash.equals(new String (messageDigest.digest()))) return true; //prüft, ob Passwort-Hash des Nutzers mit dem Hash des übergebenen Passwortes übereinstimmt
+        else return false;
     }
 
 
     /**
      *<p><strong>Vorbedingungen:</strong> Es muss die Antwort auf eine Sicherheitsfrage übergeben werden und einen Nutzer geben, auf den die Methode angewandt wird.</p>
-     * <p><strong>Effekt:</strong> Prüft, ob der Antwort-Hash des Nutzers mit dem Hash der übergebenen Antwort übereinstimmt.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob der Antwort-Hash des Nutzers mit dem Hash der übergebenen Antwort übereinstimmt.</p>
      * @param antwort übergebener String Antwort auf Sicherheitsfrage
      * @return <strong>true</strong> wenn die Antwort-Hashes übereinstimmen und <strong>false</strong>, falls das nicht der Fall ist
      */
 
     public boolean checkFrage (String antwort){
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(antwort.getBytes());
-            if (sicherheitsAntwortHash.equals(new String (messageDigest.digest()))) return true; //prüft, ob Antwort-Hash des Nutzers mit dem Hash der übergebenen Antwort übereinstimmt
-            else return false;
-        } catch (NoSuchAlgorithmException wtf){
-            System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
-            return false;
-        }
+    	if (messageDigest==null) { //Fehlermeldung wird generiert, falls kein Antwort-Hash vorhanden ist
+    		try {
+                messageDigest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException wtf){
+                System.err.println("Interner Fehler: Hash-Algorithmus nicht vorhanden [Nutzer-Konstr]");
+            }
+    	}
+        messageDigest.update(antwort.getBytes());
+        if (sicherheitsAntwortHash.equals(new String (messageDigest.digest()))) return true; //prüft, ob Antwort-Hash des Nutzers mit dem Hash der übergebenen Antwort übereinstimmt
+        else return false;
     }
 
     public boolean isAdmin() {
