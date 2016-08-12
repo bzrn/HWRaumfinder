@@ -114,7 +114,7 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 	/**
 	 * <p><strong>Vorbedingungen:</strong> Es muss ein Ausstattungs-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann 
 	 * und eines, welches als "anforderung" übergeben wird.</p>
-	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, ob die Ausstattung die Anforderungen erfüllt und wenn ja, wie Umfangreich die Ausstattung ist. </p>
+	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, ob die Ausstattung die Anforderungen erfüllt und wenn ja, wie umfangreich die Ausstattung ist. </p>
 	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände gefordert werden
 	 * @return <strong>erfuellteAnforderungen</strong> ist (int erfuellteAnforderungen=0) sind die Anforderungen nicht erfüllt, ansonsten gilt: je höher erfuellteAnforderungen, desto besser die Ausstattung
 	 *
