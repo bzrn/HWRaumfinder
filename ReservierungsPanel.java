@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten des Reservierungsvorganges
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten des Reservierungsvorganges
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.6
  * @author Alexander Reichenbach
