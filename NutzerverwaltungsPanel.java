@@ -23,7 +23,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 /**
- * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten der Nutzerverwaltung
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten der Nutzerverwaltung
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.2
  * @author Alexander Reichenbach
