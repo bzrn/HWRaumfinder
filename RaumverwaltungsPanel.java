@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 /**
- * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten der Raumverwaltung
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten der Raumverwaltung
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.4
  * @author Alexander Reichenbach
