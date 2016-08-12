@@ -17,6 +17,8 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 
 	//Attribute
 	
+	private static final long serialVersionUID = -7112512876696375565L;
+	
 	private boolean beamer;
 	private boolean ohp;
 	private boolean tafel;
@@ -110,10 +112,11 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 	}
 
 	/**
-	 * <p><strong>Vorbedingungen:</strong> Es muss ein Ausstattungs-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann und eines, welches als "anforderung" übergeben wird.</p>
-	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, wie gut die Ausstattung den Anforderungen entspricht. Je höher der Wert, desto höher ist die Übereinstimmung und desto besser ist die Ausstattung.</p>
+	 * <p><strong>Vorbedingungen:</strong> Es muss ein Ausstattungs-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann 
+	 * und eines, welches als "anforderung" übergeben wird.</p>
+	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, ob die Ausstattung die Anforderungen erfüllt und wenn ja, wie Umfangreich die Ausstattung ist. </p>
 	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände gefordert werden
-	 * @return erfuellteAnforderungen zählt, wie viele Anforderungen erfüllt werden, wird also hochgesetzt, wenn eine Anforderung erfüllt ist, aber auch, wenn Ausstattungsgegenstände vorhanden sind, die über die Anforderungen hinaus gehen
+	 * @return <strong>erfuellteAnforderungen</strong> ist (int erfuellteAnforderungen=0) sind die Anforderungen nicht erfüllt, ansonsten gilt: je höher erfuellteAnforderungen, desto besser die Ausstattung
 	 *
 	 * <p><strong>Anmerkung zur Implementierung:</strong> Es wurde mit der in Java nicht integrierten, logischen Verknüpfung der Implikaition gearbeitet,
 	 * welche mit den vorhandenen logischen Operatoren der Bool'schen Algebra realisiert wurde.</p>
@@ -123,7 +126,8 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 		
 		int erfuellteAnforderungen=0;
 	
-		if ((!anforderung.beamer || this.beamer)	// Ausstattungsobjekt ist nicht gefordert oder existiert, wenn 
+		// Ausstattungsobjekt ist nicht gefordert oder existiert, wenn dieses Kriterium nicht zutrifft, sind die Mindestanforderungen nicht erfüllt --> erfuellteAnforderungen=0
+		if ((!anforderung.beamer || this.beamer)	
 						&& (!anforderung.ohp || this.ohp)
 						&& (!anforderung.tafel || this.tafel)
 						&& (!anforderung.smartboard || this.smartboard)
@@ -131,6 +135,7 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 						&& (!anforderung.computerraum || this.computerraum)
 						&& (anforderung.getKapazitaet()<=this.getKapazitaet()))
 		{
+			//sind die Anforderungen erfüllt, wird der Raum nach Umfang der Ausstattung bewertet - je mehr Ausstattung, desto höher ist erfuellteAnforderungen
 			if (anforderung.beamer && this.beamer) erfuellteAnforderungen ++;	
 			if (anforderung.ohp && this.ohp) erfuellteAnforderungen++;
 			if (anforderung.tafel && this.tafel) erfuellteAnforderungen++;
