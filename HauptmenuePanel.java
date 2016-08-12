@@ -13,7 +13,11 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 /**
- * Created by Alexander on 26.07.2016.
+ * <strong/>Zweck:<strong/> Definiert Design und Funktionalitäten des Hauptmenü-Panels
+ * <p><strong>Änderungshistorie:</strong></p>
+ * @version 2.4
+ * @author Alexander Reichenbach
+ *
  */
 public class HauptmenuePanel extends JPanel {
     private GUIFrame frame;
