@@ -109,13 +109,14 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 		this.kapazitaet = kapazitaet;
 	}
 
-	/**
-	 * <p><strong>Vorbedingungen:</strong> Es muss ein Ausstattungs-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann und eines, welches als "anforderung" übergeben wird.</p>
-	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, wie gut die Ausstattung (eines Raumes) den Anforderungen (des Nutzers) entspricht.</p>
-	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände vom Nutzer gefordert werden (wird mit Austattung der Räume verglichen)
-	 * @return erfuellteAnforderungen zählt, wie viele Anforderungen erfüllt werden, wird also hochgesetzt, wenn eine Anforderung erfüllt ist, aber auch, wenn der Raum eine Ausstattung hat, die nicht gefordert ist
+/**
+	 * <p><strong>Vorbedingungen:</strong> Es muss ein Ausstattungs-Objekt vorhanden sein, auf dem die Methode aufgerufen werden kann 
+	 * und eines, welches als "anforderung" übergeben wird.</p>
+	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, ob die Ausstattung die Anforderungen erfüllt und wenn ja, wie Umfangreich die Ausstattung ist. </p>
+	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände gefordert werden
+	 * @return <strong>erfuellteAnforderungen</strong> ist (int erfuellteAnforderungen=0) sind die Anforderungen nicht erfüllt, ansonsten gilt: je höher erfuellteAnforderungen, desto besser die Ausstattung
 	 *
-	 * <p><strong>Anmerkung:</strong> Es wurde mit der in Java nicht integrierten, logischen Verknüpfung der Implikaition gearbeitet,
+	 * <p><strong>Anmerkung zur Implementierung:</strong> Es wurde mit der in Java nicht integrierten, logischen Verknüpfung der Implikaition gearbeitet,
 	 * welche mit den vorhandenen logischen Operatoren der Bool'schen Algebra realisiert wurde.</p>
 	 */
 	
