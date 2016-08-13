@@ -63,7 +63,13 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
     //              Abschnitt Suche
     // --------------------------------------------------
 
-    // Raumsuche anhand von Kriterien (Zeitraum || Ausstattung)
+     /**
+     * <strong>Vorbedingungen:</strong> Es müssen ein Zeitraum- und ein Ausstattungs-Objekt übergeben werden
+	 * <p><strong>Effekt:</strong> Ermöglicht die Raumsauche anhand der Kriterien Zeitraum und Ausstattung</p>
+     * @param s Zeitraum, in dem ein Raum frei sein muss, um als Suchergebnis ausgegeben zu werden
+     * @param a Austattungs-Objekt, dass die Anforderungen an die Ausstattung darstellt
+     * @return die auf die Suche passenden Räume werden in absteigender Reihenfolge zurückgegeben
+     */
     public ArrayList<String> suche (Zeitraum s, Ausstattung a){
 
         // Variableninitialisierung
@@ -86,7 +92,12 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
         return suche (new Zeitraum(start, ende), new Ausstattung(beamer, ohp, tafel, smartb, whiteb, computerr, kapazitaet));
     }
 
-    // Raumsuche über Raumkennung
+     /**
+     * <strong>Vorbedingungen:</strong> Es muss eine Raumkennung vom Typ String übergeben werden
+	 * <p><strong>Effekt:</strong> Ermöglicht die Raumsauche anhand der Raumkennung</p>
+     * @param raumKennung String, der unabhängig von Groß- und Kleinschreibung auf Übereinstimmung mit den Kennungen der vorhandenen Räume geprüft wird
+     * @return <strong>null</strong>, falls die gesuchte Kennung nicht vergeben ist, bei Übereinstimmung einer Raumkennung und der gesuchten Bezeichnung wird das entsprechende <strong>Raumobjekt</strong> zurückgegeben
+     */
     public Raum sucheKennung(String raumKennung){
         for(int i = 0; i<raeume.size(); i++){
             if(raumKennung.equalsIgnoreCase(raeume.get(i).getRaumBezeichnung())){
@@ -114,7 +125,14 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
         return reservieren (neu, false);
     }
 
-    // interne bzw. manuelle Erstellung einer Reservierung
+    /**
+     * <strong>Vorbedingungen:</strong> Es müssen ein Reservierungs-Objekt und ein boolean-Wert für overwrite übergeben werden.
+	 * <p><strong>Effekt:</strong> Interne beziehungsweise manuelle Erstellung einer Reservierung</p>
+	 * @param neu Reservierungs-Objekt, welches der Reservierungsliste hinzugefügt werden soll 
+	 * @param overwrite ist boolean overwrite als "true" übergeben, werden bei Kollisionen die betroffene(n) Reservierung(en) gelöscht und durch die neue Reservierung ersetzt 
+	 * (einsetzbar z.B. bei Stundenplanänderungen, die Reservierungen von Studenten überschreiben sollen)
+	 * @return <strong>true</strong> wenn die Reservierung der Reservierungsliste hinzugefügt wurde, <strong>false</strong>, wenn die Reservierung verworfen wurde
+     */
     public boolean reservieren (Reservierung neu, boolean overwrite) {
 
         // Variableninitialisierung
@@ -174,6 +192,12 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
         return null;
     }
 
+ /**
+    * <p><strong>Vorbedingungen:</strong> Es muss eine Reservierung übergeben werden.</p>
+	* <p><strong>Effekt:</strong> Fügt die Reservierung sortiert in die Reservierungsliste ein, falls sie nicht ohnehin schon in der Liste vorhanden ist.</p>
+    * @param neu Reservierung, die der Reservierungsliste des Raumes hinzugefügt werden soll
+    * 
+    */
     private void addReservierung(Reservierung neu){
         GlobaleMethoden.addReservierungtoArrayList(reservierungen, neu);
     }
@@ -200,6 +224,13 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
     //                  Abschnitt Räume
     // --------------------------------------------------
 
+/**
+     * <p><strong>Vorbedingungen:</strong> Es müssen ein Zeitraum und eine Raumkennung übergeben werden.</p>
+	 * <p><strong>Effekt:</strong> Prüft, ob der Raum im übergebenen Zeitraum belegt ist.</p>
+	 * @param raumKennung Name des Raumes, dessen Verfügbarkeit geprüft wird
+     * @param zr Zeitraum, der auf Kollision mit der Belegung des Raumes geprüft wird
+     * @return <strong>true</strong> wenn Zeitraum und Belegung/Reservierungen nicht kollidieren, <strong>false</strong> wenn sie kollidieren
+     */
     public boolean pruefeVerfuegbarkeitRaum (String raumKennung, Zeitraum zr){
         return sucheKennung(raumKennung).istFrei(zr);
     }
@@ -296,10 +327,18 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
         onEinleser.einlesen();
     }
 
+/**
+	 * <p><strong>Vorbedingungen:</strong> Es muss einen Raumfinder geben, auf den die Methode angewendet wird.</p>
+	 * <p><strong>Effekt:</strong> Der Raumfinder wird serialisiert und somit im Ganzen als ein Objekt in einer Datei gespeichert. 
+	 */
     public void save(){
     	RaumfinderFileAdapter.getInstance().save();
     }
 
+/**
+	 * <p><strong>Vorbedingungen:</strong> Um Fehlermeldungen zu vermeiden, sollte eine einlesbare Datei mit dem serialisierten Raumfinder existieren.</p>
+	 * <p><strong>Effekt:</strong> Liest das Raumfinder-Interface und den resCounter ein.</p>
+	 */
     public void load(){
         ourInstance = (Raumfinder)fileAdapter.load();
         onEinleser = new OnlineEinleser();
