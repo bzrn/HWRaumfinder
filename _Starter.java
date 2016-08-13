@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * <strong>Zweck:</strong> Leitet den Start des Raumfinders mittels Konsolenabfragen ein
+ * <strong>Zweck:</strong> Leitet den Start des Raumfinders mittels Konsolenabfragen ein und initialisiert das System
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.1
  * @author Alexander Reichenbach

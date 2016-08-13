@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * <strong>Zweck:</strong>  ...
+ * <strong>Zweck:</strong>  Koordination der verschiedenen Ansichten der Benutzeroberfläche und Schnittstelle zur Verarbeitungsschicht
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.5
  * @author Alexander Reichenbach
@@ -146,6 +146,10 @@ import java.util.Date;
         header.setVisible(false);
     }
 
+    /**
+     * <String>Effekt:</String> setzt das in aktuelleAnsicht gespeicherte JPanel, aktualisiert die Fensterdarstellung allerdings nicht
+     * @param AnsichtsKonstante eine der definierten String-Konstanten, die für entsprechende Ansicht steht
+     */
     private void setAktuelleAnsicht (String AnsichtsKonstante){
 
         aktuelleAnsichtStr=AnsichtsKonstante;
@@ -219,6 +223,10 @@ import java.util.Date;
         }
     }
 
+    /**
+     * <String>Effekt:</String> Aktualisiert die aktuelle Ansicht des Fensters
+     * @param AnsichtsKonstante eine der definierten String-Konstanten, die für entsprechende Ansicht steht
+     */
      void aktualisiereAnsicht (String AnsichtsKonstante) {
 
         contentPanel.remove(aktuelleAnsicht);
@@ -512,7 +520,7 @@ import java.util.Date;
     }
 
      String[] getNutzerDaten (String nutzername){
-    	NutzerIF tempNutzer = rf.sucheNutzer(nutzername);		// IF
+    	NutzerIF tempNutzer = rf.sucheNutzer(nutzername);
     	return new String[]{tempNutzer.getName(), tempNutzer.getSicherheitsFrage()};
     }
 
@@ -524,7 +532,7 @@ import java.util.Date;
                     JOptionPane.ERROR_MESSAGE);
         } else {
             boolean[] aenderungen = new boolean[4];
-            NutzerIF bearbeiteterNutzer = rf.sucheNutzer(nutzernameAlt);		//IF
+            NutzerIF bearbeiteterNutzer = rf.sucheNutzer(nutzernameAlt);
             if (!nutzernameAlt.equals(nutzernameNeu)) {
                 bearbeiteterNutzer.setName(nutzernameNeu);
                 aenderungen[0] = true;

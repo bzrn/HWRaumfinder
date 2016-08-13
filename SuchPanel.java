@@ -20,7 +20,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
 /**
- * <strong>Zweck:</strong> Definiert Design und Funktionalitäten der Suche
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten der Suche nach Kriterien
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.4
  * @author Alexander Reichenbach
@@ -95,14 +95,14 @@ public class SuchPanel extends JPanel {
 		//Dropdown Menues
 		
 		JComboBox<String> comboKapazitaet = new JComboBox<String>(GUIFrame.kapazitaet);
-		
+
 		JComboBox<String> startStunde = new JComboBox<String>(GUIFrame.hour);
 			startStunde.setSelectedItem(Integer.toString(c.get(Calendar.HOUR_OF_DAY)));
 		JComboBox<String> startMinute = new JComboBox<String>(GUIFrame.min);
 			startMinute.setSelectedItem(Integer.toString((c.get(Calendar.MINUTE)/15)*15));
-		
+		c.setTime(ende);
 		JComboBox<String> endStunde = new JComboBox<String>(GUIFrame.hour);
-			endStunde.setSelectedItem(Integer.toString(c.get(Calendar.HOUR_OF_DAY)+1));
+			endStunde.setSelectedItem(Integer.toString(c.get(Calendar.HOUR_OF_DAY)));
 		JComboBox<String> endMinute = new JComboBox<String>(GUIFrame.min);
 			endMinute.setSelectedItem(Integer.toString((c.get(Calendar.MINUTE)/15)*15));
 		

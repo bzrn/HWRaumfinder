@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * <strong>Zweck:</strong> Definiert Design und Funktionalitäten des Reservierungsvorganges
+ * <strong>Zweck:</strong> Definiert Design und Funktionalitäten des Reservierungsvorganges ink. Detailanzeige des zu reservierenden Raumes
  * <p><strong>Änderungshistorie:</strong></p>
  * @version 2.6
  * @author Alexander Reichenbach
@@ -56,28 +56,25 @@ public class ReservierungsPanel extends JPanel {
 
         setupCalendar();
 
-        try {
-            Calendar today = Calendar.getInstance();
-            //today.setTime(sdf.parse(datumStr));
-            //while (c1.before(today)||c2.before(today)) {
-            //    c1.add(Calendar.DATE, 1);
-            //    c2.add(Calendar.DATE, 1);
-            //}
-            today=c1;
-            today.set(Calendar.HOUR_OF_DAY, 19);
-            if (c1.after(today)||c2.after(today)) {
-                c1.set(Calendar.HOUR_OF_DAY, 8);
-                c2.set(Calendar.HOUR_OF_DAY, 9);
-            }
-            today.set(Calendar.HOUR_OF_DAY, 8);
-            if (c1.before(today)||c2.before(today)) {
-                c1.set(Calendar.HOUR_OF_DAY, 8);
-                c2.set(Calendar.HOUR_OF_DAY, 9);
-            }
-        } finally {} /*catch (ParseException e) {
-            System.err.println("Interner Fehler: Parsing DatumString");
-        }*/
-
+        Calendar today = Calendar.getInstance();
+        //today.setTime(sdf.parse(datumStr));
+        //while (c1.before(today)||c2.before(today)) {
+        //    c1.add(Calendar.DATE, 1);
+        //    c2.add(Calendar.DATE, 1);
+        //}
+        today=c1;
+        today.set(Calendar.HOUR_OF_DAY, 19);
+        if (c1.after(today)||c2.after(today)) {
+            c1.set(Calendar.HOUR_OF_DAY, 8);
+            c2.set(Calendar.HOUR_OF_DAY, 9);
+        }
+        today.set(Calendar.HOUR_OF_DAY, 8);
+        if (c1.before(today)||c2.before(today)) {
+            c1.set(Calendar.HOUR_OF_DAY, 8);
+            c2.set(Calendar.HOUR_OF_DAY, 9);
+        }
+        this.start = c1.getTime();
+        this.ende = c2.getTime();
         setupCalendar();
 
         titelLabel.setText("Raum " + raumKennung);
