@@ -63,14 +63,14 @@ public class RaumfinderFileAdapter implements RaumfinderFileAdapterIF {
 
 	/**
 	 * <p><strong>Vorbedingungen:</strong> Um Fehlermeldungen zu vermeiden, sollte eine einlesbare Datei mit dem serialisierten Raumfinder existieren.</p>
-	 * <p><strong>Effekt:</strong> Liest das Raumfinder-Interface und den resCounter ein.</p>
-	 * @return gibt <strong>null</strong> zurück, wenn ein Fehler beim Einlesen auftritt, sonst wird das RaumfinderIF zurückgegeben
+	 * <p><strong>Effekt:</strong> Liest den Raumfinder (der das Raumfinder-Interfaces implementieren muss) und den resCounter  aus den entsprechenden Dateien ein.</p>
+	 * @return gibt <strong>null</strong> zurück, wenn ein Fehler beim Einlesen auftritt, sonst wird ein Objekt vom Typ RaumfinderIF zurückgegeben
 	 */
 	@SuppressWarnings({ "resource", "static-access" })
 	public RaumfinderIF load() {
-		
-		// Einlesen des Raumfinder-Interfaces
+
 		try {
+			// Einlesen des Raumfinder-Interfaces
 			Scanner sc = new Scanner(rescounterdatei);
 			long resCounter = sc.nextLong();
 			sc.close();
