@@ -103,9 +103,9 @@ public class Raum implements VerarbeitungInterfaces.RaumIF, Serializable {
     }
 
 
-    /**
+  /**
      * <p><strong>Vorbedingungen:</strong> Es muss eine Reservierung übergeben werden und es muss einen Raum geben, auf den die Methode angewendet werden kann.</p>
-	 * <p><strong>Effekt:</strong> Fügt das Reservierung sortiert in die Reservierungs-/Belegungsiste ein, falls es nicht ohnehin schon in der Liste vorhanden ist.</p>
+	* <p><strong>Effekt:</strong> Fügt die Reservierung sortiert in die Reservierungs-/Belegungsliste ein, falls diese nicht ohnehin schon in der Liste vorhanden ist.</p>
      * @param neu Reservierung, die der Belegungs-/Reservierungsliste des Raumes hinzugefügt werden soll
      * @return <strong>true</strong> wenn die Reservierung der Liste hinzugefügt wurde, <strong>false</strong> wenn die Reservierung nicht hinzugefügt wurde, da sie bereits in der Liste vorhanden war
      */
