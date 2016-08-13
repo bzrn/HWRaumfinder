@@ -397,6 +397,10 @@ import java.util.Date;
             System.err.println("Interner Fehler: Zu löschender Raum existiert nicht.");
         } else {
             rf.loescheRaum(rf.sucheKennung(raumKennung));
+            JOptionPane.showMessageDialog(this,
+                    "Raum "+raumKennung+" gelöscht!",
+                    "Erfolg",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
         aktualisiereAnsicht(HAUPTMENUE);
         aktualisiereAnsicht(RAUMVERWALTUNG);
@@ -525,7 +529,7 @@ import java.util.Date;
     }
 
      void bearbeiteNutzer (String nutzernameAlt, String nutzernameNeu, String passwort, String frage, String antwort) {
-    	if (rf.sucheNutzer(nutzernameNeu)!=null){
+    	if (!nutzernameAlt.equals(nutzernameNeu) && rf.sucheNutzer(nutzernameNeu)!=null){
             JOptionPane.showMessageDialog(this,
                     "Benutzername existiert bereits!",
                     "Fehler",

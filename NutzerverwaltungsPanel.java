@@ -127,7 +127,16 @@ public class NutzerverwaltungsPanel extends JPanel {
         	weiterBtn.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                 	if (nutzerNameText.getText().isEmpty() || frageText.getText().isEmpty()) popupInputFehlt();
-                	else frame.bearbeiteNutzer(bearbeiteterNutzerDaten[0], nutzerNameText.getText(), passwordText.getText(), frageText.getText(), antwortText.getText());
+                	else {
+                	    if (!passwordText.getText().isEmpty() && passwordText.getText().length()<8){
+                            JOptionPane.showMessageDialog(frame,
+                                    "Das Passwort ist zu kurz, bitte mindestens 8 Zeichen eingeben!",
+                                    "Registrierung fehlgeschlagen",
+                                    JOptionPane.WARNING_MESSAGE);
+                        } else {
+                            frame.bearbeiteNutzer(bearbeiteterNutzerDaten[0], nutzerNameText.getText(), passwordText.getText(), frageText.getText(), antwortText.getText());
+                        }
+                    }
                 }
             });
         	nutzerBearbeitung.add(weiterBtn);

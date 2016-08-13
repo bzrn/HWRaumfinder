@@ -121,7 +121,9 @@ public class RaumverwaltungsPanel extends JPanel {
                 loeschBtn.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         if (raumNameText.getText().isEmpty() || kapaText.getText().isEmpty()) popupInputFehlt();
-                        else frame.loescheRaum(bearbeiteterRaumDaten[0]);
+                        else {
+                            frame.loescheRaum(bearbeiteterRaumDaten[0]);
+                        }
                     }
                 });
                 bearbeitungFooter.add(loeschBtn);
@@ -130,7 +132,13 @@ public class RaumverwaltungsPanel extends JPanel {
                 weiterBtn.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         if (raumNameText.getText().isEmpty() || kapaText.getText().isEmpty()) popupInputFehlt();
-                        else frame.bearbeiteRaum(bearbeiteterRaumDaten[0], raumNameText.getText(), kapaText.getText(), chckbxBuchbar.isSelected(), chckbxBeamer.isSelected(), chckbxOhp.isSelected(), chckbxTafel.isSelected(), chckbxSmartboard.isSelected(), chckbxWhiteboard.isSelected(), chckbxComputerraum.isSelected());
+                        else {
+                            frame.bearbeiteRaum(bearbeiteterRaumDaten[0], raumNameText.getText(), kapaText.getText(), chckbxBuchbar.isSelected(), chckbxBeamer.isSelected(), chckbxOhp.isSelected(), chckbxTafel.isSelected(), chckbxSmartboard.isSelected(), chckbxWhiteboard.isSelected(), chckbxComputerraum.isSelected());
+                            JOptionPane.showMessageDialog(frame,
+                                    "Raumdaten geändert!",
+                                    "Erfolg",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
                     }
                 });
                 bearbeitungFooter.add(weiterBtn);
