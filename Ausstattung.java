@@ -116,7 +116,7 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 	 * und eines, welches als "anforderung" übergeben wird.</p>
 	 * <p><strong>Effekt:</strong> Berechnet einen Integer-Wert, der Auskunft darüber gibt, ob die Ausstattung die Anforderungen erfüllt und wenn ja, wie umfangreich die Ausstattung ist. </p>
 	 * @param anforderung ein Ausstattungs-Objekt, das beschreibt, welche Ausstattungsgegenstände gefordert werden
-	 * @return <strong>erfuellteAnforderungen</strong> ist (int erfuellteAnforderungen=0) sind die Anforderungen nicht erfüllt, ansonsten gilt: je höher erfuellteAnforderungen, desto besser die Ausstattung
+	 * @return <strong>erfuellteAnforderungen</strong> ist (int erfuellteAnforderungen) = 0 sind die Anforderungen nicht erfüllt, ansonsten gilt: je höher erfuellteAnforderungen, desto umfangreicher die Ausstattung
 	 *
 	 * <p><strong>Anmerkung zur Implementierung:</strong> Es wurde mit der in Java nicht integrierten, logischen Verknüpfung der Implikaition gearbeitet,
 	 * welche mit den vorhandenen logischen Operatoren der Bool'schen Algebra realisiert wurde.</p>
@@ -147,6 +147,13 @@ public class Ausstattung implements VerarbeitungInterfaces.AusstattungIF, Serial
 		
 		return erfuellteAnforderungen;
 	}
+
+
+	/**
+	 * <p><strong>Vorbedingungen:</strong> keine</p>
+	 * <p><strong>Effekt:</strong> Gibt Ausstattungsobjekt als zweidimensionales String-Array aus </p>
+	 * @return <strong>String[][]</strong> - enthält in einer Spalte alle existierenden Ausstattungsmerkmale und in der zweiten Spalte den Grad der erfüllung durch das aktuelle Objekt
+	 */
 
 	public String[][] toStringArray() {
 		String[][] erg = new String[2][7];

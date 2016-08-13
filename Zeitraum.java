@@ -34,11 +34,6 @@ public class Zeitraum implements Serializable {
 			this.dauer=berechneDauer(start, ende);
 		}
 	}
-
-	// create-Methode
-	public static Zeitraum createZeitraum (Date start, Date ende) throws UnzulaessigerZeitraumException{
-		return new Zeitraum(start, ende);
-	}
 	
 	//getter und setter
 	

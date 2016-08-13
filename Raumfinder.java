@@ -9,7 +9,11 @@ import java.util.Date;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
- * Created by mwolff on 19.06.16.
+ * <strong>Zweck:</strong> <ul> <li>Verwaltet Gesamtlisten der Nutzer, Räume und Reservierungen und koordiniert Änderunen an diesen</li>
+ *                              <li>Zugriff auf Persistenzschichz</li></ul>
+ * @version 3.4
+ * @author Alexander Reichenbach
+ *
  */
 
 
