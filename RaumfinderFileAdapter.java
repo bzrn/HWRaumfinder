@@ -70,12 +70,12 @@ public class RaumfinderFileAdapter implements RaumfinderFileAdapterIF {
 	public RaumfinderIF load() {
 
 		try {
-			// Einlesen des Raumfinder-Interfaces
+			// Einlesen des resCounters
 			Scanner sc = new Scanner(rescounterdatei);
 			long resCounter = sc.nextLong();
 			sc.close();
 			
-			// Einlesen des resCounters
+			// Einlesen des Raumfinder-Interfaces
 			ObjectInputStream in = new ObjectInputStream (new FileInputStream(datei));
 			RaumfinderIF rfif = (RaumfinderIF) in.readObject();
 			rfif.setResCounter(resCounter);
