@@ -4,9 +4,53 @@ package Verarbeitung;
 import java.io.Serializable;
 
 /**
- * <p><strong>Zweck:</strong> Der Dozent kann als Reservierer angelegt werden, ist selber jedoch kein aktiver Nutzer des Systems. Dadurch ist es möglich, bei Reservierungen, die Vorlesungen und Seminare repräsentieren, den Dozenten als Reservierer anzugeben.</p> 
- * <p><strong>Änderungshistorie:</strong></p>
- * @version 1.3
+ * <strong>Zweck:</strong> Der Dozent kann als Reservierer angelegt werden, ist selber jedoch kein aktiver Nutzer des Systems. Dadurch ist es moeglich, bei Reservierungen, die Vorlesungen und Seminare repraesentieren, den Dozenten als Reservierer anzugeben. 
+ * <h2>Aenderungshistorie:</h2>
+ * 
+ * <ol>
+ * 	<li>
+ * 		<ul>
+ * 			<li> <strong> Version: </strong> 0.1 </li>
+ *			<li> <strong> Datum: </strong> 25.06.16 </li>
+ *			<li> <strong> Autor: </strong> Alexander Reichenbach </li>
+ * 			<li> <strong> Beschreibung: </strong> Initiale Befuellung </li>
+ *		 </ul>
+ *	</li>
+ *	<li>
+ *		<ul>
+ *			<li> <strong> Version: </strong> 0.2 </li>
+ *			<li> <strong> Datum: </strong> 28.07.16 </li>
+ *			<li> <strong> Autor: </strong> Alexander Reichenbach </li>
+ * 			<li> <strong> Beschreibung: </strong> Update Package Verarbeitung </li>
+ *		</ul>
+ *	</li>
+ *	<li>
+ *		<ul>
+ *			<li> <strong> Version: </strong> 1.0 </li>
+ *			<li> <strong> Datum: </strong> 06.08.16 </li>
+ *			<li> <strong> Autor: </strong> Hanna Behnke </li>
+ * 			<li> <strong> Beschreibung: </strong> Finales Update </li>
+ *		</ul>
+ *	</li>
+ *	<li>
+ *		<ul>
+ *			<li> <strong> Version: </strong> 1.1 </li>
+ *			<li> <strong> Datum: </strong> 11.08.16 </li>
+ *			<li> <strong> Autor: </strong> Hanna Behnke </li>
+ * 			<li> <strong> Beschreibung: </strong> Kommentare/Unit-Spezifikationen </li>
+ *		</ul>
+ *	</li>
+ *	<li>
+ *		<ul>
+ *			<li> <strong> Version: </strong> 1.2 </li>
+ *			<li> <strong> Datum: </strong> 12.08.16 </li>
+ *			<li> <strong> Autor: </strong> Alexander Reichenbach </li>
+ * 			<li> <strong> Beschreibung: </strong> Bug Fixes </li>
+ *		</ul>
+ *	</li>
+ * </ol>
+ * 
+ * @version 1.2
  * @author Alexander Reichenbach
  *
  */
