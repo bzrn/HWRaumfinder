@@ -99,9 +99,9 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
      * @return <strong>null</strong>, falls die gesuchte Kennung nicht vergeben ist, bei Übereinstimmung einer Raumkennung und der gesuchten Bezeichnung wird das entsprechende <strong>Raumobjekt</strong> zurückgegeben
      */
     public Raum sucheKennung(String raumKennung){
-        for(int i = 0; i<raeume.size(); i++){
-            if(raumKennung.equalsIgnoreCase(raeume.get(i).getRaumBezeichnung())){
-                return raeume.get(i);
+        for(int k = 0; k<raeume.size(); k++){
+            if(raumKennung.equalsIgnoreCase(raeume.get(k).getRaumBezeichnung())){
+                return raeume.get(k);
             }
         }
         return null;
@@ -243,6 +243,7 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
 
     public void addRaum(Raum a){
         raeume.add(a);
+        //raeume.sort();
     }
 
     public void addRaum (String raumKennung, boolean beamer, boolean ohp, boolean tafel, boolean smartb, boolean whiteb, boolean computerr, int kapazitaet, boolean admin){
@@ -288,9 +289,20 @@ public class Raumfinder implements VerarbeitungInterfaces.RaumfinderIF, Serializ
         }
     }
 
+    /**
+     * <p><strong>Vorbedingungen:</strong> Der zu löschende Nutzer darf nicht null sein und muss im Raumfinder gespeichert sein.</p>
+     * <p><strong>Effekt:</strong> Die save()-Methode auf dem RaumfinderFileAdapter - Persistenzschicht - aufgerufen.
+     * @param n Zu löschender Nutzer
+     * @return true bei Erfolg, false bei Misserfolg (wenn Nutzer nicht-löschbarer Admin)
+     */
     public boolean loescheNutzer (Nutzer n) {
         if (n.isAdmin()) if (!((Admin) n).isDeletable()) return false;
-
+        if (!n.isAdmin()) {
+            ArrayList<Reservierung> nutzerReses = ((StandardNutzer)n).getReservierungen();
+            for (int j=0; j<nutzerReses.size(); j++){
+                nutzerReses.get(j).setError(true);
+            }
+        }
         nutzer.remove(n);
         return true;
     }

@@ -30,17 +30,19 @@ public class OnlineEinleser {
 
         ArrayList<Reservierung> resses = new ArrayList<Reservierung>();
 
-        download();
+        //download();
+        fileCounter=167;
 
         for (int i=0; i<fileCounter; i++) {
             resses.addAll(readEvents(SPEICHERORT + "events_" + i + ".ics"));
         }
 
-        for (int i=0; i<resses.size(); i++){
+        /*for (int i=0; i<resses.size(); i++){
             raumfinder.reservieren(resses.get(i), true);
         }
 
         System.out.println("OnlineEinleser: "+resses.size()+" Reservierungen eingelesen.");
+        */
     }
 
     private void download(){
@@ -176,22 +178,6 @@ public class OnlineEinleser {
         fileCounter++;
     }
 
-    /*
-    public static void downloadFileFromURL(String urlString, File destination) {
-        try {
-            URL website = new URL(urlString);
-            ReadableByteChannel rbc;
-            rbc = Channels.newChannel(website.openStream());
-            FileOutputStream fos = new FileOutputStream(destination);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-            fos.close();
-            rbc.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    */
-
     private ArrayList<Reservierung> readEvents (String filepath) {
 
         ArrayList<Reservierung> reservierungen =new ArrayList<Reservierung>();
@@ -258,17 +244,25 @@ public class OnlineEinleser {
                 if (strRaum.isEmpty()) strRaum = "Ohne Raum";
                 tempRaum = raumfinder.sucheKennung(strRaum);
                     if (tempRaum == null) {
-                        tempRaum = new Raum (
-                                        strRaum,
-                                        new Ausstattung(false, false, false, false, false, false, 0),       // Ausstattung null
-                                        true        // buchbar true
-                        );
+                        if(!strRaum.equals("Ohne Raum")){
+                            tempRaum = new Raum (
+                                    strRaum,
+                                    new Ausstattung(false, false, false, false, false, false, 0),       // Ausstattung null
+                                    true        // buchbar true
+                            );
+                        } else {
+                            tempRaum = new Raum (
+                                    strRaum,
+                                    new Ausstattung(false, false, false, false, false, false, 0),       // Ausstattung null
+                                    false        // buchbar false
+                            );
+                        }
                         raumfinder.addRaum(tempRaum);
                     }
 
                 tempBesitzer = new Dozent (strBesitzer);
                 tempZeitraum = new Zeitraum(icsStringToDate(strStart), icsStringToDate(strEnde));
-
+/*
                 reservierungen.add(
                         new Reservierung(
                                 tempRaum,
@@ -276,7 +270,8 @@ public class OnlineEinleser {
                                 tempZeitraum,
                                 strName
                         )
-                );
+                );*/
+                raumfinder.reservieren(new Reservierung(tempRaum, tempBesitzer, tempZeitraum, strName), true);
             }
 
         } catch (IndexOutOfBoundsException e) {
